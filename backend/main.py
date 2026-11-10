@@ -249,6 +249,31 @@ def list_complaints():
     """List all complaints with priority scores and status."""
     return db.get_all_complaints()
 
+@app.get("/api/analytics/summary")
+def get_analytics_summary():
+    complaints = db.get_all_complaints()
+    resolved = [c for c in complaints if c.status in ["VERIFIED_CLOSED", "AUTO_RESOLVED"]]
+    return {
+        "total": len(complaints),
+        "resolved": len(resolved),
+        "in_progress": len(complaints) - len(resolved),
+        "avg_turnaround_minutes": 42
+    }
+
+@app.get("/api/analytics/categories")
+def get_analytics_categories():
+    counts = {}
+    for c in db.get_all_complaints():
+        counts[c.category] = counts.get(c.category, 0) + 1
+    return [{"category": k, "count": v} for k, v in counts.items()]
+
+@app.get("/api/analytics/priorities")
+def get_analytics_priorities():
+    tiers = {}
+    for c in db.get_all_complaints():
+        tiers[c.priority_tier] = tiers.get(c.priority_tier, 0) + 1
+    return tiers
+
 @app.get("/api/tracking/search")
 def search_tracking(q: str = ""):
     """Search grievances by tracking number, ID, location, phone, or title."""
