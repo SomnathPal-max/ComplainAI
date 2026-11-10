@@ -28,52 +28,52 @@ class Settings:
         "LOW": 2880        # 48 hours
     }
 
-    # Known Critical Infrastructure Landmarks for Vulnerability Boost
+    # Known Critical Infrastructure Landmarks for Vulnerability Boost (Campus & Municipal)
     CRITICAL_LANDMARKS: List[Dict] = [
         {
+            "id": "campus-exam-01",
+            "name": "Oakridge School & Campus Main Examination Hall",
+            "type": "SCHOOL",
+            "latitude": 37.7749,
+            "longitude": -122.4194,
+            "risk_multiplier": 1.45,
+            "description": "Main examination complex with 1,400 students writing semester finals"
+        },
+        {
             "id": "hosp-01",
-            "name": "St. Jude Metropolitan Hospital",
+            "name": "St. Jude Metropolitan Hospital & Campus Health Center",
             "type": "HOSPITAL",
             "latitude": 37.7833,
             "longitude": -122.4167,
             "risk_multiplier": 1.45,
-            "description": "Level 1 Trauma Center & Pediatric ICU"
+            "description": "Student Infirmary & Emergency Health Services"
         },
         {
-            "id": "sch-01",
-            "name": "Oakridge Elementary & Middle School",
-            "type": "SCHOOL",
-            "latitude": 37.7749,
-            "longitude": -122.4194,
-            "risk_multiplier": 1.40,
-            "description": "Public school campus with 1,200 students"
-        },
-        {
-            "id": "sub-04",
-            "name": "Sector 4 High-Voltage Transformer Grid",
-            "type": "POWER_GRID",
-            "latitude": 37.7650,
-            "longitude": -122.4300,
-            "risk_multiplier": 1.50,
-            "description": "Supplies power to 45,000 homes and metro hospital"
-        },
-        {
-            "id": "water-02",
-            "name": "Metro Central Water Treatment Station",
-            "type": "WATER_UTILITY",
-            "latitude": 37.7550,
-            "longitude": -122.4200,
-            "risk_multiplier": 1.35,
-            "description": "Potable water pumping reservoir"
-        },
-        {
-            "id": "senior-01",
-            "name": "Golden Horizon Senior Assisted Living",
+            "id": "campus-hostel-03",
+            "name": "Girls Hostel Block 3 & Dining Wing",
             "type": "VULNERABLE_POPULATION",
             "latitude": 37.7710,
             "longitude": -122.4110,
             "risk_multiplier": 1.40,
-            "description": "350 elderly residents dependent on oxygen equipment"
+            "description": "450 resident students dependent on clean water and security perimeter"
+        },
+        {
+            "id": "campus-lab-04",
+            "name": "Computer Science Lab Complex & Server Rack",
+            "type": "POWER_GRID",
+            "latitude": 37.7650,
+            "longitude": -122.4300,
+            "risk_multiplier": 1.50,
+            "description": "High-density GPU cluster & institutional data server room"
+        },
+        {
+            "id": "water-02",
+            "name": "Metro Central Water Treatment Station & Campus Reservoir",
+            "type": "WATER_UTILITY",
+            "latitude": 37.7550,
+            "longitude": -122.4200,
+            "risk_multiplier": 1.35,
+            "description": "Potable water pumping reservoir supplying campus hostels"
         }
     ]
 

@@ -3,22 +3,88 @@ import uuid
 import random
 from typing import Dict, List, Optional, Any
 from datetime import datetime, timedelta
-from backend.models import Complaint, MasterIncident, ScoreBreakdown, AuditLogEntry
+from backend.models import Complaint, MasterIncident, ScoreBreakdown, AuditLogEntry, UserProfile, FacultyScorecard
 from backend.config import settings
 from backend.ai.priority_engine import priority_engine
+
+# Pre-configured Demo Users for 1-Click Role-Based Authentication
+DEMO_USERS: Dict[str, UserProfile] = {
+    "student@college.edu": UserProfile(
+        id="usr-stud-01",
+        name="Aarav Sharma",
+        role="STUDENT",
+        email="student@college.edu",
+        department="Computer Science & Engineering",
+        roll_or_staff_id="21CS042",
+        title="Student (Year 4, B.Tech CSE)",
+        avatar_url="🎓"
+    ),
+    "aarav.sharma@college.edu": UserProfile(
+        id="usr-stud-01",
+        name="Aarav Sharma",
+        role="STUDENT",
+        email="aarav.sharma@college.edu",
+        department="Computer Science & Engineering",
+        roll_or_staff_id="21CS042",
+        title="Student (Year 4, B.Tech CSE)",
+        avatar_url="🎓"
+    ),
+    "faculty@college.edu": UserProfile(
+        id="usr-fac-01",
+        name="Prof. Rajesh Verma",
+        role="FACULTY",
+        email="faculty@college.edu",
+        department="Campus Facilities & Lab Superintendent",
+        roll_or_staff_id="FAC-881",
+        title="Associate Professor & Campus Technical Superintendent",
+        avatar_url="👨‍🏫"
+    ),
+    "prof.verma@college.edu": UserProfile(
+        id="usr-fac-01",
+        name="Prof. Rajesh Verma",
+        role="FACULTY",
+        email="prof.verma@college.edu",
+        department="Campus Facilities & Lab Superintendent",
+        roll_or_staff_id="FAC-881",
+        title="Associate Professor & Campus Technical Superintendent",
+        avatar_url="👨‍🏫"
+    ),
+    "hod@college.edu": UserProfile(
+        id="usr-hod-01",
+        name="Dr. Ananya Shukla",
+        role="HOD_ADMIN",
+        email="hod@college.edu",
+        department="Computer Science & Engineering",
+        roll_or_staff_id="HOD-101",
+        title="Head of Department (CSE) & Campus Dean of Infrastructure",
+        avatar_url="🏛️"
+    ),
+    "hod.shukla@college.edu": UserProfile(
+        id="usr-hod-01",
+        name="Dr. Ananya Shukla",
+        role="HOD_ADMIN",
+        email="hod.shukla@college.edu",
+        department="Computer Science & Engineering",
+        roll_or_staff_id="HOD-101",
+        title="Head of Department (CSE) & Campus Dean of Infrastructure",
+        avatar_url="🏛️"
+    )
+}
 
 class Database:
     def __init__(self):
         self.complaints: Dict[str, Complaint] = {}
         self.master_incidents: Dict[str, MasterIncident] = {}
+        self.faculty_scorecards: Dict[str, FacultyScorecard] = {}
         self._seed_initial_data()
+        self.recompute_rankings()
 
     def _seed_initial_data(self):
         now = datetime.utcnow()
 
-        # Seed 1: The Sparking Wire near Oakridge School (Target for Minute 1 & Minute 3 Demo)
+        # Seed 1: The Sparking Wire near Examination Hall (CRITICAL - Rank #1)
         c1_id = "CMP-7001"
-        c1_lat, c1_lng = 37.7753, -122.4190  # 65 meters from Oakridge School!
+        c1_lat, c1_lng = 37.7753, -122.4190  # 57 meters from Oakridge / Campus Exam Hall!
         c1_score = priority_engine.calculate_priority(
             nlp_urgency=92.0,
             vision_hazard=94.0,
@@ -30,14 +96,14 @@ class Database:
         self.complaints[c1_id] = Complaint(
             id=c1_id,
             tracking_number="CMP-7001",
-            title="Active Arc-Flashing Electrical Wire Hanging Outside Oakridge School",
-            description="Exposed 4.8kV utility wire detached from crossarm and is violently sparking against chainlink fence. School recess bell about to ring.",
+            title="Active Arc-Flashing Electrical Conduit Outside Examination Hall Complex",
+            description="Exposed 4.8kV utility conduit detached from ceiling and is violently sparking outside Hall Complex A. Semester final exam bell about to ring in 25 minutes.",
             original_transcript="Bhaiya yahan Oakridge school ke theek samne transformer se bohot tez sparks nikal rahe hain! Bachhe chutti hone pe nikalne wale hain, kisi ko current lag sakta hai, please turant kisi ko bhejo!",
             dialect="Urban North Indian / Hinglish Colloquial",
             translated_english="Brothers, right in front of Oakridge School, intense sparks are flying from the transformer! Kids are about to leave for recess, someone could get electrocuted, please send someone immediately!",
             category="Public Safety & Electrical",
-            sub_tags=["High-Voltage Hazard", "Fire Risk", "Arc Flash Hazard", "Pedestrian Exposure"],
-            sub_tag_confidences={"High-Voltage Hazard": 0.98, "Fire Risk": 0.91, "Pedestrian Exposure": 0.89},
+            sub_tags=["High-Voltage Hazard", "Fire Risk", "Arc Flash Hazard", "Student Examination Zone"],
+            sub_tag_confidences={"High-Voltage Hazard": 0.98, "Fire Risk": 0.91, "Student Examination Zone": 0.95},
             sentiment="Extreme Distress",
             vocal_emotion="Panicked",
             vocal_panic_score=92.0,
@@ -48,36 +114,109 @@ class Database:
             context_risk_score=c1_score.context_score,
             priority_score=c1_score.total_score,
             priority_tier=c1_score.tier,
+            rank=1,
             score_breakdown=c1_score,
             status="IN_PROGRESS",
             user_name="Aarav Sharma",
             user_phone="+1 (555) 948-2104",
+            student_roll="21CS042",
+            student_email="aarav.sharma@college.edu",
+            department="Computer Science & Engineering",
+            block_or_hostel="Complex A Examination Hall Frontage",
             channel="PHONE_VOICE",
-            location_name="Oakridge School Gate, Elm & 8th St",
+            location_name="Oakridge School & Campus Main Examination Hall",
             latitude=c1_lat,
             longitude=c1_lng,
+            proof_type="PHOTO",
             image_url="/static/images/sparking_wire.svg",
-            created_at=(now - timedelta(minutes=35)).strftime("%Y-%m-%dT%H:%M:%SZ"),
-            sla_due_at=(now + timedelta(minutes=85)).strftime("%Y-%m-%dT%H:%M:%SZ"),
-            sla_seconds_remaining=5100,
+            assigned_faculty_id="FAC-881",
+            assigned_faculty_name="Prof. Rajesh Verma",
+            created_at=(now - timedelta(minutes=48)).strftime("%Y-%m-%dT%H:%M:%SZ"),
+            sla_due_at=(now + timedelta(minutes=72)).strftime("%Y-%m-%dT%H:%M:%SZ"),
+            sla_seconds_remaining=4320,
             sla_escalated=False,
+            hod_status="PENDING_REVIEW",
             audit_trail=[
                 AuditLogEntry(
-                    timestamp=(now - timedelta(minutes=35)).strftime("%H:%M:%S"),
-                    event="SNAP_AND_SPEAK_TRIAGE",
-                    actor="ComplainAI Multimodal VLM",
-                    details="Audio distress parsed (92% panic). Visual hazard tagged 94/100. Proximity to Oakridge School triggered Vulnerability Boost (+19.4pts)."
+                    timestamp=(now - timedelta(minutes=48)).strftime("%H:%M:%S"),
+                    event="STUDENT_GRIEVANCE_FILED",
+                    actor="Student Aarav Sharma (21CS042)",
+                    details="Audio distress parsed (92% panic). Visual hazard tagged 94/100. Proximity to Exam Hall Complex triggered Vulnerability Boost (+19.4pts)."
                 ),
                 AuditLogEntry(
-                    timestamp=(now - timedelta(minutes=25)).strftime("%H:%M:%S"),
-                    event="DISPATCH_OVERRIDE",
+                    timestamp=(now - timedelta(minutes=38)).strftime("%H:%M:%S"),
+                    event="FACULTY_DISPATCHED",
                     actor="System Automation",
-                    details="Tier 1 Rapid Response unit dispatched with high-voltage insulated bucket truck."
+                    details="Assigned to Prof. Rajesh Verma (Campus Technical Superintendent). Insulated boom unit on-site."
                 )
             ]
         )
 
-        # Seed 2: Pothole on 4th Street (Target for Anti-Fake Closure Demonstration)
+        # Seed 2: Girls Hostel Water Failure (HIGH - Rank #2)
+        c4_id = "CMP-7004"
+        c4_lat, c4_lng = 37.7712, -122.4115  # Near Girls Hostel Block 3
+        c4_score = priority_engine.calculate_priority(
+            nlp_urgency=86.0,
+            vision_hazard=78.0,
+            cluster_size=2,
+            lat=c4_lat,
+            lng=c4_lng,
+            vocal_panic_score=84.0
+        )
+        self.complaints[c4_id] = Complaint(
+            id=c4_id,
+            tracking_number="CMP-7004",
+            title="Total Water Supply Failure on 2nd & 3rd Floors of Girls Hostel Block 3",
+            description="Motor pump coupling failure. 180 resident students have zero running water since 6:00 AM before semester practical exam batches.",
+            original_transcript="Bhaiya Block 3 Girls Hostel mein subah se paani bilkul nahi aa raha hai! Exams start hone wale hain, please turant motor check karo!",
+            dialect="Urban Hinglish Colloquial",
+            translated_english="Brothers, in Block 3 Girls Hostel there is no water since morning! Exams are starting soon, please check the motor pump immediately!",
+            category="Hostel Living & Sanitation",
+            sub_tags=["Hostel Water Outage", "Public Health", "180 Students Impacted"],
+            sub_tag_confidences={"Hostel Water Outage": 0.97, "Public Health": 0.89},
+            sentiment="Extreme Distress",
+            vocal_emotion="Panicked",
+            vocal_panic_score=84.0,
+            visual_defect="High-Pressure Water Pump Cavitation & Riser Pipe Rupture",
+            visual_hazard_score=78.0,
+            nlp_urgency_score=86.0,
+            cluster_size=2,
+            context_risk_score=c4_score.context_score,
+            priority_score=c4_score.total_score,
+            priority_tier=c4_score.tier,
+            rank=2,
+            score_breakdown=c4_score,
+            status="IN_PROGRESS",
+            user_name="Priya Nair",
+            user_phone="+1 (555) 819-3321",
+            student_roll="22EC081",
+            student_email="priya.nair@college.edu",
+            department="Electronics & Communication",
+            block_or_hostel="Girls Hostel Block 3 (Rooms 201-340)",
+            channel="WEB",
+            location_name="Girls Hostel Block 3 & Dining Wing",
+            latitude=c4_lat,
+            longitude=c4_lng,
+            proof_type="PHOTO",
+            image_url="/static/images/sparking_wire.svg",
+            assigned_faculty_id="FAC-882",
+            assigned_faculty_name="Er. Ramesh Kumar (Hostel Supervisor)",
+            created_at=(now - timedelta(hours=1, minutes=20)).strftime("%Y-%m-%dT%H:%M:%SZ"),
+            sla_due_at=(now + timedelta(hours=2, minutes=40)).strftime("%Y-%m-%dT%H:%M:%SZ"),
+            sla_seconds_remaining=9600,
+            sla_escalated=False,
+            hod_status="PENDING_REVIEW",
+            audit_trail=[
+                AuditLogEntry(
+                    timestamp=(now - timedelta(hours=1, minutes=20)).strftime("%H:%M:%S"),
+                    event="STUDENT_GRIEVANCE_FILED",
+                    actor="Student Priya Nair (22EC081)",
+                    details="Hostel water shortage registered. Crowd volume multiplier boosted priority to Rank #2."
+                )
+            ]
+        )
+
+        # Seed 3: Campus Road Pothole (MEDIUM - Rank #3)
         c2_id = "CMP-7002"
         c2_lat, c2_lng = 37.7790, -122.4120
         c2_score = priority_engine.calculate_priority(
@@ -91,7 +230,7 @@ class Database:
         self.complaints[c2_id] = Complaint(
             id=c2_id,
             tracking_number="CMP-7002",
-            title="Severe 8-Inch Asphalt Crater on 4th Street Bicycle Lane",
+            title="Severe 8-Inch Asphalt Crater on Campus Bicycle Track",
             description="Deep cavity with exposed sub-base rock. Cyclists and scooters are swerving into oncoming vehicular traffic to avoid it.",
             category="Municipal Infrastructure (Roads)",
             sub_tags=["Severe Pothole", "Traffic Collision Risk", "Pavement Structural Void"],
@@ -106,30 +245,39 @@ class Database:
             context_risk_score=c2_score.context_score,
             priority_score=c2_score.total_score,
             priority_tier=c2_score.tier,
+            rank=3,
             score_breakdown=c2_score,
             status="IN_PROGRESS",
             user_name="Marcus Vance",
             user_phone="+1 (555) 302-8841",
+            student_roll="23ME019",
+            student_email="marcus.vance@college.edu",
+            department="Mechanical Engineering",
+            block_or_hostel="North Campus Bicycle Perimeter",
             channel="WEB",
             location_name="4th St & Bryant Ave (Northbound)",
             latitude=c2_lat,
             longitude=c2_lng,
+            proof_type="PHOTO",
             image_url="/static/images/pothole.svg",
+            assigned_faculty_id="FAC-882",
+            assigned_faculty_name="Er. Ramesh Kumar",
             created_at=(now - timedelta(hours=2)).strftime("%Y-%m-%dT%H:%M:%SZ"),
             sla_due_at=(now + timedelta(hours=4)).strftime("%Y-%m-%dT%H:%M:%SZ"),
             sla_seconds_remaining=14400,
             sla_escalated=False,
+            hod_status="PENDING_REVIEW",
             audit_trail=[
                 AuditLogEntry(
                     timestamp=(now - timedelta(hours=2)).strftime("%H:%M:%S"),
                     event="INTAKE_CLASSIFIED",
-                    actor="ComplainAI Engine",
-                    details="Surface cavity classified. Work order #WO-409 created for Roadway Maintenance."
+                    actor="Campus Facilities AI",
+                    details="Surface cavity classified. Work order created for Campus Civil Works."
                 )
             ]
         )
 
-        # Seed 3: Duplicate Billing Charge (Target for Agentic Zero-Touch Auto-Resolver)
+        # Seed 4: Duplicate Exam Fee Deduction (LOW - Rank #4, Auto-Resolver)
         c3_id = "CMP-7003"
         c3_score = priority_engine.calculate_priority(
             nlp_urgency=38.0,
@@ -142,8 +290,8 @@ class Database:
         self.complaints[c3_id] = Complaint(
             id=c3_id,
             tracking_number="CMP-7003",
-            title="Duplicate Monthly Charge on Invoice INV-402 ($89.00)",
-            description="I was charged twice on October 28th for my Fiber 1Gbps plan ($89.00 x 2). Account #ACC-88321.",
+            title="Duplicate Semester Examination Fee Deducted on Student Portal ($89.00 / ₹7,200)",
+            description="I was charged twice on October 28th for my semester end exam registration fee on ERP Invoice INV-402 ($89.00 x 2). Student Account #ACC-88321.",
             category="Billing & Financial Services",
             sub_tags=["Duplicate Transaction", "Invoice Discrepancy", "Automated Refund Candidate"],
             sub_tag_confidences={"Duplicate Transaction": 0.99, "Automated Refund Candidate": 0.95},
@@ -157,20 +305,27 @@ class Database:
             context_risk_score=c3_score.context_score,
             priority_score=c3_score.total_score,
             priority_tier=c3_score.tier,
+            rank=4,
             score_breakdown=c3_score,
             status="TRIAGED",
             user_name="Elena Rostova",
             user_phone="+1 (555) 714-9923",
+            student_roll="21CS104",
+            student_email="elena.rostova@college.edu",
+            department="Computer Science & Engineering",
+            block_or_hostel="Administrative Block / Accounts Portal",
             channel="WEB",
             location_name="Account Portal / Digital Ingestion",
             latitude=37.7749,
             longitude=-122.4194,
+            proof_type="PHOTO",
             image_url="/static/images/billing.svg",
             created_at=(now - timedelta(minutes=15)).strftime("%Y-%m-%dT%H:%M:%SZ"),
             sla_due_at=(now + timedelta(hours=24)).strftime("%Y-%m-%dT%H:%M:%SZ"),
             sla_seconds_remaining=85500,
             sla_escalated=False,
             auto_resolved=False,
+            hod_status="PENDING_REVIEW",
             audit_trail=[
                 AuditLogEntry(
                     timestamp=(now - timedelta(minutes=15)).strftime("%H:%M:%S"),
@@ -181,9 +336,97 @@ class Database:
             ]
         )
 
-        # Seed 4: Water Main Rupture Master Incident (Existing cluster)
+        # Seed 5: Already Solved Problem (Target for HOD Review & Work Quality Audit)
+        c5_id = "CMP-7005"
+        c5_lat, c5_lng = 37.7650, -122.4300
+        c5_score = priority_engine.calculate_priority(
+            nlp_urgency=88.0,
+            vision_hazard=85.0,
+            cluster_size=1,
+            lat=c5_lat,
+            lng=c5_lng,
+            vocal_panic_score=80.0
+        )
+        self.complaints[c5_id] = Complaint(
+            id=c5_id,
+            tracking_number="CMP-7005",
+            title="CS Lab 4 Main Compiler Server & Power Trip Ahead of 2 PM Practical Exam",
+            description="Power supply surge tripped primary server rack in CS Lab 4. 18 student workstations powered down right before practical evaluation.",
+            category="Academic Facilities & Labs",
+            sub_tags=["CS Lab Failure", "Exam Disruption", "Server Tripped"],
+            sub_tag_confidences={"CS Lab Failure": 0.99, "Exam Disruption": 0.96},
+            sentiment="Distressed",
+            vocal_emotion="Panicked",
+            vocal_panic_score=80.0,
+            visual_defect="Server Rack Power Supply Unit Failure & Tripped Breaker",
+            visual_hazard_score=85.0,
+            nlp_urgency_score=88.0,
+            cluster_size=1,
+            context_risk_score=c5_score.context_score,
+            priority_score=c5_score.total_score,
+            priority_tier=c5_score.tier,
+            rank=5,
+            score_breakdown=c5_score,
+            status="VERIFIED_CLOSED",
+            user_name="Rohan Mehta",
+            user_phone="+1 (555) 431-8890",
+            student_roll="21CS089",
+            student_email="rohan.mehta@college.edu",
+            department="Computer Science & Engineering",
+            block_or_hostel="Computer Science Lab Complex (Lab 4)",
+            channel="WEB",
+            location_name="Computer Science Lab Complex & Server Rack",
+            latitude=c5_lat,
+            longitude=c5_lng,
+            proof_type="PHOTO",
+            image_url="/static/images/sparking_wire.svg",
+            after_image_url="/static/images/repaired_wire.svg",
+            assigned_faculty_id="FAC-881",
+            assigned_faculty_name="Prof. Rajesh Verma",
+            time_taken_minutes=42,
+            resolved_at=(now - timedelta(minutes=18)).strftime("%Y-%m-%dT%H:%M:%SZ"),
+            resolution_proof={
+                "verified": True,
+                "is_good_resolution": True,
+                "quality_verdict": "GOOD_FIX_EXCELLENT",
+                "quality_score": 97.8,
+                "fix_confidence": 97.8,
+                "reason": "EXCELLENT FIX: Power supply unit replaced, GPU diagnostic benchmark completed, all 18 workstations online.",
+                "cryptographic_token": "CERT-VERIFIED-42A9B8F12C",
+                "recommendation_for_hod": "EXCELLENT WORK: Quick turnaround before semester exam. Ready for HOD approval."
+            },
+            created_at=(now - timedelta(hours=1)).strftime("%Y-%m-%dT%H:%M:%SZ"),
+            sla_due_at=(now + timedelta(hours=1)).strftime("%Y-%m-%dT%H:%M:%SZ"),
+            sla_seconds_remaining=3600,
+            sla_escalated=False,
+            hod_status="APPROVED_EXCELLENT",
+            hod_feedback="Commended: Fast 42-minute turnaround prevented cancellation of the 2 PM compilers evaluation.",
+            hod_reviewed_at=(now - timedelta(minutes=10)).strftime("%Y-%m-%dT%H:%M:%SZ"),
+            audit_trail=[
+                AuditLogEntry(
+                    timestamp=(now - timedelta(hours=1)).strftime("%H:%M:%S"),
+                    event="STUDENT_REPORT_FILED",
+                    actor="Rohan Mehta (21CS089)",
+                    details="CS Lab 4 server outage reported with photo proof."
+                ),
+                AuditLogEntry(
+                    timestamp=(now - timedelta(minutes=18)).strftime("%H:%M:%S"),
+                    event="PROOF_OF_RESOLUTION_VERIFIED",
+                    actor="Prof. Rajesh Verma & AI Guard",
+                    details="AI Proof Scan: GOOD FIX (97.8% Quality). Token: CERT-VERIFIED-42A9B8F12C."
+                ),
+                AuditLogEntry(
+                    timestamp=(now - timedelta(minutes=10)).strftime("%H:%M:%S"),
+                    event="HOD_ENDORSEMENT_APPROVED",
+                    actor="Dr. Ananya Shukla (HOD CSE)",
+                    details="Approved with Commendation. Time taken: 42 minutes."
+                )
+            ]
+        )
+
+        # Seed 6: Water Main Master Incident (Existing cluster)
         m1_id = "MASTER-INC-202"
-        m1_lat, m1_lng = 37.7830, -122.4160  # Near St. Jude Hospital!
+        m1_lat, m1_lng = 37.7830, -122.4160
         self.master_incidents[m1_id] = MasterIncident(
             id=m1_id,
             title="12-Inch Subterranean Water Main Rupture & Roadway Flooding",
@@ -202,8 +445,73 @@ class Database:
             updated_at=now.strftime("%Y-%m-%dT%H:%M:%SZ")
         )
 
+        # Seed Faculty Performance Scorecards for HOD / Admin Review
+        self.faculty_scorecards = {
+            "FAC-881": FacultyScorecard(
+                faculty_id="FAC-881",
+                name="Prof. Rajesh Verma",
+                role_title="Campus Technical Superintendent & Lab Head",
+                department="Computer Science & Campus Facilities",
+                tasks_assigned=16,
+                tasks_resolved=15,
+                avg_time_taken_hours=1.8,
+                avg_quality_score=97.2,
+                good_fixes_count=14,
+                bad_fixes_count=1,
+                rating=4.9
+            ),
+            "FAC-882": FacultyScorecard(
+                faculty_id="FAC-882",
+                name="Er. Ramesh Kumar",
+                role_title="Senior Facilities & Hostel Maintenance Engineer",
+                department="Civil & Hostel Works",
+                tasks_assigned=24,
+                tasks_resolved=21,
+                avg_time_taken_hours=2.6,
+                avg_quality_score=93.8,
+                good_fixes_count=19,
+                bad_fixes_count=2,
+                rating=4.7
+            ),
+            "FAC-883": FacultyScorecard(
+                faculty_id="FAC-883",
+                name="Dr. Sunita Patil",
+                role_title="Campus Health & Sanitation Officer",
+                department="Mess & Student Welfare",
+                tasks_assigned=11,
+                tasks_resolved=11,
+                avg_time_taken_hours=1.2,
+                avg_quality_score=98.5,
+                good_fixes_count=11,
+                bad_fixes_count=0,
+                rating=5.0
+            )
+        }
+
+    def recompute_rankings(self):
+        """
+        Recalculates AI rankings for all complaints:
+        Highest priority score = Rank #1, Rank #2, etc.
+        """
+        sorted_complaints = sorted(
+            self.complaints.values(),
+            key=lambda c: (0 if c.status == "VERIFIED_CLOSED" else 1, c.priority_score),
+            reverse=True
+        )
+        for idx, c in enumerate(sorted_complaints):
+            c.rank = idx + 1
+
     def get_all_complaints(self) -> List[Complaint]:
+        self.recompute_rankings()
         return sorted(list(self.complaints.values()), key=lambda c: c.priority_score, reverse=True)
+
+    def get_ranked_complaints(self) -> List[Complaint]:
+        self.recompute_rankings()
+        return sorted(list(self.complaints.values()), key=lambda c: c.rank)
+
+    def get_student_complaints(self, student_email: str) -> List[Complaint]:
+        self.recompute_rankings()
+        return [c for c in self.complaints.values() if c.student_email == student_email or student_email in c.user_name.lower()]
 
     def get_complaint(self, complaint_id: str) -> Optional[Complaint]:
         return self.complaints.get(complaint_id)
@@ -217,6 +525,8 @@ class Database:
             if (q in c.id.lower() or 
                 q in c.tracking_number.lower() or 
                 (c.user_phone and q in c.user_phone.lower()) or 
+                (c.student_roll and q in c.student_roll.lower()) or
+                (c.student_email and q in c.student_email.lower()) or
                 q in c.title.lower() or 
                 q in c.location_name.lower() or
                 q in c.category.lower()):
@@ -225,6 +535,7 @@ class Database:
 
     def save_complaint(self, complaint: Complaint):
         self.complaints[complaint.id] = complaint
+        self.recompute_rankings()
 
     def get_all_masters(self) -> List[MasterIncident]:
         return sorted(list(self.master_incidents.values()), key=lambda m: m.priority_score, reverse=True)
@@ -232,17 +543,41 @@ class Database:
     def get_master(self, master_id: str) -> Optional[MasterIncident]:
         return self.master_incidents.get(master_id)
 
+    def get_faculty_scorecards(self) -> List[FacultyScorecard]:
+        return list(self.faculty_scorecards.values())
+
+    def review_hod_work(self, complaint_id: str, endorsement: str, feedback: str, hod_name: str) -> Dict[str, Any]:
+        """HOD reviews completed work, reviews turnaround time, and endorses or requests rework."""
+        c = self.get_complaint(complaint_id)
+        if not c:
+            return {"success": False, "message": "Complaint not found"}
+
+        now = datetime.utcnow()
+        c.hod_status = endorsement
+        c.hod_feedback = feedback
+        c.hod_reviewed_at = now.strftime("%Y-%m-%dT%H:%M:%SZ")
+
+        if endorsement == "REJECTED_REWORK":
+            c.status = "IN_PROGRESS"
+            event_name = "HOD_REJECTED_REWORK_REQUESTED"
+        else:
+            event_name = f"HOD_WORK_REVIEW_{endorsement}"
+
+        c.audit_trail.append(AuditLogEntry(
+            timestamp=now.strftime("%H:%M:%S"),
+            event=event_name,
+            actor=hod_name,
+            details=f"Review decision: {endorsement}. Feedback: {feedback}"
+        ))
+        self.save_complaint(c)
+        return {"success": True, "complaint": c.dict(), "message": f"HOD review recorded: {endorsement}"}
+
     def simulate_mass_outage(self) -> Dict[str, Any]:
-        """
-        Minute 2 Demo Pitch Feature:
-        Fires 25 citizen complaints across Sector 4 within 250m of Sector 4 Transformer Substation.
-        Clusters all 25 into one pulsing red Master Incident pin, dynamically boosting priority to Critical!
-        """
         now = datetime.utcnow()
         master_id = f"MASTER-OUTAGE-{int(time.time())}"
         center_lat = 37.7650
         center_lng = -122.4300
-        location_name = "Sector 4 Electrical Grid Substation Zone"
+        location_name = "Campus Power Substation & Lab Complex"
 
         citizen_names = [
             "David Chen", "Sarah Miller", "Rajesh Patel", "Maria Gonzalez", "James Wilson",
@@ -298,12 +633,17 @@ class Database:
                 context_risk_score=score_res.context_score,
                 priority_score=score_res.total_score,
                 priority_tier=score_res.tier,
+                rank=1,
                 score_breakdown=score_res,
                 status="TRIAGED",
                 master_incident_id=master_id,
                 is_master=False,
                 user_name=name,
                 user_phone=f"+1 (555) {random.randint(200, 999)}-{random.randint(1000, 9999)}",
+                student_roll=f"23CS{100 + i}",
+                student_email=f"student{i+1}@college.edu",
+                department="Engineering",
+                block_or_hostel=location_name,
                 channel=random.choice(["WEB", "WHATSAPP", "PHONE_VOICE"]),
                 location_name=location_name,
                 latitude=offset_lat,
@@ -346,13 +686,14 @@ class Database:
             center_longitude=center_lng,
             location_name=location_name,
             hazard_level="Extreme",
-            priority_score=master_score.total_score,  # ~98/100
+            priority_score=master_score.total_score,
             priority_tier="CRITICAL",
             status="ACTIVE",
             created_at=now.strftime("%Y-%m-%dT%H:%M:%SZ"),
             updated_at=now.strftime("%Y-%m-%dT%H:%M:%SZ")
         )
         self.master_incidents[master_id] = master_incident
+        self.recompute_rankings()
 
         return {
             "success": True,
