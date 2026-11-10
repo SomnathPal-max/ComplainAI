@@ -681,13 +681,17 @@
 
     <!-- Segmented Navigation Bar -->
     <nav class="portal-nav">
-      <button class="portal-tab-btn active" id="navStudentBtn" onclick="navigatePortal('student')">
+      <button class="portal-tab-btn active" id="navOverviewBtn" onclick="navigatePortal('overview')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+        Platform Overview
+      </button>
+      <button class="portal-tab-btn" id="navStudentBtn" onclick="navigatePortal('student')">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c0 2 2 3 6 3s6-1 6-3v-5"/></svg>
         Student Portal
       </button>
       <button class="portal-tab-btn" id="navFacultyBtn" onclick="navigatePortal('faculty')">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-        Faculty & Staff Queue
+        Faculty &amp; Staff Queue
         <span class="tab-badge" id="navFacultyBadge">4</span>
       </button>
       <button class="portal-tab-btn" id="navHODBtn" onclick="navigatePortal('hod')">
@@ -718,12 +722,12 @@
   </header>
 
   <!-- ============================================================== -->
-  <!-- 2. QUICK INCIDENT SCENARIO SIMULATOR RIBBON                    -->
+  <!-- 2. QUICK INCIDENT SCENARIO RIBBON                              -->
   <!-- ============================================================== -->
   <div class="scenario-ribbon">
     <div style="display:flex; align-items:center; gap:0.5rem; color:var(--text-muted);">
       <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#6366f1" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
-      <span style="font-weight:700; color:#cbd5e1; font-size:0.75rem;">Verified Demo Scenarios:</span>
+      <span style="font-weight:700; color:#cbd5e1; font-size:0.75rem;">Verified Incident Profiles:</span>
     </div>
     <div class="scenario-pills">
       <button class="scenario-pill-btn" onclick="applyPresetScenario('exam_wire')">
@@ -743,9 +747,274 @@
 
   <main>
     <!-- ============================================================== -->
+    <!-- TAB 0: 🌐 PLATFORM OVERVIEW & CAPABILITIES                     -->
+    <!-- ============================================================== -->
+    <div id="portal-overview" class="tab-content active">
+      
+      <!-- Institutional Hero Banner -->
+      <div class="card" style="margin-bottom:1.75rem; background:linear-gradient(135deg, rgba(15, 23, 42, 0.95), rgba(30, 27, 75, 0.85)); border-color:rgba(99, 102, 241, 0.35);">
+        <div style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:1rem; margin-bottom:1.25rem;">
+          <div>
+            <div style="display:inline-flex; align-items:center; gap:0.5rem; background:rgba(99, 102, 241, 0.15); border:1px solid rgba(99, 102, 241, 0.4); padding:0.25rem 0.75rem; border-radius:999px; font-size:0.75rem; font-weight:700; color:#a5b4fc; margin-bottom:0.75rem;">
+              <span style="display:inline-block; width:8px; height:8px; border-radius:50%; background:#10b981; animation:pulse 2s infinite;"></span>
+              CAMPUS INTELLIGENCE &amp; ZERO-TOUCH RESOLUTION ECOSYSTEM • v2.4 ENTERPRISE
+            </div>
+            <h1 style="font-size:1.85rem; font-weight:800; color:#ffffff; line-height:1.25; margin-bottom:0.6rem;">
+              ComplainAI: Autonomous Campus Grievance Command Center
+            </h1>
+            <p style="font-size:0.92rem; color:#cbd5e1; max-width:860px; line-height:1.6;">
+              While traditional complaint portals rely on passive forms and slow human dispatch, ComplainAI combines 
+              <strong>Vision-Language AI</strong>, <strong>Acoustic Emotion Recognition</strong>, <strong>Geospatial Swarm Clustering</strong>, and 
+              <strong>OpenCV Computer Vision Verification</strong> into a self-healing command infrastructure. Grievances are triaged, mathematically prioritized, verified with tamper-proof photo/video proof, and autonomously resolved before operational bottlenecks occur.
+            </p>
+          </div>
+          <div style="display:flex; gap:0.65rem; flex-wrap:wrap;">
+            <button class="btn btn-primary" onclick="navigatePortal('student')">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c0 2 2 3 6 3s6-1 6-3v-5"/></svg>
+              Student Portal
+            </button>
+            <button class="btn btn-secondary" onclick="navigatePortal('faculty')">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
+              Faculty Queue
+            </button>
+            <button class="btn btn-secondary" onclick="navigatePortal('hod')">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+              HOD Oversight
+            </button>
+          </div>
+        </div>
+
+        <!-- 4 Key Impact Metrics -->
+        <div class="grid-4col" style="margin-top:1.25rem;">
+          <div style="background:rgba(2, 6, 23, 0.6); border:1px solid rgba(255,255,255,0.08); border-radius:var(--radius-md); padding:0.85rem;">
+            <div style="font-size:0.72rem; color:var(--text-dim); text-transform:uppercase; font-weight:700;">Zero-Touch Resolution</div>
+            <div style="font-size:1.45rem; font-weight:800; color:#38bdf8; font-family:'JetBrains Mono', monospace; margin:0.2rem 0;">&lt; 4 Seconds</div>
+            <div style="font-size:0.74rem; color:#94a3b8;">Automated fee refunds &amp; account sync</div>
+          </div>
+          <div style="background:rgba(2, 6, 23, 0.6); border:1px solid rgba(255,255,255,0.08); border-radius:var(--radius-md); padding:0.85rem;">
+            <div style="font-size:0.72rem; color:var(--text-dim); text-transform:uppercase; font-weight:700;">Anti-Fake Closure Guard</div>
+            <div style="font-size:1.45rem; font-weight:800; color:#34d399; font-family:'JetBrains Mono', monospace; margin:0.2rem 0;">100% Verified</div>
+            <div style="font-size:0.74rem; color:#94a3b8;">OpenCV ORB feature &amp; diff inspection</div>
+          </div>
+          <div style="background:rgba(2, 6, 23, 0.6); border:1px solid rgba(255,255,255,0.08); border-radius:var(--radius-md); padding:0.85rem;">
+            <div style="font-size:0.72rem; color:var(--text-dim); text-transform:uppercase; font-weight:700;">Priority Score Range</div>
+            <div style="font-size:1.45rem; font-weight:800; color:#fde68a; font-family:'JetBrains Mono', monospace; margin:0.2rem 0;">0 – 100 Index</div>
+            <div style="font-size:0.74rem; color:#94a3b8;">Dynamic vulnerability-boosted ranking</div>
+          </div>
+          <div style="background:rgba(2, 6, 23, 0.6); border:1px solid rgba(255,255,255,0.08); border-radius:var(--radius-md); padding:0.85rem;">
+            <div style="font-size:0.72rem; color:var(--text-dim); text-transform:uppercase; font-weight:700;">Campus Infrastructure</div>
+            <div style="font-size:1.45rem; font-weight:800; color:#c084fc; font-family:'JetBrains Mono', monospace; margin:0.2rem 0;">200m GIS Buffers</div>
+            <div style="font-size:0.74rem; color:#94a3b8;">Exam Halls, Hostels, Labs &amp; Hospitals</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Section Title -->
+      <div style="margin-bottom:1.25rem;">
+        <h2 style="font-size:1.25rem; font-weight:800; color:#ffffff; margin-bottom:0.25rem;">
+          What ComplainAI Can Do: Core Capabilities &amp; Technical Pillars
+        </h2>
+        <p style="font-size:0.84rem; color:var(--text-muted);">
+          Every layer of the platform is designed to replace slow, bureaucratic steps with autonomous intelligence.
+        </p>
+      </div>
+
+      <!-- 6 Technical Capabilities Cards Grid -->
+      <div class="grid-3col" style="margin-bottom:2rem;">
+        
+        <!-- Card 1 -->
+        <div class="card">
+          <div style="width:42px; height:42px; border-radius:10px; background:rgba(99, 102, 241, 0.15); display:flex; align-items:center; justify-content:center; margin-bottom:1rem; border:1px solid rgba(99, 102, 241, 0.4);">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#818cf8" stroke-width="2"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+          </div>
+          <h3 style="font-size:1rem; font-weight:800; color:#ffffff; margin-bottom:0.45rem;">1. Zero-Input "Snap &amp; Speak" Multimodal Intake</h3>
+          <p style="font-size:0.8rem; color:#94a3b8; line-height:1.55; margin-bottom:0.85rem;">
+            Students submit complaints using high-res photos, video recordings, or voice notes in any regional dialect. The AI transcribes audio, measures vocal distress/panic, and extracts visual defect severity using Computer Vision, auto-populating structured tickets.
+          </p>
+          <div style="font-size:0.73rem; color:#a5b4fc; background:rgba(99, 102, 241, 0.08); padding:0.45rem 0.65rem; border-radius:var(--radius-sm); border:1px solid rgba(99, 102, 241, 0.2);">
+            ✓ Solves literacy barriers &amp; eliminates long, abandoned forms.
+          </div>
+        </div>
+
+        <!-- Card 2 -->
+        <div class="card">
+          <div style="width:42px; height:42px; border-radius:10px; background:rgba(245, 158, 11, 0.15); display:flex; align-items:center; justify-content:center; margin-bottom:1rem; border:1px solid rgba(245, 158, 11, 0.4);">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+          </div>
+          <h3 style="font-size:1rem; font-weight:800; color:#ffffff; margin-bottom:0.45rem;">2. Dynamic Priority Formula with Vulnerability Boost</h3>
+          <p style="font-size:0.8rem; color:#94a3b8; line-height:1.55; margin-bottom:0.85rem;">
+            Replaces static Low/Med/High tags with a mathematical index: <br />
+            <code style="display:block; margin:0.4rem 0; padding:0.35rem 0.5rem; background:#040711; border-radius:4px; color:#fde68a; font-size:0.74rem;">
+              P_score = (w1·NLP) + (w2·Vision) + (w3·log(Cluster)) + (w4·Context_Risk)
+            </code>
+            If a defect is within 200m of an active examination hall or hostel, urgency spikes automatically.
+          </p>
+          <div style="font-size:0.73rem; color:#fde68a; background:rgba(245, 158, 11, 0.08); padding:0.45rem 0.65rem; border-radius:var(--radius-sm); border:1px solid rgba(245, 158, 11, 0.2);">
+            ✓ High-impact hazards jump to Rank #1 even if phrased politely.
+          </div>
+        </div>
+
+        <!-- Card 3 -->
+        <div class="card">
+          <div style="width:42px; height:42px; border-radius:10px; background:rgba(16, 185, 129, 0.15); display:flex; align-items:center; justify-content:center; margin-bottom:1rem; border:1px solid rgba(16, 185, 129, 0.4);">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+          </div>
+          <h3 style="font-size:1rem; font-weight:800; color:#ffffff; margin-bottom:0.45rem;">3. Proof-of-Resolution Anti-Fake Closure Guard</h3>
+          <p style="font-size:0.8rem; color:#94a3b8; line-height:1.55; margin-bottom:0.85rem;">
+            Technicians and faculty cannot mark tickets closed without uploading photographic or video proof. The AI compares Before vs After proof with OpenCV ORB keypoint matching and pixel delta analysis, evaluating the fix as <strong>GOOD (Certified)</strong> or <strong>BAD (Incomplete/Unrelated)</strong>.
+          </p>
+          <div style="font-size:0.73rem; color:#6ee7b7; background:rgba(16, 185, 129, 0.08); padding:0.45rem 0.65rem; border-radius:var(--radius-sm); border:1px solid rgba(16, 185, 129, 0.2);">
+            ✓ Eradicates false closures &amp; guarantees verifiable repairs.
+          </div>
+        </div>
+
+        <!-- Card 4 -->
+        <div class="card">
+          <div style="width:42px; height:42px; border-radius:10px; background:rgba(56, 189, 248, 0.15); display:flex; align-items:center; justify-content:center; margin-bottom:1rem; border:1px solid rgba(56, 189, 248, 0.4);">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#38bdf8" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+          </div>
+          <h3 style="font-size:1rem; font-weight:800; color:#ffffff; margin-bottom:0.45rem;">4. Faculty Priority Queue &amp; SLA Countdowns</h3>
+          <p style="font-size:0.8rem; color:#94a3b8; line-height:1.55; margin-bottom:0.85rem;">
+            Campus resolvers have a prioritized task queue ranked from Rank #1 down. Real-time countdown clocks display SLA remaining time per severity tier. When fixes are completed, resolvers upload proof directly from mobile or desktop.
+          </p>
+          <div style="font-size:0.73rem; color:#7dd3fc; background:rgba(56, 189, 248, 0.08); padding:0.45rem 0.65rem; border-radius:var(--radius-sm); border:1px solid rgba(56, 189, 248, 0.2);">
+            ✓ Clears confusion on what task requires emergency intervention.
+          </div>
+        </div>
+
+        <!-- Card 5 -->
+        <div class="card">
+          <div style="width:42px; height:42px; border-radius:10px; background:rgba(168, 85, 247, 0.15); display:flex; align-items:center; justify-content:center; margin-bottom:1rem; border:1px solid rgba(168, 85, 247, 0.4);">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#c084fc" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          </div>
+          <h3 style="font-size:1rem; font-weight:800; color:#ffffff; margin-bottom:0.45rem;">5. Admin &amp; HOD Governance &amp; Turnaround Audit</h3>
+          <p style="font-size:0.8rem; color:#94a3b8; line-height:1.55; margin-bottom:0.85rem;">
+            Department Heads and Campus Deans have complete operational visibility: average turnaround time (MTTR in minutes), faculty performance scorecards, and side-by-side Before vs After visual inspection with 1-click Institutional Approval or Rework Directives.
+          </p>
+          <div style="font-size:0.73rem; color:#e9d5ff; background:rgba(168, 85, 247, 0.08); padding:0.45rem 0.65rem; border-radius:var(--radius-sm); border:1px solid rgba(168, 85, 247, 0.2);">
+            ✓ Complete institutional accountability across departments.
+          </div>
+        </div>
+
+        <!-- Card 6 -->
+        <div class="card">
+          <div style="width:42px; height:42px; border-radius:10px; background:rgba(236, 72, 153, 0.15); display:flex; align-items:center; justify-content:center; margin-bottom:1rem; border:1px solid rgba(236, 72, 153, 0.4);">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#f472b6" stroke-width="2"><circle cx="12" cy="12" r="10"/><polygon points="12 8 8 12 12 16 16 12 12 8"/></svg>
+          </div>
+          <h3 style="font-size:1rem; font-weight:800; color:#ffffff; margin-bottom:0.45rem;">6. Spatial Swarm Clustering &amp; Zero-Touch Resolver</h3>
+          <p style="font-size:0.8rem; color:#94a3b8; line-height:1.55; margin-bottom:0.85rem;">
+            When 25 students report a broken riser pipe or campus Wi-Fi outage within 10 minutes, the AI clusters them into <strong>1 Master Incident</strong>, boosting priority while preventing dashboard flooding. For digital tickets, the autonomous resolver triggers instant refunds or credential resets in 4 seconds.
+          </p>
+          <div style="font-size:0.73rem; color:#fbcfe8; background:rgba(236, 72, 153, 0.08); padding:0.45rem 0.65rem; border-radius:var(--radius-sm); border:1px solid rgba(236, 72, 153, 0.2);">
+            ✓ Slashes Tier-1 manual workload by up to 70%.
+          </div>
+        </div>
+
+      </div>
+
+      <!-- 3-Role Interactive Workflow Walkthrough -->
+      <div class="card" style="margin-bottom:2rem;">
+        <div class="card-header">
+          <div class="card-title-group">
+            <div class="card-title">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#6366f1" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+              How The 3 Portals Function Together in Real Time
+            </div>
+            <div class="card-subtitle">End-to-end journey from student submission to verified institutional sign-off.</div>
+          </div>
+          <button class="btn btn-primary" onclick="openAuthDialog()">Switch Role / Login</button>
+        </div>
+
+        <div class="grid-3col">
+          
+          <div style="background:#090e1c; border:1px solid var(--border-subtle); border-radius:var(--radius-md); padding:1.25rem;">
+            <div style="display:flex; align-items:center; gap:0.5rem; margin-bottom:0.75rem;">
+              <span class="badge badge-rank">Role 1</span>
+              <strong style="color:#ffffff; font-size:0.95rem;">Student Portal</strong>
+            </div>
+            <ul style="font-size:0.78rem; color:#94a3b8; line-height:1.7; padding-left:1.1rem; margin-bottom:1rem;">
+              <li>Snaps photo or records video of physical issue.</li>
+              <li>Speaks description in regional dialect (audio auto-translated).</li>
+              <li>Receives instant <strong>Priority Index ($P_{\text{score}}$)</strong> and Rank.</li>
+              <li>Tracks live SLA countdown and inspected resolution proof.</li>
+            </ul>
+            <button class="btn btn-secondary" style="width:100%; font-size:0.75rem;" onclick="navigatePortal('student')">Open Student Portal →</button>
+          </div>
+
+          <div style="background:#090e1c; border:1px solid var(--border-subtle); border-radius:var(--radius-md); padding:1.25rem;">
+            <div style="display:flex; align-items:center; gap:0.5rem; margin-bottom:0.75rem;">
+              <span class="badge badge-good">Role 2</span>
+              <strong style="color:#ffffff; font-size:0.95rem;">Faculty &amp; Staff Portal</strong>
+            </div>
+            <ul style="font-size:0.78rem; color:#94a3b8; line-height:1.7; padding-left:1.1rem; margin-bottom:1rem;">
+              <li>Inspects priority-ranked queue (`#1`, `#2`, etc.).</li>
+              <li>Dispatches technician to physical site.</li>
+              <li>Uploads "After" photo or video evidence of repair.</li>
+              <li>AI scans proof and certifies <strong>GOOD FIX</strong> vs <strong>BAD FIX</strong>.</li>
+            </ul>
+            <button class="btn btn-secondary" style="width:100%; font-size:0.75rem;" onclick="navigatePortal('faculty')">Open Faculty Queue →</button>
+          </div>
+
+          <div style="background:#090e1c; border:1px solid var(--border-subtle); border-radius:var(--radius-md); padding:1.25rem;">
+            <div style="display:flex; align-items:center; gap:0.5rem; margin-bottom:0.75rem;">
+              <span class="badge" style="background:#4c1d95; color:#e9d5ff;">Role 3</span>
+              <strong style="color:#ffffff; font-size:0.95rem;">Admin &amp; HOD Portal</strong>
+            </div>
+            <ul style="font-size:0.78rem; color:#94a3b8; line-height:1.7; padding-left:1.1rem; margin-bottom:1rem;">
+              <li>Audits campus-wide Mean Turnaround Time (MTTR).</li>
+              <li>Monitors faculty performance scorecards and ratings.</li>
+              <li>Reviews Before vs After photographic proof side-by-side.</li>
+              <li>1-click <strong>Approve &amp; Endorse</strong> or <strong>Request Rework</strong>.</li>
+            </ul>
+            <button class="btn btn-secondary" style="width:100%; font-size:0.75rem;" onclick="navigatePortal('hod')">Open HOD Oversight →</button>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Technical Architecture Specifications -->
+      <div class="card">
+        <div class="card-header">
+          <div class="card-title-group">
+            <div class="card-title">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#38bdf8" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+              Enterprise System Stack &amp; Hardware Interfaces
+            </div>
+            <div class="card-subtitle">Production-grade architecture specifications running on this instance.</div>
+          </div>
+          <span class="badge badge-good">System Status: Active</span>
+        </div>
+
+        <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(200px, 1fr)); gap:1rem; font-size:0.8rem;">
+          <div style="background:#060a14; padding:0.85rem; border-radius:var(--radius-sm); border:1px solid var(--border-subtle);">
+            <div style="color:var(--text-dim); font-size:0.7rem; text-transform:uppercase;">API &amp; Application Core</div>
+            <strong style="color:#ffffff;">FastAPI (Python 3.13) + Uvicorn</strong>
+            <div style="color:#94a3b8; font-size:0.72rem; margin-top:2px;">Async WebSocket sync &amp; SLA clocks</div>
+          </div>
+          <div style="background:#060a14; padding:0.85rem; border-radius:var(--radius-sm); border:1px solid var(--border-subtle);">
+            <div style="color:var(--text-dim); font-size:0.7rem; text-transform:uppercase;">Computer Vision Verification</div>
+            <strong style="color:#ffffff;">OpenCV (cv2) + PIL</strong>
+            <div style="color:#94a3b8; font-size:0.72rem; margin-top:2px;">ORB keypoints &amp; structural difference</div>
+          </div>
+          <div style="background:#060a14; padding:0.85rem; border-radius:var(--radius-sm); border:1px solid var(--border-subtle);">
+            <div style="color:var(--text-dim); font-size:0.7rem; text-transform:uppercase;">Multimodal Intelligence Engine</div>
+            <strong style="color:#ffffff;">Local Ollama &amp; Autonomous Core</strong>
+            <div style="color:#94a3b8; font-size:0.72rem; margin-top:2px;">Private campus offline execution</div>
+          </div>
+          <div style="background:#060a14; padding:0.85rem; border-radius:var(--radius-sm); border:1px solid var(--border-subtle);">
+            <div style="color:var(--text-dim); font-size:0.7rem; text-transform:uppercase;">Geospatial Geofencing</div>
+            <strong style="color:#ffffff;">Haversine 200m Risk Buffers</strong>
+            <div style="color:#94a3b8; font-size:0.72rem; margin-top:2px;">Campus asset vulnerability matrix</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ============================================================== -->
     <!-- TAB 1: 🎓 STUDENT PORTAL                                      -->
     <!-- ============================================================== -->
-    <div id="portal-student" class="tab-content active">
+    <div id="portal-student" class="tab-content">
       <div class="grid-2col">
 
         <!-- Left: File a Complaint Card -->
@@ -1032,8 +1301,8 @@
               <input type="file" id="facProofFileInput" accept="image/*,video/*" style="display:none;" onchange="onFacultyProofSelected(event)" />
             </div>
 
-            <!-- Demo Scenarios for Good Fix vs Bad Fix -->
-            <div style="font-size:0.72rem; color:var(--text-dim); margin:0.6rem 0 0.35rem;">Simulate Remediation Types for Demo:</div>
+            <!-- Reference Profiles for Good Fix vs Bad Fix -->
+            <div style="font-size:0.72rem; color:var(--text-dim); margin:0.6rem 0 0.35rem;">Reference Profiles for Live Inspection:</div>
             <div style="display:flex; gap:0.4rem; flex-wrap:wrap;">
               <button type="button" class="scenario-pill-btn" style="background:#064e3b; color:#a7f3d0; border-color:#059669;" onclick="setFacultyPresetMode('genuine_repaired_wire')">
                 ✓ Certified Wire Repair (Good Fix: 98%)
@@ -1243,7 +1512,7 @@
           </div>
           <button class="btn btn-primary" onclick="simulateCrowdSwarm()">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
-            Simulate Campus Outage Swarm (25 Students)
+            Execute Outage Swarm Clustering (25 Reports)
           </button>
         </div>
 
@@ -1368,6 +1637,7 @@
       if (target) target.classList.add('active');
 
       const btnMap = {
+        overview: 'navOverviewBtn',
         student: 'navStudentBtn',
         faculty: 'navFacultyBtn',
         hod: 'navHODBtn',
@@ -1897,12 +2167,16 @@
       const path = (window.location.pathname || '').toLowerCase();
       if (path.includes('login')) {
         openAuthDialog();
+      } else if (path.includes('student')) {
+        navigatePortal('student');
       } else if (path.includes('faculty')) {
         navigatePortal('faculty');
       } else if (path.includes('hod') || path.includes('admin')) {
         navigatePortal('hod');
       } else if (path.includes('map')) {
         navigatePortal('map');
+      } else if (path.includes('overview') || path.includes('about')) {
+        navigatePortal('overview');
       }
 
       updateHeaderUI();

@@ -756,6 +756,8 @@ app.mount("/uploads", StaticFiles(directory="backend/uploads"), name="uploads")
 app.mount("/static", StaticFiles(directory="backend/static"), name="static")
 
 @app.get("/")
+@app.get("/overview")
+@app.get("/about")
 @app.get("/login")
 @app.get("/student")
 @app.get("/faculty")
