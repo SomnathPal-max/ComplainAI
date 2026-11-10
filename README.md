@@ -1,25 +1,63 @@
-# ⚡ ComplainAI (Autonomous Multimodal Grievance Intelligence & Zero-Touch Resolution Ecosystem)
+# 🛡️ ComplainAI — Civic & Enterprise Grievance Intelligence Ecosystem
 
-> **Transforming traditional passive ticketing into a self-healing, multimodal command center powered by Vision-Language Models (Ollama), Acoustic Emotion Recognition, Spatial Clustering, and Agentic Workflows.**
+> **An autonomous multimodal grievance command and dispatch system that transforms public safety reporting, civil infrastructure maintenance, and service dispute resolution with Vision-Language Models (Ollama / Local Engine), Acoustic Distress Analysis, Spatial Swarm Clustering, and Zero-Touch Agentic Workflows.**
+
+[![Deploy on Render](https://render.com/images/deploy-to-render-button.svg)](https://render.com)
+[![Docker](https://img.shields.io/badge/Docker-Ready-blue.svg)](Dockerfile)
+[![Python](https://img.shields.io/badge/Python-3.11%20%7C%203.12%20%7C%203.13-blue)](https://python.org)
+[![FastAPI](https://img.shields.io/badge/FastAPI-Production-green)](https://fastapi.tiangolo.com)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
 ---
 
 ## 🌟 Executive Overview
 
-Traditional enterprise grievance systems are passive, text-heavy, and reactive. They suffer from high user drop-off due to tedious forms, catastrophic ticket floods during outages, false closures by field contractors, and multi-day delays on trivial digital disputes.
+Traditional 311 tools and customer grievance platforms are passive, text-heavy, and reactive. They suffer from steep citizen drop-off due to tedious forms, catastrophic ticket floods during municipal outages, fraudulent "false closures" by field contractors, and multi-day delays on simple digital billing disputes.
 
-**ComplainAI** reimagines civil and enterprise grievance intelligence as an active, self-healing nervous system:
-- **Zero-Input Triage:** Citizens can snap a photo and record a 5-second voice note in any regional dialect; the AI extracts visual hazard severity, translates speech, detects panic tremor, and auto-fills a structured ticket.
-- **Dynamic Priority Formula with Vulnerability Boost:** Replaces static Low/Med/High tags with a live mathematical index calibrated from $0\text{--}100$ that automatically spikes when hazards are located near schools, hospitals, or high-risk infrastructure.
-- **Swarm Deduplication:** Merges hundreds of incoming concurrent reports into a single pulsing **Master Incident Pin**, using crowd density as a logarithmic priority multiplier.
-- **Anti-Fake Closure Guard:** Computer vision compares Before vs. After imagery at verified GPS coordinates, rejecting false closure attempts and generating tamper-proof cryptographic resolution certificates.
-- **Agentic Zero-Touch Resolver:** Autonomous tool-calling executes CRM queries, anomaly audits, Stripe refunds, and SMS notifications for Tier-1 digital complaints in under 4 seconds.
+**ComplainAI** reimagines civic and enterprise grievance management as an active, self-healing nervous system:
+- **Universal Citizen Intake:** Citizens upload photos or record voice notes in regional dialects. The AI extracts visual hazard severity, translates speech, scores acoustic panic/tremor, and auto-populates the complete structured ticket.
+- **Dynamic Priority Formula with Vulnerability Boost:** Replaces static Low/Med/High tags with a calibrated continuous index from $0\text{--}100$ that automatically spikes when hazards are located within 200m of schools, hospitals, or high-risk infrastructure.
+- **Swarm Deduplication:** Merges hundreds of concurrent reports into a single pulsing **Master Incident Pin**, using crowd density as a logarithmic priority multiplier.
+- **Anti-Fake Closure Guard:** Computer vision compares Before vs. After imagery at verified coordinates, rejecting fraudulent closure attempts and issuing tamper-proof cryptographic certificates.
+- **Agentic Zero-Touch Resolver:** Autonomous tool-calling executes CRM queries, anomaly audits, Stripe refunds, and SMS notifications for Tier-1 disputes in under 4 seconds.
 - **Empathy-First AI Copilot:** Diagnoses emotional distress (Panicked, Angry, Frustrated) and drafts warm, policy-backed de-escalating responses for field resolvers.
 - **Predictive Failure Forecasting:** Detects velocity surges across zones (e.g., 340% spike in voltage fluctuations) and prompts proactive maintenance *before* equipment blowouts occur.
 
 ---
 
-## 🧠 Dynamic Priority Formula ($P_{\text{score}}$)
+## 🏛️ System Architecture
+
+```
+ComplainAI/
+├── run.py                          # Multi-environment launcher (binds to $PORT / $HOST)
+├── requirements.txt                # Pinned production dependencies
+├── Dockerfile                      # Production container spec with healthchecks
+├── render.yaml                     # Render 1-click deployment blueprint
+├── Procfile                        # Heroku / Railway web process entrypoint
+├── backend/
+│   ├── main.py                     # FastAPI REST API, WebSockets, real upload handlers
+│   ├── config.py                   # Priority weights, SLA thresholds, landmark coordinates
+│   ├── models.py                   # Pydantic v2 schemas for tickets, SLA, proofs, & AI
+│   ├── database.py                 # Spatial in-memory store, search engine, swarm simulator
+│   ├── ai/
+│   │   ├── ollama_client.py        # Ollama REST client with fast socket probing & fallback
+│   │   ├── multimodal_triage.py    # Audio ASR, dialect translation, CV hazard scoring
+│   │   ├── priority_engine.py      # Dynamic formula with 200m GIS vulnerability boost
+│   │   ├── clustering.py           # Vector similarity + Haversine spatial radius swarm
+│   │   ├── anti_fake_closure.py    # Before vs. After CV verification & cryptographic tokens
+│   │   ├── zero_touch_resolver.py  # Multi-tool agentic autonomous billing refund
+│   │   ├── copilot.py              # Empathy-First de-escalation response generator
+│   │   └── forecasting.py          # Spatial-temporal velocity failure forecasting
+│   └── static/
+│       ├── index.html              # Professional 4-portal civic tech SPA
+│       └── images/                 # Crisp vector graphics for Before/After & demo scenes
+└── tests/
+    └── test_complain_ai.py         # Complete test suite (11 unit and integration tests)
+```
+
+---
+
+## 🧮 Dynamic Priority Formula ($P_{\text{score}}$)
 
 ComplainAI calculates a calibrated $0\text{--}100$ Priority Index for every grievance:
 
@@ -32,124 +70,116 @@ $$P_{\text{score}} = (w_1 \cdot \text{NLP}_{\text{Urgency}}) + (w_2 \cdot \text{
 - $w_4 = 0.20$ (GIS Environmental Proximity & Vulnerability Boost)
 
 ### Vulnerability Boost Mechanics:
-When a complaint is geocoded within $200\text{m}$ of a high-consequence landmark (e.g. **Oakridge Elementary School**, **St. Jude Metropolitan Hospital**, or the **Sector 4 High-Voltage Transformer Substation**), $Context_{\text{Risk}}$ automatically spikes from baseline (20) to $95+$, ensuring life-safety issues instantly leap to the top of the queue regardless of the reporter's tone.
+When a grievance is geocoded within $200\text{m}$ of a high-consequence facility (**Oakridge Elementary School**, **St. Jude Metropolitan Hospital**, or **Sector 4 High-Voltage Transformer Substation**), $Context_{\text{Risk}}$ automatically spikes from baseline (20) to $95+$, ensuring critical life-safety hazards instantly leap to the top of the queue regardless of the reporter's tone.
 
 ---
 
-## 🚀 The 7 Core Innovations
+## 🚀 The 4 User Portals
 
-| Innovation | Technical Implementation | Real-World Problem Solved |
-| :--- | :--- | :--- |
-| **1. Zero-Input "Snap & Speak" Triage** | Multimodal Vision + Regional ASR & Acoustic Distress Analysis. | Eliminates long, frustrating complaint forms; removes literacy and regional dialect barriers. |
-| **2. Swarm Deduplication & Master Incident Clustering** | Dual-condition matching: Semantic vector cosine similarity + Geospatial Haversine radius ($350\text{m}$). | Prevents admin boards from crashing during mass outages; turns crowd volume into an urgency multiplier. |
-| **3. Proof-of-Resolution "Anti-Fake Closure" Guard** | Computer Vision feature matching + Scene structural alignment + Defect remediation verification. | Eradicates fraudulent ticket closures by contractors without on-site work. |
-| **4. Agentic "Zero-Touch" Auto-Resolver** | Multi-tool autonomous function execution (CRM ledger query $\to$ anomaly check $\to$ Stripe refund $\to$ ERP sync $\to$ SMS dispatch). | Slashes resolution time from 48 hours to 3.82 seconds for Tier-1 billing disputes. |
-| **5. Dynamic Priority with "Vulnerability Boost"** | Continuous mathematical index with automated spatial proximity triggers. | Protects vulnerable populations (pediatric ICUs, elementary schools) from silent hazards. |
-| **6. Empathy-First De-Escalation AI Copilot** | Emotional state classification (Panicked, Angry, Frustrated) + tailored, policy-cited response generation. | Prevents rude or robotic agent replies that ignite social media PR disasters. |
-| **7. Predictive Failure Forecasting** | Spatio-temporal complaint velocity tracking and anomaly detection. | Shifts municipal and utility teams from reactive firefighting to proactive prevention. |
+1. **📝 File a Report (Citizen Intake):**
+   - Drag-and-drop real photos or snap with mobile camera.
+   - Record voice notes directly with the browser microphone (animated waveform + live Speech-to-Text).
+   - "Detect My GPS" button using HTML5 Geolocation.
+   - Instant multimodal triage with explainable Priority Breakdown.
+
+2. **🔍 Track Status (Public Transparency):**
+   - Search by Ticket Number (e.g. `CMP-7001`) or complainant phone number.
+   - Real-time ticking SLA countdown clock.
+   - Side-by-side Before vs. After photographic proof of resolution with cryptographic verification stamp.
+   - Step-by-step audit trail (Reported $\to$ Triaged $\to$ Unit Dispatched $\to$ Verified Closed).
+   - Printable receipt export.
+
+3. **🛠️ Resolver Operations (Field Dispatch):**
+   - Queue filterable by Priority, SLA, and Status.
+   - **Empathy-First AI Copilot:** Generates personalized, policy-backed de-escalating responses in 3 tones (Empathetic, Formal, Action-Oriented).
+   - **Proof-of-Resolution Anti-Fake Guard:** Field resolvers upload an "After" photo; Computer Vision verifies defect remediation and blocks fake/unrelated images.
+   - **Agentic Zero-Touch Resolver:** Autonomous 4-second Stripe refund simulation for digital/billing disputes.
+
+4. **📊 City Analytics & Spatial GIS Map (Executive Command):**
+   - Real-time city KPI counters.
+   - Interactive 2D GIS city map with 200m vulnerability buffer rings around schools and hospitals.
+   - **Simulate Swarm Outage Button:** Simulates 25 concurrent outage reports collapsing into 1 Master Incident pin.
+   - **Predictive Failure Forecasting:** Transformer surge early warning with 1-click preventative crew deployment.
 
 ---
 
-## 🏆 3-Minute Live Pitch Storyboard (Demo Guide for Judges)
+## 🚢 Deployment Guide
 
-The application includes a built-in **Pitch Flow Quick Action Bar** at the top of the interface:
+ComplainAI is cloud-agnostic and ready to deploy in seconds:
 
+### Option 1: Deploy on Render (Recommended)
+1. Fork or push this repository to GitHub.
+2. Sign in to [Render](https://render.com).
+3. Click **New +** $\to$ **Web Service** $\to$ Select your `ComplainAI` repository.
+4. Render automatically detects `render.yaml` and `requirements.txt`:
+   - **Build Command:** `pip install -r requirements.txt`
+   - **Start Command:** `python run.py`
+5. Click **Deploy Web Service**. Done!
+
+### Option 2: Deploy on Railway
+1. Sign in to [Railway](https://railway.app).
+2. Click **New Project** $\to$ **Deploy from GitHub repo**.
+3. Select `ComplainAI`. Railway automatically reads the `Procfile` (`web: python run.py`) and exposes your application on a live HTTPS domain.
+
+### Option 3: Deploy with Docker
+```bash
+# 1. Build the Docker image
+docker build -t complainai .
+
+# 2. Run the container
+docker run -d -p 8000:8000 --name complainai-app complainai
+
+# 3. Access in browser
+open http://localhost:8000
 ```
-[Min 1: Snap & Speak Triage] ──▶ [Min 2: Simulate Crowd Swarm] ──▶ [Min 3: Anti-Fake Closure] ──▶ [Zero-Touch Refund]
+
+### Option 4: Local Development
+```bash
+# 1. Clone repository
+git clone https://github.com/SomnathPal-max/ComplainAI.git
+cd ComplainAI
+
+# 2. Install dependencies
+pip install -r requirements.txt
+
+# 3. Run test suite
+python -m pytest -v
+
+# 4. Start server
+python run.py
 ```
-
-### Minute 1: Zero-Input Multimodal Triage
-1. Navigate to the **Citizen Intake ("Snap & Speak")** portal.
-2. Select the **"⚡ 1. Sparking Wire (Hindi/Oakridge School)"** scenario or click **Record Microphone**.
-3. Click **"⚡ Submit with AI Multimodal Triage"**.
-4. Show the judges the live diagnostic cards:
-   - **ASR Dialect Translation:** Translated from urban colloquial Hinglish to clear English.
-   - **Acoustic Distress Meter:** Detected elevated vocal tremor (**92% Panic**).
-   - **Computer Vision Hazard:** Tagged **94/100 Arc Flash Hazard** with defect bounding box.
-   - **Explainable Formula Breakdown:**
-     $$\text{P\_score} = (0.35 \times 92) + (0.30 \times 94) + (0.15 \times 33) + (0.20 \times 95) = \mathbf{94.2/100}\ [\text{CRITICAL}]$$
-     Explicitly displays: `+19.4 Vulnerability Boost (Oakridge Elementary School @ 57m)`.
-
-### Minute 2: The Crowd Swarm Outage
-1. Switch to the **Admin Command Center** tab.
-2. Click the pulsing red button: **"🔥 Simulate Mass Outage (25-User Swarm)"**.
-3. Watch the interactive 2D GIS Canvas map:
-   - 25 separate citizen reports flood in within a $250\text{m}$ radius of Sector 4 Substation.
-   - The engine automatically collapses all 25 reports into a single **Pulsing Red Master Incident Pin** (`MASTER-OUTAGE-... [25 Swarm Reports]`).
-   - Priority dynamically climbs to **98.4/100 (CRITICAL)** via the logarithmic crowd multiplier.
-
-### Minute 3: The Anti-Fake Closure Guard
-1. Switch to the **Resolver Workspace** tab and select ticket **CMP-7002 (Severe 8" Asphalt Crater)**.
-2. Review the **Empathy-First AI Copilot** draft, which auto-generated a de-escalating apology citing Municipal Quality Charter §4.2.
-3. In the Anti-Fake Closure Guard, click **"❌ 1. Test Fake Photo (Domestic Cat)"**:
-   - The AI runs Computer Vision comparison on the Before/After frames.
-   - Instantly rejects closure with a red warning: *"❌ CLOSURE REJECTED: Uploaded verification image shows an unrelated indoor scene. 0/142 background keypoints matched."*
-4. Click **"✅ 2. Test Genuine Repaired Photo"**:
-   - The AI verifies compaction and asphalt patch matching the original background street markings (**97.4% Confidence**).
-   - Ticket transitions to `VERIFIED_CLOSED` and generates tamper-proof cryptographic token `CERT-VERIFIED-7A41...`.
-
-### Bonus: Agentic Zero-Touch Refund
-1. Under the Admin Command Center tab, locate **CMP-7003 (Duplicate $89.00 Charge)**.
-2. Click **"⚡ Run Autonomous Tool Execution"**.
-3. Watch the agentic tool stream execute in **3.82 seconds**:
-   - `Tool 1: BillingDatabase.query_ledger` $\to$ Detected 2x $89.00 collision.
-   - `Tool 2: PolicyEngine.verify_refund` $\to$ Approved.
-   - `Tool 3: StripeGateway.create_refund` $\to$ Settled `re_3P99281Z`.
-   - `Tool 4: ERPAccountingService.post_credit_memo` $\to$ Reconciled.
-   - `Tool 5: NotificationService.dispatch_multichannel` $\to$ SMS receipt sent.
+Open **`http://localhost:8000`** in your browser.
 
 ---
 
-## 🦙 Ollama Architecture & Configuration
+## 🦙 Ollama & Local AI Configuration
 
 ComplainAI is built **Ollama-first**:
 - Default Endpoint: `http://127.0.0.1:11434`
-- Recommended Models: `llama3.2-vision`, `llama3.2`, `llava`, `mistral`, `qwen2.5`
-- **Zero-Crash Autonomous Fallback Mode:** If Ollama is starting up or unreachable, ComplainAI seamlessly activates an autonomous local inference pipeline providing high-accuracy multimodal analysis, ensuring pitches and demonstrations never fail.
-- **In-App LLM Control Modal:** Click the top-right **Ollama: Status** badge to adjust the Ollama URL, switch active models, and test connections live.
+- Supported Models: `llama3.2-vision`, `llama3.2`, `llava`, `mistral`, `qwen2.5`
+- **Zero-Crash Autonomous Fallback Mode:** If Ollama is offline or starting up, ComplainAI seamlessly activates an autonomous local inference pipeline providing high-accuracy multimodal analysis, ensuring pitches and demonstrations never fail.
+- **In-App LLM Control Modal:** Click the top-right **AI Engine: Status** badge to adjust the Ollama URL, switch active models, and test connections live.
 
 ---
 
-## 📁 Repository Structure
+## 🧪 Automated Test Suite
 
-```
-ComplainAI/
-├── run.py                          # Single-command full-stack server launcher
-├── backend/
-│   ├── main.py                     # FastAPI REST API, WebSockets, static file server
-│   ├── config.py                   # System weights, SLA limits, landmark coordinates
-│   ├── models.py                   # Pydantic v2 schemas for tickets, SLA, proofs, & AI
-│   ├── database.py                 # In-memory + spatial store, seed fixtures, swarm simulator
-│   ├── ai/
-│   │   ├── ollama_client.py        # Ollama REST client with fast socket probing & fallback
-│   │   ├── multimodal_triage.py    # Audio ASR, dialect translation, CV hazard scoring
-│   │   ├── priority_engine.py      # Dynamic formula with 200m GIS vulnerability boost
-│   │   ├── clustering.py           # Vector similarity + Haversine spatial radius swarm
-│   │   ├── anti_fake_closure.py    # Before vs. After CV verification & cryptographic tokens
-│   │   ├── zero_touch_resolver.py  # Multi-tool agentic autonomous billing refund
-│   │   ├── copilot.py              # Empathy-First de-escalation response generator
-│   │   └── forecasting.py          # Spatial-temporal velocity failure forecasting
-│   └── static/
-│       ├── index.html              # Futuristic 3-portal SPA (Citizen, Resolver, Admin)
-│       └── images/                 # Crisp vector graphics for Before/After & demo scenes
-└── tests/
-    └── test_complain_ai.py         # 11 comprehensive automated tests covering all modules
-```
-
----
-
-## ⚡ Quickstart Guide
-
-### 1. Run Automated Test Suite
+All 11 unit and integration tests run cleanly:
 ```bash
-python -m pytest -v tests/test_complain_ai.py
-```
-*Expected: 11 passed in < 1 second.*
-
-### 2. Launch the Application
-```bash
-python run.py
+python -m pytest -v
 ```
 
-### 3. Open in Browser
-Visit **`http://127.0.0.1:8000`** to access the complete command center.
+```
+tests/test_complain_ai.py::test_haversine_distance PASSED                [  9%]
+tests/test_complain_ai.py::test_dynamic_priority_formula_with_vulnerability_boost PASSED [ 18%]
+tests/test_complain_ai.py::test_audio_asr_and_regional_dialect_translation PASSED [ 27%]
+tests/test_complain_ai.py::test_computer_vision_hazard_scoring PASSED    [ 36%]
+tests/test_complain_ai.py::test_anti_fake_closure_guard_rejection PASSED [ 45%]
+tests/test_complain_ai.py::test_anti_fake_closure_guard_approval PASSED  [ 54%]
+tests/test_complain_ai.py::test_zero_touch_autonomous_resolution PASSED  [ 63%]
+tests/test_complain_ai.py::test_empathy_copilot_de_escalation PASSED     [ 72%]
+tests/test_complain_ai.py::test_simulate_mass_outage_crowd_swarm PASSED  [ 81%]
+tests/test_complain_ai.py::test_swarm_clustering_radius_match PASSED     [ 90%]
+tests/test_complain_ai.py::test_database_state_and_landmarks PASSED      [100%]
+======================= 11 passed in 0.72s ========================
+```

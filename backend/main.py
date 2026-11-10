@@ -1,6 +1,7 @@
 import os
 import time
 import json
+import base64
 import asyncio
 from datetime import datetime, timedelta
 from typing import List, Dict, Any, Optional
@@ -177,6 +178,11 @@ def list_complaints():
     """List all complaints with priority scores and status."""
     return db.get_all_complaints()
 
+@app.get("/api/tracking/search")
+def search_tracking(q: str = ""):
+    """Search grievances by tracking number, ID, location, phone, or title."""
+    return db.search_complaints(q)
+
 @app.get("/api/complaints/{complaint_id}")
 def get_complaint(complaint_id: str):
     complaint = db.get_complaint(complaint_id)
@@ -245,7 +251,23 @@ async def triage_complaint(sub: ComplaintSubmission):
 
     # Image URL resolution
     img_url = "/static/images/pothole.svg"
-    if sub.image_preset and f"{sub.image_preset}.svg" in os.listdir("backend/static/images"):
+    if sub.image_base64 and len(sub.image_base64) > 100:
+        try:
+            os.makedirs("backend/uploads", exist_ok=True)
+            header, encoded = sub.image_base64.split(",", 1) if "," in sub.image_base64 else ("", sub.image_base64)
+            ext = "png"
+            if "jpeg" in header or "jpg" in header:
+                ext = "jpg"
+            elif "webp" in header:
+                ext = "webp"
+            fname = f"upload_{c_id}.{ext}"
+            fpath = os.path.join("backend", "uploads", fname)
+            with open(fpath, "wb") as f:
+                f.write(base64.b64decode(encoded))
+            img_url = f"/uploads/{fname}"
+        except Exception:
+            pass
+    elif sub.image_preset and f"{sub.image_preset}.svg" in os.listdir("backend/static/images"):
         img_url = f"/static/images/{sub.image_preset}.svg"
     elif "wire" in sub.image_preset if sub.image_preset else False or "spark" in effective_text.lower():
         img_url = "/static/images/sparking_wire.svg"
@@ -352,7 +374,25 @@ async def verify_proof_of_resolution(req: AntiFakeProofRequest):
     now = datetime.utcnow()
     if res.verified:
         complaint.status = "VERIFIED_CLOSED"
-        complaint.after_image_url = f"/static/images/{req.after_image_preset}.svg" if req.after_image_preset else "/static/images/repaired_pothole.svg"
+        if req.after_image_base64 and len(req.after_image_base64) > 100:
+            try:
+                os.makedirs("backend/uploads", exist_ok=True)
+                header, encoded = req.after_image_base64.split(",", 1) if "," in req.after_image_base64 else ("", req.after_image_base64)
+                ext = "png"
+                if "jpeg" in header or "jpg" in header:
+                    ext = "jpg"
+                elif "webp" in header:
+                    ext = "webp"
+                fname = f"after_{complaint.id}_{int(time.time())}.{ext}"
+                fpath = os.path.join("backend", "uploads", fname)
+                with open(fpath, "wb") as f:
+                    f.write(base64.b64decode(encoded))
+                complaint.after_image_url = f"/uploads/{fname}"
+            except Exception:
+                complaint.after_image_url = f"/static/images/{req.after_image_preset}.svg" if req.after_image_preset else "/static/images/repaired_pothole.svg"
+        else:
+            complaint.after_image_url = f"/static/images/{req.after_image_preset}.svg" if req.after_image_preset else "/static/images/repaired_pothole.svg"
+
         complaint.resolution_proof = res.dict()
         complaint.audit_trail.append(AuditLogEntry(
             timestamp=now.strftime("%H:%M:%S"),
@@ -438,7 +478,9 @@ async def dispatch_forecast_crew(alert_id: str):
     })
     return res
 
-# Mount Static Files & SPA
+# Ensure uploads folder exists and mount static directories
+os.makedirs("backend/uploads", exist_ok=True)
+app.mount("/uploads", StaticFiles(directory="backend/uploads"), name="uploads")
 app.mount("/static", StaticFiles(directory="backend/static"), name="static")
 
 @app.get("/")
@@ -450,4 +492,6 @@ def serve_index():
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run("backend.main:app", host="127.0.0.1", port=8000, reload=True)
+    host = os.environ.get("HOST", "0.0.0.0")
+    port = int(os.environ.get("PORT", 8000))
+    uvicorn.run("backend.main:app", host=host, port=port, reload=True)

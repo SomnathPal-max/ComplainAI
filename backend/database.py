@@ -208,6 +208,21 @@ class Database:
     def get_complaint(self, complaint_id: str) -> Optional[Complaint]:
         return self.complaints.get(complaint_id)
 
+    def search_complaints(self, query: str) -> List[Complaint]:
+        q = query.strip().lower()
+        if not q:
+            return self.get_all_complaints()
+        results = []
+        for c in self.complaints.values():
+            if (q in c.id.lower() or 
+                q in c.tracking_number.lower() or 
+                (c.user_phone and q in c.user_phone.lower()) or 
+                q in c.title.lower() or 
+                q in c.location_name.lower() or
+                q in c.category.lower()):
+                results.append(c)
+        return sorted(results, key=lambda x: x.priority_score, reverse=True)
+
     def save_complaint(self, complaint: Complaint):
         self.complaints[complaint.id] = complaint
 

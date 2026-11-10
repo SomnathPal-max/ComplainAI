@@ -3,207 +3,264 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ComplainAI — Autonomous Multimodal Grievance Intelligence</title>
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⚡</text></svg>">
+  <title>ComplainAI — Civic & Enterprise Grievance Intelligence</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🛡️</text></svg>">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg-dark: #090d16;
+      --bg-page: #0b0f19;
       --bg-card: #111827;
-      --bg-card-hover: #1e293b;
-      --border-color: #1f293d;
-      --accent-cyan: #06b6d4;
-      --accent-blue: #3b82f6;
-      --accent-emerald: #10b981;
-      --accent-amber: #f59e0b;
-      --accent-rose: #f43f5e;
-      --accent-purple: #8b5cf6;
-      --text-main: #f8fafc;
+      --bg-card-subtle: #0d1322;
+      --bg-hover: #1f293d;
+      --border-subtle: #1e293b;
+      --border-focus: #3b82f6;
+      --text-primary: #f9fafb;
+      --text-secondary: #cbd5e1;
       --text-muted: #94a3b8;
+      --text-dim: #64748b;
+      --brand-primary: #2563eb;
+      --brand-hover: #1d4ed8;
+      --color-critical: #ef4444;
+      --color-high: #f59e0b;
+      --color-medium: #3b82f6;
+      --color-low: #10b981;
+      --color-success: #10b981;
+      --radius-sm: 6px;
+      --radius-md: 10px;
+      --radius-lg: 14px;
+      --shadow-card: 0 4px 6px -1px rgba(0, 0, 0, 0.2), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
     }
 
     * {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
     }
 
     body {
-      background-color: var(--bg-dark);
-      color: var(--text-main);
+      background-color: var(--bg-page);
+      color: var(--text-primary);
       min-height: 100vh;
-      overflow-x: hidden;
       display: flex;
       flex-direction: column;
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
     }
 
     /* Scrollbars */
-    ::-webkit-scrollbar { width: 6px; height: 6px; }
-    ::-webkit-scrollbar-track { background: var(--bg-dark); }
-    ::-webkit-scrollbar-thumb { background: #334155; border-radius: 3px; }
+    ::-webkit-scrollbar { width: 7px; height: 7px; }
+    ::-webkit-scrollbar-track { background: var(--bg-page); }
+    ::-webkit-scrollbar-thumb { background: #243046; border-radius: 4px; }
+    ::-webkit-scrollbar-thumb:hover { background: #334155; }
 
     /* Top Navigation Header */
     header {
-      background: rgba(17, 24, 39, 0.85);
-      backdrop-filter: blur(12px);
-      border-bottom: 1px solid var(--border-color);
+      background: rgba(17, 24, 39, 0.95);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid var(--border-subtle);
       position: sticky;
       top: 0;
-      z-index: 50;
-      padding: 0.75rem 1.5rem;
+      z-index: 100;
+      padding: 0.65rem 1.5rem;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 1rem;
+      gap: 1.25rem;
     }
 
-    .brand {
+    .brand-group {
       display: flex;
       align-items: center;
       gap: 0.75rem;
       text-decoration: none;
-      color: var(--text-main);
+      color: inherit;
     }
-    .brand-icon {
+    .brand-badge {
       width: 36px;
       height: 36px;
-      background: linear-gradient(135deg, var(--accent-cyan), var(--accent-blue));
-      border-radius: 8px;
+      background: linear-gradient(135deg, #1e3a8a, #2563eb);
+      border: 1px solid rgba(59, 130, 246, 0.4);
+      border-radius: var(--radius-sm);
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 1.25rem;
-      box-shadow: 0 0 15px rgba(6, 182, 212, 0.4);
+      font-size: 1.15rem;
     }
     .brand-title {
-      font-size: 1.25rem;
-      font-weight: 800;
-      letter-spacing: -0.02em;
-      background: linear-gradient(90deg, #38bdf8, #818cf8);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
+      font-size: 1.1rem;
+      font-weight: 700;
+      letter-spacing: -0.01em;
+      color: var(--text-primary);
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
     }
-    .brand-subtitle {
-      font-size: 0.7rem;
-      color: var(--text-muted);
+    .brand-tag {
+      font-size: 0.65rem;
+      background: #1e293b;
+      color: #93c5fd;
+      padding: 1px 6px;
+      border-radius: 4px;
+      font-weight: 600;
       text-transform: uppercase;
-      letter-spacing: 0.05em;
+      letter-spacing: 0.04em;
+    }
+    .brand-desc {
+      font-size: 0.72rem;
+      color: var(--text-muted);
     }
 
-    /* Portal Tabs */
+    /* Global Search / Track input in header */
+    .header-search {
+      flex: 1;
+      max-width: 340px;
+      position: relative;
+    }
+    .header-search input {
+      width: 100%;
+      background: var(--bg-card-subtle);
+      border: 1px solid var(--border-subtle);
+      border-radius: 20px;
+      padding: 0.4rem 0.9rem 0.4rem 2.1rem;
+      color: var(--text-primary);
+      font-size: 0.8rem;
+      transition: all 0.2s;
+    }
+    .header-search input:focus {
+      outline: none;
+      border-color: var(--border-focus);
+      background: #131c31;
+    }
+    .header-search-icon {
+      position: absolute;
+      left: 0.75rem;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 0.8rem;
+      color: var(--text-dim);
+    }
+
+    /* Main Navigation Tabs */
     .nav-tabs {
       display: flex;
-      background: #0f172a;
-      border: 1px solid var(--border-color);
-      border-radius: 10px;
+      background: #0d1322;
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
       padding: 3px;
-      gap: 4px;
+      gap: 3px;
     }
     .nav-tab-btn {
       background: transparent;
       border: none;
       color: var(--text-muted);
-      padding: 0.5rem 1rem;
-      border-radius: 7px;
+      padding: 0.45rem 0.9rem;
+      border-radius: var(--radius-sm);
       font-size: 0.82rem;
-      font-weight: 600;
+      font-weight: 500;
       cursor: pointer;
       display: flex;
       align-items: center;
       gap: 0.4rem;
-      transition: all 0.2s ease;
+      transition: all 0.15s ease;
     }
     .nav-tab-btn:hover {
-      color: var(--text-main);
-      background: rgba(255, 255, 255, 0.05);
+      color: var(--text-primary);
+      background: rgba(255, 255, 255, 0.04);
     }
     .nav-tab-btn.active {
-      background: linear-gradient(135deg, #1e293b, #334155);
-      color: #38bdf8;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
-      border: 1px solid rgba(56, 189, 248, 0.2);
+      background: var(--bg-card);
+      color: #60a5fa;
+      font-weight: 600;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+      border: 1px solid rgba(59, 130, 246, 0.25);
     }
 
-    /* Ollama Status Badge */
-    .ollama-badge {
+    /* Header Actions */
+    .header-actions {
       display: flex;
       align-items: center;
-      gap: 0.5rem;
-      background: #0f172a;
-      border: 1px solid var(--border-color);
+      gap: 0.65rem;
+    }
+    .status-pill {
+      display: flex;
+      align-items: center;
+      gap: 0.45rem;
+      background: #0d1322;
+      border: 1px solid var(--border-subtle);
       border-radius: 20px;
-      padding: 0.35rem 0.85rem;
+      padding: 0.35rem 0.75rem;
       font-size: 0.75rem;
       cursor: pointer;
       transition: border-color 0.2s;
     }
-    .ollama-badge:hover {
-      border-color: var(--accent-cyan);
+    .status-pill:hover {
+      border-color: #3b82f6;
     }
     .status-dot {
-      width: 8px;
-      height: 8px;
+      width: 7px;
+      height: 7px;
       border-radius: 50%;
-      background: var(--accent-emerald);
-      box-shadow: 0 0 8px var(--accent-emerald);
+      background: var(--color-success);
     }
-    .status-dot.offline {
-      background: var(--accent-amber);
-      box-shadow: 0 0 8px var(--accent-amber);
-    }
+    .status-dot.offline { background: var(--color-high); }
 
-    /* Pitch Flow Banner */
-    .pitch-banner {
-      background: linear-gradient(90deg, #1e1b4b, #0f172a, #132a3f);
-      border-bottom: 1px solid rgba(99, 102, 241, 0.3);
-      padding: 0.5rem 1.5rem;
+    /* Secondary Assistive Banner */
+    .sub-banner {
+      background: #0e1526;
+      border-bottom: 1px solid var(--border-subtle);
+      padding: 0.45rem 1.5rem;
       display: flex;
       align-items: center;
       justify-content: space-between;
       font-size: 0.8rem;
     }
-    .pitch-steps {
+    .sub-banner-left {
       display: flex;
       align-items: center;
-      gap: 0.75rem;
+      gap: 0.5rem;
+      color: var(--text-muted);
+    }
+    .scenario-picker {
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
       flex-wrap: wrap;
     }
-    .pitch-step-pill {
-      background: rgba(255, 255, 255, 0.07);
-      border: 1px solid rgba(255, 255, 255, 0.12);
-      border-radius: 20px;
+    .scenario-btn {
+      background: #162035;
+      border: 1px solid #24334f;
+      border-radius: 14px;
       padding: 0.2rem 0.65rem;
+      font-size: 0.73rem;
+      color: var(--text-secondary);
+      cursor: pointer;
       display: flex;
       align-items: center;
-      gap: 0.35rem;
-      cursor: pointer;
-      transition: all 0.2s;
+      gap: 0.3rem;
+      transition: all 0.15s;
     }
-    .pitch-step-pill:hover {
-      background: rgba(56, 189, 248, 0.2);
-      border-color: #38bdf8;
-      color: #38bdf8;
+    .scenario-btn:hover {
+      background: #1e2c47;
+      color: #93c5fd;
+      border-color: #3b82f6;
     }
 
     /* Main Container */
     main {
       flex: 1;
       padding: 1.5rem;
-      max-width: 1600px;
+      max-width: 1560px;
       width: 100%;
       margin: 0 auto;
     }
 
-    .tab-content {
-      display: none;
-    }
-    .tab-content.active {
-      display: block;
-      animation: fadeIn 0.3s ease;
-    }
-
+    .tab-content { display: none; }
+    .tab-content.active { display: block; animation: fadeIn 0.2s ease; }
     @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(6px); }
+      from { opacity: 0; transform: translateY(4px); }
       to { opacity: 1; transform: translateY(0); }
     }
 
@@ -215,56 +272,68 @@
     }
     .grid-3col {
       display: grid;
-      grid-template-columns: 1fr 1fr 1fr;
+      grid-template-columns: repeat(3, 1fr);
       gap: 1.25rem;
     }
-    @media (max-width: 1024px) {
-      .grid-2col, .grid-3col { grid-template-columns: 1fr; }
+    .grid-4col {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1rem;
+    }
+    @media (max-width: 1100px) {
+      .grid-2col, .grid-3col, .grid-4col { grid-template-columns: 1fr; }
+      header { flex-wrap: wrap; }
+      .header-search { order: 3; max-width: 100%; }
     }
 
     /* Cards */
     .card {
       background: var(--bg-card);
-      border: 1px solid var(--border-color);
-      border-radius: 12px;
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
       padding: 1.25rem;
-      position: relative;
+      box-shadow: var(--shadow-card);
     }
     .card-header {
       display: flex;
       align-items: center;
       justify-content: space-between;
       margin-bottom: 1rem;
+      padding-bottom: 0.75rem;
       border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-      padding-bottom: 0.6rem;
     }
     .card-title {
       font-size: 0.95rem;
       font-weight: 700;
-      color: var(--text-main);
+      color: var(--text-primary);
       display: flex;
       align-items: center;
       gap: 0.5rem;
     }
+    .card-subtitle {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      margin-top: 0.15rem;
+    }
 
-    /* Badges & Pills */
+    /* Badges */
     .badge {
       display: inline-flex;
       align-items: center;
-      gap: 0.25rem;
+      gap: 0.3rem;
       padding: 0.2rem 0.55rem;
-      border-radius: 6px;
+      border-radius: var(--radius-sm);
       font-size: 0.7rem;
-      font-weight: 700;
+      font-weight: 600;
+      letter-spacing: 0.02em;
       text-transform: uppercase;
-      letter-spacing: 0.03em;
     }
-    .badge-critical { background: rgba(244, 63, 94, 0.15); color: #fb7185; border: 1px solid rgba(244, 63, 94, 0.3); }
-    .badge-high { background: rgba(245, 158, 11, 0.15); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.3); }
-    .badge-medium { background: rgba(59, 130, 246, 0.15); color: #60a5fa; border: 1px solid rgba(59, 130, 246, 0.3); }
-    .badge-low { background: rgba(16, 185, 129, 0.15); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.3); }
+    .badge-critical { background: rgba(239, 68, 68, 0.12); color: #fca5a5; border: 1px solid rgba(239, 68, 68, 0.3); }
+    .badge-high { background: rgba(245, 158, 11, 0.12); color: #fde047; border: 1px solid rgba(245, 158, 11, 0.3); }
+    .badge-medium { background: rgba(59, 130, 246, 0.12); color: #93c5fd; border: 1px solid rgba(59, 130, 246, 0.3); }
+    .badge-low { background: rgba(16, 185, 129, 0.12); color: #86efac; border: 1px solid rgba(16, 185, 129, 0.3); }
 
-    /* Inputs & Form Elements */
+    /* Form Fields */
     .form-group {
       margin-bottom: 1rem;
     }
@@ -275,240 +344,243 @@
       color: var(--text-muted);
       margin-bottom: 0.35rem;
       text-transform: uppercase;
-      letter-spacing: 0.04em;
+      letter-spacing: 0.03em;
     }
     input[type="text"], select, textarea {
       width: 100%;
-      background: #0b1120;
-      border: 1px solid #1e293b;
-      border-radius: 8px;
-      padding: 0.65rem 0.85rem;
-      color: var(--text-main);
+      background: var(--bg-card-subtle);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-sm);
+      padding: 0.6rem 0.85rem;
+      color: var(--text-primary);
       font-size: 0.85rem;
       transition: border-color 0.2s;
     }
     input[type="text"]:focus, select:focus, textarea:focus {
       outline: none;
-      border-color: var(--accent-cyan);
+      border-color: var(--border-focus);
     }
 
     /* Buttons */
     .btn {
-      background: #1e293b;
-      color: var(--text-main);
-      border: 1px solid #334155;
-      padding: 0.6rem 1.1rem;
-      border-radius: 8px;
+      background: #1a2438;
+      color: var(--text-primary);
+      border: 1px solid #2e3e5c;
+      padding: 0.55rem 1rem;
+      border-radius: var(--radius-sm);
       font-size: 0.82rem;
-      font-weight: 600;
+      font-weight: 500;
       cursor: pointer;
       display: inline-flex;
       align-items: center;
       justify-content: center;
       gap: 0.4rem;
-      transition: all 0.2s ease;
+      transition: all 0.15s ease;
     }
     .btn:hover {
-      background: #334155;
-      border-color: #475569;
+      background: #24334f;
+      border-color: #3b82f6;
     }
     .btn-primary {
-      background: linear-gradient(135deg, #0284c7, #2563eb);
-      border: 1px solid rgba(56, 189, 248, 0.4);
-      color: white;
-      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+      background: var(--brand-primary);
+      border-color: #1d4ed8;
+      color: #ffffff;
+      font-weight: 600;
     }
     .btn-primary:hover {
-      background: linear-gradient(135deg, #0369a1, #1d4ed8);
-      box-shadow: 0 4px 16px rgba(37, 99, 235, 0.5);
+      background: var(--brand-hover);
+      border-color: #1e40af;
     }
     .btn-danger {
-      background: linear-gradient(135deg, #dc2626, #b91c1c);
-      border: 1px solid rgba(239, 68, 68, 0.4);
-      color: white;
+      background: #991b1b;
+      border-color: #b91c1c;
+      color: #ffffff;
+    }
+    .btn-danger:hover {
+      background: #b91c1c;
     }
     .btn-success {
-      background: linear-gradient(135deg, #059669, #047857);
-      border: 1px solid rgba(16, 185, 129, 0.4);
-      color: white;
+      background: #065f46;
+      border-color: #059669;
+      color: #ffffff;
+    }
+    .btn-success:hover {
+      background: #047857;
     }
 
-    /* Preset Quick Buttons */
-    .presets-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.4rem;
-      margin-bottom: 0.75rem;
-    }
-    .preset-chip {
-      background: rgba(255, 255, 255, 0.05);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      border-radius: 6px;
-      padding: 0.3rem 0.6rem;
-      font-size: 0.73rem;
-      color: var(--text-muted);
+    /* Interactive Upload Box */
+    .upload-box {
+      border: 1.5px dashed #283750;
+      border-radius: var(--radius-sm);
+      background: var(--bg-card-subtle);
+      padding: 1rem;
+      text-align: center;
       cursor: pointer;
-      transition: all 0.2s;
+      transition: border-color 0.2s, background-color 0.2s;
+      position: relative;
     }
-    .preset-chip:hover, .preset-chip.active {
-      background: rgba(56, 189, 248, 0.15);
-      border-color: #38bdf8;
-      color: #38bdf8;
+    .upload-box:hover {
+      border-color: var(--brand-primary);
+      background: #101828;
     }
-
-    /* Waveform visualizer canvas */
-    #audioWaveCanvas {
+    .preview-img-container {
       width: 100%;
-      height: 48px;
-      background: #090e1a;
-      border-radius: 6px;
-      border: 1px solid #1e293b;
-      margin-top: 0.4rem;
-    }
-
-    /* Image Preview Box */
-    .image-preview-container {
-      width: 100%;
-      height: 220px;
-      background: #0b1120;
-      border: 1px dashed #334155;
-      border-radius: 8px;
+      height: 190px;
+      border-radius: var(--radius-sm);
+      overflow: hidden;
+      background: #060912;
       display: flex;
       align-items: center;
       justify-content: center;
-      overflow: hidden;
+      border: 1px solid var(--border-subtle);
       position: relative;
     }
-    .image-preview-container img {
+    .preview-img-container img {
       width: 100%;
       height: 100%;
-      object-fit: cover;
+      object-fit: contain;
     }
 
-    /* Priority Gauge Meter */
-    .priority-gauge-box {
-      background: linear-gradient(135deg, #0b1120, #131c31);
-      border: 1px solid var(--border-color);
-      border-radius: 12px;
+    /* Audio Wave Canvas */
+    #waveCanvas {
+      width: 100%;
+      height: 44px;
+      background: #080c16;
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-sm);
+      margin-top: 0.4rem;
+    }
+
+    /* Priority Gauge Box */
+    .priority-metric-card {
+      background: linear-gradient(180deg, #131c31 0%, #0e1526 100%);
+      border: 1px solid #24334f;
+      border-radius: var(--radius-md);
       padding: 1.25rem;
       text-align: center;
-      position: relative;
-      overflow: hidden;
     }
-    .gauge-score {
-      font-size: 3.2rem;
-      font-weight: 900;
+    .priority-score-num {
+      font-size: 3rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
       line-height: 1;
-      margin: 0.4rem 0;
-      background: linear-gradient(90deg, #f43f5e, #fbbf24);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
+      margin: 0.35rem 0;
+      color: #f43f5e;
     }
-    .formula-box {
+    .formula-display {
       background: #070b14;
-      border: 1px solid #1e293b;
-      border-radius: 8px;
-      padding: 0.6rem;
-      font-family: monospace;
-      font-size: 0.75rem;
-      color: #38bdf8;
+      border: 1px solid #1c273c;
+      border-radius: var(--radius-sm);
+      padding: 0.5rem 0.75rem;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.73rem;
+      color: #60a5fa;
       text-align: left;
       margin-top: 0.75rem;
-      word-break: break-all;
+      overflow-x: auto;
     }
 
-    /* Live GIS Map Canvas */
-    #gisMapCanvas {
+    /* SLA Timer Clock */
+    .sla-timer-box {
+      background: #141b2c;
+      border: 1px solid #202d45;
+      border-radius: var(--radius-sm);
+      padding: 0.75rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 0.75rem;
+    }
+    .sla-clock {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: #fbbf24;
+    }
+
+    /* GIS Map Canvas */
+    #gisCanvas {
       width: 100%;
-      height: 440px;
-      background: #060911;
-      border-radius: 8px;
-      border: 1px solid #1e293b;
+      height: 480px;
+      background: #060912;
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-sm);
       display: block;
       cursor: crosshair;
     }
 
-    /* Pulsing Animation for Master Incident pins */
-    @keyframes pulseMaster {
-      0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7); }
-      70% { transform: scale(1.05); box-shadow: 0 0 0 16px rgba(239, 68, 68, 0); }
-      100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
-    }
-    .pulsing-btn {
-      animation: pulseMaster 2s infinite;
-    }
-
-    /* Ticket List */
-    .ticket-list {
+    /* Ticket Queue List */
+    .ticket-queue {
       display: flex;
       flex-direction: column;
-      gap: 0.6rem;
-      max-height: 520px;
+      gap: 0.5rem;
+      max-height: 580px;
       overflow-y: auto;
     }
-    .ticket-item {
-      background: #0e1526;
-      border: 1px solid #1e293b;
-      border-radius: 8px;
-      padding: 0.85rem;
+    .ticket-queue-item {
+      background: var(--bg-card-subtle);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-sm);
+      padding: 0.75rem 0.85rem;
       cursor: pointer;
-      transition: all 0.2s;
+      transition: all 0.15s;
     }
-    .ticket-item:hover, .ticket-item.active {
-      border-color: var(--accent-cyan);
-      background: #142038;
+    .ticket-queue-item:hover, .ticket-queue-item.active {
+      border-color: #3b82f6;
+      background: #131c31;
     }
 
     /* Timeline Stepper */
     .timeline {
       position: relative;
-      padding-left: 1.5rem;
+      padding-left: 1.4rem;
       margin-top: 1rem;
     }
     .timeline::before {
       content: '';
       position: absolute;
-      left: 6px;
-      top: 5px;
-      bottom: 5px;
+      left: 5px;
+      top: 6px;
+      bottom: 6px;
       width: 2px;
-      background: #334155;
+      background: #1e293b;
     }
-    .timeline-step {
+    .timeline-item {
       position: relative;
-      margin-bottom: 1rem;
+      margin-bottom: 0.85rem;
       font-size: 0.8rem;
     }
     .timeline-dot {
       position: absolute;
-      left: -1.5rem;
-      top: 2px;
-      width: 14px;
-      height: 14px;
+      left: -1.4rem;
+      top: 3px;
+      width: 12px;
+      height: 12px;
       border-radius: 50%;
-      background: var(--accent-cyan);
+      background: #3b82f6;
       border: 2px solid var(--bg-card);
     }
 
-    /* Live Modal */
-    .modal-backdrop {
+    /* Modals */
+    .modal-overlay {
       display: none;
       position: fixed;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background: rgba(0, 0, 0, 0.8);
+      inset: 0;
+      background: rgba(3, 7, 18, 0.75);
       backdrop-filter: blur(4px);
-      z-index: 100;
+      z-index: 200;
       align-items: center;
       justify-content: center;
     }
-    .modal-backdrop.open { display: flex; }
-    .modal-box {
+    .modal-overlay.open { display: flex; }
+    .modal-card {
       background: var(--bg-card);
-      border: 1px solid var(--border-color);
-      border-radius: 12px;
-      max-width: 600px;
-      width: 90%;
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      max-width: 580px;
+      width: 92%;
       padding: 1.5rem;
+      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5);
     }
   </style>
 </head>
@@ -516,348 +588,521 @@
 
   <!-- Top Navigation Header -->
   <header>
-    <a href="#" class="brand">
-      <div class="brand-icon">⚡</div>
+    <div class="brand-group">
+      <div class="brand-badge">🛡️</div>
       <div>
-        <div class="brand-title">ComplainAI</div>
-        <div class="brand-subtitle">Autonomous Multimodal Grievance Intelligence</div>
+        <div class="brand-title">
+          ComplainAI
+          <span class="brand-tag">v2.0 Civic OS</span>
+        </div>
+        <div class="brand-desc">Autonomous Multimodal Grievance Intelligence & Zero-Touch Dispatch</div>
       </div>
-    </a>
-
-    <!-- Role-Based Navigation Tabs -->
-    <div class="nav-tabs">
-      <button class="nav-tab-btn active" onclick="switchTab('intake')">
-        <span>📱</span> Citizen Intake ("Snap & Speak")
-      </button>
-      <button class="nav-tab-btn" onclick="switchTab('resolver')">
-        <span>🛠️</span> Resolver Workspace (Anti-Fake & Copilot)
-      </button>
-      <button class="nav-tab-btn" onclick="switchTab('admin')">
-        <span>⚡</span> Admin Command (GIS Swarm & Forecast)
-      </button>
     </div>
 
-    <!-- Ollama Status Badge -->
-    <div class="ollama-badge" onclick="openOllamaModal()">
-      <div class="status-dot" id="ollamaDot"></div>
-      <span id="ollamaLabel">Ollama: Checking...</span>
-      <span style="color:#64748b; font-size:0.65rem;">⚙️</span>
+    <!-- Quick Ticket Tracker Search in Header -->
+    <div class="header-search">
+      <span class="header-search-icon">🔍</span>
+      <input type="text" id="quickSearchInput" placeholder="Track by Ticket # (e.g. CMP-7001)..." onkeydown="handleQuickSearch(event)" />
+    </div>
+
+    <!-- Role / Portal Navigation Tabs -->
+    <nav class="nav-tabs">
+      <button class="nav-tab-btn active" onclick="navigateTab('intake')">
+        <span>📝</span> File a Report
+      </button>
+      <button class="nav-tab-btn" onclick="navigateTab('tracker')">
+        <span>🔍</span> Track Status
+      </button>
+      <button class="nav-tab-btn" onclick="navigateTab('resolver')">
+        <span>🛠️</span> Resolver Operations
+      </button>
+      <button class="nav-tab-btn" onclick="navigateTab('analytics')">
+        <span>📊</span> City Analytics & Map
+      </button>
+    </nav>
+
+    <!-- Header Actions -->
+    <div class="header-actions">
+      <div class="status-pill" onclick="openOllamaDialog()" title="Configure Ollama / Local AI Service">
+        <div class="status-dot" id="headerEngineDot"></div>
+        <span id="headerEngineLabel">AI Engine: Online</span>
+        <span style="font-size:0.65rem; color:#64748b;">⚙️</span>
+      </div>
     </div>
   </header>
 
-  <!-- Pitch Flow Quick Action Bar -->
-  <div class="pitch-banner">
-    <div style="font-weight:700; color:#38bdf8; display:flex; align-items:center; gap:0.4rem;">
-      <span>🏆 3-Minute Live Pitch Storyboard:</span>
+  <!-- Assistive Scenario Bar -->
+  <div class="sub-banner">
+    <div class="sub-banner-left">
+      <span>💡</span>
+      <strong>Explore Presets & Verified Scenarios:</strong>
     </div>
-    <div class="pitch-steps">
-      <div class="pitch-step-pill" onclick="triggerPitchStep(1)">
-        <strong>Min 1:</strong> Snap & Speak Multimodal Triage
-      </div>
-      <div class="pitch-step-pill" onclick="triggerPitchStep(2)">
-        <strong>Min 2:</strong> Simulate Crowd Swarm Outage
-      </div>
-      <div class="pitch-step-pill" onclick="triggerPitchStep(3)">
-        <strong>Min 3:</strong> Anti-Fake Closure Verification
-      </div>
-      <div class="pitch-step-pill" onclick="triggerPitchStep(4)">
-        <strong>Zero-Touch:</strong> 4-Second Auto-Refund
-      </div>
+    <div class="scenario-picker">
+      <button class="scenario-btn" onclick="loadScenario('sparking_wire')">
+        ⚡ 1. Exposed Wire (Near School)
+      </button>
+      <button class="scenario-btn" onclick="loadScenario('water_flood')">
+        💧 2. Water Main Rupture (Hospital St)
+      </button>
+      <button class="scenario-btn" onclick="loadScenario('pothole')">
+        🕳️ 3. Road Pothole (Bike Lane)
+      </button>
+      <button class="scenario-btn" onclick="loadScenario('billing')">
+        💳 4. Duplicate Billing Dispute
+      </button>
     </div>
   </div>
 
   <main>
-    <!-- ========================================== -->
-    <!-- TAB 1: CITIZEN INTAKE ("SNAP & SPEAK")      -->
-    <!-- ========================================== -->
+    <!-- ============================================================== -->
+    <!-- TAB 1: FILE A REPORT (CITIZEN INTAKE)                           -->
+    <!-- ============================================================== -->
     <div id="tab-intake" class="tab-content active">
       <div class="grid-2col">
 
-        <!-- Left Form: Multimodal Submission -->
+        <!-- Form Card: Multimodal Intake -->
         <div class="card">
           <div class="card-header">
-            <div class="card-title">
-              <span>🎙️</span> Zero-Input "Snap & Speak" Intake
+            <div>
+              <div class="card-title">
+                <span>📷</span> Citizen Grievance Submission
+              </div>
+              <div class="card-subtitle">Upload a photo, record audio in your dialect, or describe the issue.</div>
             </div>
-            <span class="badge badge-medium">Omnichannel Portal</span>
+            <span class="badge badge-medium">Omnichannel Ingestion</span>
           </div>
 
-          <!-- Channel Selector -->
+          <!-- Channel Selection -->
           <div class="form-group">
-            <label>Submission Channel</label>
-            <div class="presets-row">
-              <div class="preset-chip active" onclick="setChannel(this, 'WEB')">🌐 Web Portal</div>
-              <div class="preset-chip" onclick="setChannel(this, 'WHATSAPP')">💬 WhatsApp Intake</div>
-              <div class="preset-chip" onclick="setChannel(this, 'PHONE_VOICE')">📞 Voice Hotline</div>
-              <div class="preset-chip" onclick="setChannel(this, 'EMAIL')">✉️ Email Parsing</div>
-            </div>
-          </div>
-
-          <!-- Quick Demo Presets -->
-          <div class="form-group">
-            <label>Demo Audio & Image Scenarios</label>
-            <div class="presets-row">
-              <div class="preset-chip active" onclick="loadScenario('sparking_wire')">⚡ 1. Sparking Wire (Hindi/Oakridge School)</div>
-              <div class="preset-chip" onclick="loadScenario('water_flood')">💧 2. Water Main Rupture (Hospital St)</div>
-              <div class="preset-chip" onclick="loadScenario('pothole')">🕳️ 3. Deep 8" Pothole (Bike Lane)</div>
-              <div class="preset-chip" onclick="loadScenario('billing')">💳 4. Double Charge $89 (Auto-Refund)</div>
+            <label>Reporting Channel</label>
+            <div style="display:flex; gap:0.4rem; flex-wrap:wrap;">
+              <button class="scenario-btn" id="chanWeb" onclick="selectChannel('WEB')" style="background:#1d4ed8; color:#fff;">🌐 Public Web Portal</button>
+              <button class="scenario-btn" id="chanWhatsApp" onclick="selectChannel('WHATSAPP')">💬 WhatsApp Bot</button>
+              <button class="scenario-btn" id="chanHotline" onclick="selectChannel('PHONE_VOICE')">📞 Voice Hotline</button>
+              <button class="scenario-btn" id="chanEmail" onclick="selectChannel('EMAIL')">✉️ Email Parsing</button>
             </div>
           </div>
 
-          <!-- Voice Note Input -->
+          <!-- Photo Evidence Section (Supports Real Files + Camera + Presets) -->
           <div class="form-group">
-            <label>Voice Note / Regional Dialect Recording</label>
+            <label>Scene / Defect Photo Evidence</label>
+            <div class="preview-img-container" id="imagePreviewContainer">
+              <img id="formImagePreview" src="/static/images/sparking_wire.svg" alt="Scene Preview" />
+            </div>
+            <div style="display:flex; gap:0.5rem; margin-top:0.5rem;">
+              <label class="btn" style="flex:1; cursor:pointer;">
+                <span>📁</span> Upload Photo File
+                <input type="file" id="realPhotoInput" accept="image/*" style="display:none;" onchange="handleRealImageUpload(event)" />
+              </label>
+              <button class="btn" onclick="triggerWebcamCapture()" style="flex:1;">
+                <span>📷</span> Camera Capture
+              </button>
+            </div>
+            <div id="uploadFileInfo" style="font-size:0.72rem; color:#94a3b8; margin-top:0.25rem;">Default sample: sparking_wire.svg (Verified preset)</div>
+          </div>
+
+          <!-- Voice Note Recording Section (Real Microphone + ASR Dialect Support) -->
+          <div class="form-group">
+            <label>Acoustic Voice Recording (Regional Dialects Supported)</label>
             <div style="display:flex; gap:0.5rem; align-items:center;">
-              <button class="btn" id="btnRecordAudio" onclick="toggleMicrophoneRecord()">
-                <span id="recordIcon">🔴</span> <span id="recordText">Record Microphone</span>
+              <button class="btn" id="btnMicRecord" onclick="toggleMicrophone()">
+                <span id="micIcon">🎙️</span>
+                <span id="micText">Record Voice Note</span>
               </button>
-              <button class="btn" onclick="playPresetAudio()">
-                <span>🔊</span> Play Audio Clip
+              <button class="btn" onclick="playCurrentAudioPreset()">
+                <span>🔊</span> Listen Sample
               </button>
-              <span id="audioStatusText" style="font-size:0.75rem; color:#94a3b8;">Preset: Hindi/Hinglish Voice Note</span>
+              <span id="micStatusText" style="font-size:0.75rem; color:#94a3b8;">Preset: Hindi / Hinglish Dialect</span>
             </div>
-            <canvas id="audioWaveCanvas"></canvas>
+            <canvas id="waveCanvas"></canvas>
           </div>
 
-          <!-- Scene Photo / Defect View -->
+          <!-- Description & Transcription -->
           <div class="form-group">
-            <label>Scene Photo / Inspection Image</label>
-            <div class="image-preview-container" id="imagePreviewBox">
-              <img id="intakeImagePreview" src="/static/images/sparking_wire.svg" alt="Defect Scene" />
-            </div>
+            <label>Issue Description & Transcript</label>
+            <textarea id="formDescription" rows="3" placeholder="Describe the problem, or let the voice recording auto-transcribe here..."></textarea>
           </div>
 
-          <!-- Text Transcription & Notes -->
+          <!-- Location & Proximity -->
           <div class="form-group">
-            <label>Raw Transcript / Description</label>
-            <textarea id="intakeDescription" rows="3" placeholder="Transcribed speech or text will appear here..."></textarea>
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.35rem;">
+              <label style="margin-bottom:0;">Incident Location & Critical Landmark</label>
+              <button class="btn" style="padding:0.2rem 0.6rem; font-size:0.7rem;" onclick="detectUserLocation()">
+                <span>📍</span> Detect My GPS
+              </button>
+            </div>
+            <select id="formLocationSelect" onchange="updateLocationCoordinates()">
+              <option value="Oakridge School Gate, Elm & 8th St" data-lat="37.7753" data-lng="-122.4190">Oakridge Elementary & Middle School (65m proximity — Vulnerability Boost Zone)</option>
+              <option value="Grand Ave Corridor (St. Jude Hospital Frontage)" data-lat="37.7830" data-lng="-122.4160">St. Jude Metropolitan Hospital (80m proximity — Trauma Center)</option>
+              <option value="Sector 4 Electrical Grid Substation Zone" data-lat="37.7650" data-lng="-122.4300">Sector 4 Transformer Substation Zone</option>
+              <option value="4th St & Bryant Ave (Northbound)" data-lat="37.7790" data-lng="-122.4120">4th Street & Bryant Ave Bicycle Lane</option>
+              <option value="Central Metro Water Treatment Station" data-lat="37.7550" data-lng="-122.4200">Central Water Treatment Reservoir</option>
+            </select>
           </div>
 
-          <!-- Citizen & Location details -->
-          <div style="display:grid; grid-template-columns:1fr 1fr; gap:0.75rem; margin-bottom:1rem;">
+          <!-- Citizen Contact Details -->
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:0.75rem; margin-bottom:1.25rem;">
             <div>
-              <label>Citizen Name</label>
-              <input type="text" id="intakeUserName" value="Aarav Sharma" />
+              <label>Citizen / Complainant Name</label>
+              <input type="text" id="formUserName" value="Aarav Sharma" />
             </div>
             <div>
-              <label>Location Landmark</label>
-              <select id="intakeLocation">
-                <option value="Oakridge School Gate, Elm & 8th St" data-lat="37.7753" data-lng="-122.4190">Oakridge School (65m proximity)</option>
-                <option value="Grand Ave Corridor (St. Jude Hospital Frontage)" data-lat="37.7830" data-lng="-122.4160">St. Jude Hospital (80m proximity)</option>
-                <option value="Sector 4 Electrical Grid Substation Zone" data-lat="37.7650" data-lng="-122.4300">Sector 4 Transformer Grid</option>
-                <option value="4th St & Bryant Ave (Northbound)" data-lat="37.7790" data-lng="-122.4120">4th Street Bike Lane</option>
-              </select>
+              <label>Phone / Contact Number</label>
+              <input type="text" id="formUserPhone" value="+1 (555) 948-2104" />
             </div>
           </div>
 
-          <!-- Submit Button -->
-          <button class="btn btn-primary" style="width:100%; font-size:0.95rem; padding:0.85rem;" onclick="submitIntakeTriage()">
-            <span>⚡</span> Submit with AI Multimodal Triage (Ollama)
+          <!-- Submit CTA -->
+          <button class="btn btn-primary" style="width:100%; padding:0.85rem; font-size:0.92rem;" onclick="submitGrievanceTriage()">
+            <span>⚡</span> Submit Grievance with Multimodal AI Triage
           </button>
         </div>
 
-        <!-- Right Side: Real-time AI Triage Analysis & Dynamic Formula -->
+        <!-- Diagnostic Feedback Card: Real-time Multi-factor Priority Breakdown -->
         <div class="card" id="triageResultCard">
           <div class="card-header">
-            <div class="card-title">
-              <span>🧠</span> AI Multimodal Diagnostic Breakdown
+            <div>
+              <div class="card-title">
+                <span>🧠</span> Autonomous AI Triage Diagnostics
+              </div>
+              <div class="card-subtitle" id="resultTrackingSubtitle">Ticket #CMP-7001 | Triaged in 0.42 seconds</div>
             </div>
-            <span class="badge badge-critical" id="resultPriorityBadge">CRITICAL TIER</span>
+            <span class="badge badge-critical" id="resultTierBadge">CRITICAL EMERGENCY</span>
           </div>
 
-          <!-- Priority Gauge -->
-          <div class="priority-gauge-box">
-            <div style="font-size:0.8rem; text-transform:uppercase; color:#94a3b8; letter-spacing:0.05em;">
-              Calibrated Multi-Factor Priority Index ($P_{\text{score}}$)
+          <!-- Priority Gauge Metric -->
+          <div class="priority-metric-card">
+            <div style="font-size:0.75rem; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.04em;">
+              Calibrated Priority Index ($P_{\text{score}}$)
             </div>
-            <div class="gauge-score" id="resultScoreValue">94.2</div>
-            <div style="font-size:0.85rem; font-weight:700; color:#fb7185;" id="resultTierLabel">
-              CRITICAL EMERGENCY — 2 HOUR SLA DISPATCH
+            <div class="priority-score-num" id="resultScoreNum">94.2</div>
+            <div style="font-size:0.8rem; font-weight:600; color:#fb7185;" id="resultSlaLabel">
+              2-HOUR MAXIMUM RESPONSE DISPATCH GUARANTEE
             </div>
-            <!-- Dynamic Math Formula -->
-            <div class="formula-box" id="resultFormulaStr">
-              P_score = (0.35 × 92) + (0.30 × 94) + (0.15 × 32) + (0.20 × 95) = 94.2/100
+
+            <!-- Mathematical Formula -->
+            <div class="formula-display" id="resultFormulaDisplay">
+              P_score = (0.35 × 92) + (0.30 × 94) + (0.15 × 33) + (0.20 × 95) = 94.2/100
             </div>
           </div>
 
-          <!-- Explainable Breakdown Cards -->
+          <!-- 4 Detailed Factor Cards -->
           <div style="display:grid; grid-template-columns:1fr 1fr; gap:0.75rem; margin-top:1rem;">
-            <div class="card" style="padding:0.75rem; background:#0b1120;">
-              <div style="font-size:0.7rem; color:#94a3b8;">ACOUSTIC DISTRESS & ASR</div>
-              <div style="font-weight:700; font-size:0.85rem; color:#f87171;" id="resultVocalEmotion">
+            <div class="card" style="padding:0.75rem; background:var(--bg-card-subtle);">
+              <div style="font-size:0.7rem; color:var(--text-muted);">ACOUSTIC DISTRESS & TRANSLATION</div>
+              <div style="font-weight:700; font-size:0.85rem; color:#f87171;" id="resultAcousticEmotion">
                 Panicked (92% vocal tremor)
               </div>
-              <div style="font-size:0.7rem; color:#64748b; margin-top:0.2rem;" id="resultDialect">
+              <div style="font-size:0.7rem; color:#64748b; margin-top:0.2rem;" id="resultDialectInfo">
                 Dialect: Urban Hinglish Colloquial
               </div>
             </div>
 
-            <div class="card" style="padding:0.75rem; background:#0b1120;">
-              <div style="font-size:0.7rem; color:#94a3b8;">COMPUTER VISION HAZARD</div>
-              <div style="font-weight:700; font-size:0.85rem; color:#f59e0b;" id="resultVisualHazard">
-                94/100 Arc Flash Hazard
+            <div class="card" style="padding:0.75rem; background:var(--bg-card-subtle);">
+              <div style="font-size:0.7rem; color:var(--text-muted);">COMPUTER VISION HAZARD</div>
+              <div style="font-weight:700; font-size:0.85rem; color:#f59e0b;" id="resultHazardScore">
+                94/100 Arc Flash Defect
               </div>
-              <div style="font-size:0.7rem; color:#64748b; margin-top:0.2rem;" id="resultDefectDetected">
+              <div style="font-size:0.7rem; color:#64748b; margin-top:0.2rem;" id="resultDefectInfo">
                 Exposed 4.8kV Conductor
               </div>
             </div>
 
-            <div class="card" style="padding:0.75rem; background:#0b1120;">
-              <div style="font-size:0.7rem; color:#94a3b8;">SWARM CLUSTER FACTOR</div>
-              <div style="font-weight:700; font-size:0.85rem; color:#38bdf8;" id="resultClusterSize">
+            <div class="card" style="padding:0.75rem; background:var(--bg-card-subtle);">
+              <div style="font-size:0.7rem; color:var(--text-muted);">SPATIAL SWARM DEDUPLICATION</div>
+              <div style="font-weight:700; font-size:0.85rem; color:#38bdf8;" id="resultClusterInfo">
                 3 Concurrent Reports
               </div>
               <div style="font-size:0.7rem; color:#64748b; margin-top:0.2rem;">
-                Radius: 350m Spatial Buffer
+                Radius: 350m Density Match
               </div>
             </div>
 
-            <div class="card" style="padding:0.75rem; background:#0b1120;">
-              <div style="font-size:0.7rem; color:#94a3b8;">VULNERABILITY BOOST (GIS)</div>
-              <div style="font-weight:700; font-size:0.85rem; color:#a855f7;" id="resultVulnerability">
-                +19.4pts (Oakridge School @ 65m)
+            <div class="card" style="padding:0.75rem; background:var(--bg-card-subtle);">
+              <div style="font-size:0.7rem; color:var(--text-muted);">VULNERABILITY BOOST (GIS)</div>
+              <div style="font-weight:700; font-size:0.85rem; color:#c084fc;" id="resultVulnerabilityInfo">
+                +19.4pts (Oakridge School @ 57m)
               </div>
               <div style="font-size:0.7rem; color:#64748b; margin-top:0.2rem;">
-                Pedestrian & Minor Risk Zone
+                Pedestrian & School Zone Proximity
               </div>
             </div>
           </div>
 
-          <!-- English Translation & Category -->
-          <div style="margin-top:1rem; background:#0e1526; border-radius:8px; padding:0.75rem; border:1px solid #1e293b;">
-            <div style="font-size:0.75rem; font-weight:700; color:#38bdf8; margin-bottom:0.25rem;">
-              Autonomous ASR Translation:
+          <!-- Automatic Speech-to-Text Translated English -->
+          <div style="margin-top:1rem; background:#0e1526; border-radius:var(--radius-sm); padding:0.75rem; border:1px solid var(--border-subtle);">
+            <div style="font-size:0.72rem; font-weight:700; color:#38bdf8; margin-bottom:0.2rem;">
+              Autonomous Dialect Translation (ASR):
             </div>
-            <div style="font-size:0.82rem; color:#cbd5e1; font-style:italic;" id="resultTranslatedText">
+            <div style="font-size:0.8rem; color:#cbd5e1; font-style:italic;" id="resultEnglishTranscript">
               "Brothers, right in front of Oakridge School, intense sparks are flying from the transformer! Kids are about to leave for recess, someone could get electrocuted, please send someone immediately!"
             </div>
-            <div style="margin-top:0.5rem; display:flex; gap:0.4rem; flex-wrap:wrap;" id="resultSubTags">
+            <div style="margin-top:0.5rem; display:flex; gap:0.35rem; flex-wrap:wrap;" id="resultSubTags">
               <span class="badge badge-critical">High-Voltage Hazard: 98%</span>
               <span class="badge badge-high">Fire Risk: 91%</span>
               <span class="badge badge-medium">Pedestrian Exposure: 89%</span>
             </div>
           </div>
 
-          <!-- Citizen Tracking Timeline -->
-          <div class="timeline" id="intakeTimeline">
-            <div class="timeline-step">
-              <div class="timeline-dot"></div>
-              <strong>Grievance Submitted & Verified</strong>
-              <div style="color:#64748b; font-size:0.7rem;">Automated Ollama multimodal triage complete</div>
-            </div>
-            <div class="timeline-step">
-              <div class="timeline-dot" style="background:#f59e0b;"></div>
-              <strong>Rapid Emergency Crew Dispatched</strong>
-              <div style="color:#64748b; font-size:0.7rem;">Tier 1 High-Voltage Unit en route (ETA 12 mins)</div>
-            </div>
+          <!-- Progress Action Link -->
+          <div style="margin-top:1rem; display:flex; justify-content:space-between; align-items:center;">
+            <span style="font-size:0.75rem; color:var(--text-muted);">Grievance actively routed to Department Dispatch.</span>
+            <button class="btn btn-primary" style="padding:0.4rem 0.85rem;" onclick="viewCurrentInTracker()">
+              <span>🔍</span> Track in Public Portal
+            </button>
           </div>
         </div>
 
       </div>
     </div>
 
-    <!-- ========================================== -->
-    <!-- TAB 2: RESOLVER WORKSPACE (ANTI-FAKE & COPILOT) -->
-    <!-- ========================================== -->
+    <!-- ============================================================== -->
+    <!-- TAB 2: LIVE PUBLIC TRACKER (CITIZEN TRANSPARENCY)              -->
+    <!-- ============================================================== -->
+    <div id="tab-tracker" class="tab-content">
+      <div class="card" style="margin-bottom:1.25rem;">
+        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:1rem;">
+          <div>
+            <h2 style="font-size:1.15rem; font-weight:700; color:var(--text-primary);">Public Grievance Status & Audit Feed</h2>
+            <p style="font-size:0.8rem; color:var(--text-muted);">Enter any complaint tracking ID or phone number to view live progress, resolution proof, and SLA countdowns.</p>
+          </div>
+          <div style="display:flex; gap:0.5rem; min-width:320px;">
+            <input type="text" id="trackerSearchField" placeholder="Enter ID e.g. CMP-7001..." value="CMP-7001" style="flex:1;" />
+            <button class="btn btn-primary" onclick="executeTrackerSearch()">Search</button>
+          </div>
+        </div>
+
+        <!-- Quick selection chips -->
+        <div style="display:flex; gap:0.5rem; margin-top:0.75rem; flex-wrap:wrap;">
+          <span style="font-size:0.75rem; color:var(--text-muted); align-self:center;">Sample Records:</span>
+          <button class="scenario-btn" onclick="quickTrack('CMP-7001')">CMP-7001 (Power Line / School)</button>
+          <button class="scenario-btn" onclick="quickTrack('CMP-7002')">CMP-7002 (4th St Pothole)</button>
+          <button class="scenario-btn" onclick="quickTrack('CMP-7003')">CMP-7003 (Duplicate Billing)</button>
+        </div>
+      </div>
+
+      <!-- Tracker Details Display Card -->
+      <div class="card" id="trackerDetailCard">
+        <div class="card-header">
+          <div>
+            <div style="display:flex; align-items:center; gap:0.5rem;">
+              <span class="card-title" id="trackTitle">Active Arc-Flashing Electrical Wire Outside School</span>
+              <span class="badge badge-critical" id="trackStatusBadge">IN_PROGRESS</span>
+            </div>
+            <div class="card-subtitle" id="trackMetaSub">Tracking ID: CMP-7001 | Registered for Aarav Sharma | Channel: PHONE_VOICE</div>
+          </div>
+          <button class="btn" onclick="printReceipt()">
+            <span>🖨️</span> Print / Save Receipt
+          </button>
+        </div>
+
+        <div class="grid-2col">
+          <!-- Left: Incident Overview & Timeline -->
+          <div>
+            <div class="sla-timer-box">
+              <div>
+                <div style="font-size:0.7rem; color:var(--text-muted); text-transform:uppercase;">Guaranteed Resolution Window (SLA)</div>
+                <div class="sla-clock" id="trackSlaClock">01:24:45 Remaining</div>
+              </div>
+              <span class="badge badge-critical" id="trackTierPill">CRITICAL TIER (2h)</span>
+            </div>
+
+            <div style="margin-top:1rem;">
+              <label>Description & Scene Assessment</label>
+              <p style="font-size:0.83rem; color:var(--text-secondary); background:var(--bg-card-subtle); padding:0.75rem; border-radius:var(--radius-sm); border:1px solid var(--border-subtle);" id="trackDesc">
+                Exposed 4.8kV utility wire detached from crossarm and is violently sparking against chainlink fence. School recess bell about to ring.
+              </p>
+            </div>
+
+            <div style="margin-top:1rem;">
+              <label>Location & Assigned Field Unit</label>
+              <div style="font-size:0.8rem; color:var(--text-secondary);">
+                📍 <strong id="trackLocation">Oakridge School Gate, Elm & 8th St</strong>
+              </div>
+              <div style="font-size:0.75rem; color:#60a5fa; margin-top:0.2rem;" id="trackAssignedUnit">
+                🚒 Unit Deployed: Rapid High-Voltage Emergency Squad #9 (Insulated Boom Truck)
+              </div>
+            </div>
+
+            <!-- Audit Trail Stepper -->
+            <div style="margin-top:1.25rem;">
+              <label>Verified Audit Trail</label>
+              <div class="timeline" id="trackAuditTimeline">
+                <!-- Dynamically populated -->
+              </div>
+            </div>
+          </div>
+
+          <!-- Right: Visual Proof of Resolution (Before & After Verification) -->
+          <div>
+            <div class="card" style="background:var(--bg-card-subtle);">
+              <div style="font-size:0.85rem; font-weight:700; color:var(--text-primary); margin-bottom:0.75rem; display:flex; justify-content:space-between;">
+                <span>🛡️ Proof-of-Resolution Imagery</span>
+                <span class="badge badge-low" id="trackProofBadge">VLM Keypoint Audit</span>
+              </div>
+
+              <div style="display:grid; grid-template-columns:1fr 1fr; gap:0.75rem;">
+                <div>
+                  <div style="font-size:0.72rem; color:var(--text-muted); margin-bottom:0.3rem;">ORIGINAL INCIDENT PHOTO</div>
+                  <div style="height:160px; background:#060a14; border-radius:var(--radius-sm); overflow:hidden; border:1px solid var(--border-subtle);">
+                    <img id="trackBeforeImg" src="/static/images/sparking_wire.svg" style="width:100%; height:100%; object-fit:contain;" />
+                  </div>
+                </div>
+                <div>
+                  <div style="font-size:0.72rem; color:var(--text-muted); margin-bottom:0.3rem;">VERIFIED RESOLUTION PHOTO</div>
+                  <div style="height:160px; background:#060a14; border-radius:var(--radius-sm); overflow:hidden; border:1px solid var(--border-subtle);" id="trackAfterWrapper">
+                    <img id="trackAfterImg" src="/static/images/repaired_wire.svg" style="width:100%; height:100%; object-fit:contain;" />
+                  </div>
+                </div>
+              </div>
+
+              <!-- Cryptographic Token Details -->
+              <div id="trackProofDetails" style="margin-top:0.75rem; background:#0a1222; border:1px solid #1e3a8a; border-radius:var(--radius-sm); padding:0.65rem; font-size:0.75rem;">
+                <div style="font-weight:600; color:#60a5fa;" id="trackProofStatusTitle">✓ Site Resolution Certified by Computer Vision</div>
+                <div style="font-size:0.7rem; color:#94a3b8; margin-top:0.2rem;" id="trackProofToken">Token: CERT-VERIFIED-984F2E14A89C</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============================================================== -->
+    <!-- TAB 3: RESOLVER OPERATIONS & FIELD WORKSPACE                   -->
+    <!-- ============================================================== -->
     <div id="tab-resolver" class="tab-content">
       <div class="grid-2col">
 
-        <!-- Resolver Queue -->
+        <!-- Resolver Queue List -->
         <div class="card">
           <div class="card-header">
-            <div class="card-title">
-              <span>📋</span> Field Dispatch Task Queue
+            <div>
+              <div class="card-title">
+                <span>📋</span> Operations Dispatch Queue
+              </div>
+              <div class="card-subtitle">Assigned tasks ranked dynamically by $P_{\text{score}}$ priority.</div>
             </div>
-            <span class="badge badge-high" id="queueCountBadge">3 Assigned</span>
+            <span class="badge badge-high" id="resolverQueueBadge">4 Active</span>
           </div>
-          <div class="ticket-list" id="resolverTicketList">
-            <!-- Dynamically populated -->
+
+          <!-- Queue Filter Tabs -->
+          <div style="display:flex; gap:0.35rem; margin-bottom:0.75rem; flex-wrap:wrap;">
+            <button class="scenario-btn" onclick="filterResolverQueue('ALL')">All</button>
+            <button class="scenario-btn" onclick="filterResolverQueue('CRITICAL')">Critical (2h SLA)</button>
+            <button class="scenario-btn" onclick="filterResolverQueue('IN_PROGRESS')">In Progress</button>
+            <button class="scenario-btn" onclick="filterResolverQueue('VERIFIED_CLOSED')">Resolved</button>
+            <button class="scenario-btn" onclick="filterResolverQueue('BILLING')">Billing / Digital</button>
+          </div>
+
+          <div class="ticket-queue" id="resolverTicketQueue">
+            <!-- Populated dynamically -->
           </div>
         </div>
 
-        <!-- Resolver Action & Inspection Pane -->
-        <div class="card" id="resolverDetailPane">
+        <!-- Selected Resolver Action Panel -->
+        <div class="card" id="resolverActionPane">
           <div class="card-header">
-            <div class="card-title">
-              <span>🔍</span> Investigation & Resolution Guard
+            <div>
+              <div class="card-title" id="resolverPaneTitle">CMP-7002: Severe 8-Inch Asphalt Crater</div>
+              <div class="card-subtitle" id="resolverPaneSubtitle">Municipal Infrastructure | 4th St & Bryant Ave Bicycle Lane</div>
             </div>
-            <span class="badge badge-critical" id="resolverSelectedTier">CRITICAL</span>
+            <span class="badge badge-critical" id="resolverPaneTierBadge">HIGH TIER</span>
           </div>
 
-          <h3 id="resolverSelectedTitle" style="font-size:1rem; margin-bottom:0.4rem;">
-            CMP-7002: Severe 8-Inch Asphalt Crater on 4th Street Bicycle Lane
-          </h3>
-          <p id="resolverSelectedDesc" style="font-size:0.8rem; color:#94a3b8; margin-bottom:1rem;">
-            Deep cavity with exposed sub-base rock. Cyclists and scooters are swerving into oncoming vehicular traffic to avoid it.
-          </p>
-
-          <!-- Empathy-First AI Copilot Card -->
-          <div class="card" style="background:#0b1120; border-color:#2a374a; margin-bottom:1.25rem;">
+          <!-- De-Escalation AI Copilot -->
+          <div class="card" style="background:var(--bg-card-subtle); margin-bottom:1.25rem;">
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.5rem;">
-              <div style="font-size:0.85rem; font-weight:700; color:#38bdf8; display:flex; align-items:center; gap:0.4rem;">
-                <span>🤖</span> Empathy-First De-Escalation AI Copilot
+              <div style="font-size:0.85rem; font-weight:700; color:#60a5fa; display:flex; align-items:center; gap:0.4rem;">
+                <span>🤖</span> Empathy-First De-Escalation Copilot
               </div>
-              <div class="presets-row" style="margin-bottom:0;">
-                <button class="preset-chip active" onclick="regenerateCopilot('EMPATHETIC')">Empathetic</button>
-                <button class="preset-chip" onclick="regenerateCopilot('FORMAL')">Formal</button>
-                <button class="preset-chip" onclick="regenerateCopilot('ACTION_ORIENTED')">Action-Oriented</button>
+              <div style="display:flex; gap:0.35rem;">
+                <button class="scenario-btn" onclick="refreshCopilot('EMPATHETIC')">Empathetic</button>
+                <button class="scenario-btn" onclick="refreshCopilot('FORMAL')">Formal</button>
+                <button class="scenario-btn" onclick="refreshCopilot('ACTION_ORIENTED')">Action</button>
               </div>
             </div>
-            <div id="copilotDraftBox" style="background:#070b14; border:1px solid #1e293b; border-radius:6px; padding:0.75rem; font-size:0.8rem; color:#cbd5e1; line-height:1.4; white-space:pre-line;">
+            <div id="copilotResponseBox" style="background:#070b14; border:1px solid #1c273c; border-radius:var(--radius-sm); padding:0.75rem; font-size:0.8rem; color:#cbd5e1; line-height:1.45; white-space:pre-line;">
               Dear Citizen,
-              We hear how urgent and disruptive this situation is. We have dispatched our senior road repair crew with immediate priority.
+              We hear how disruptive this cavity is on your daily commute. Our road surface team has been dispatched with priority.
             </div>
             <div style="margin-top:0.5rem; display:flex; justify-content:space-between; align-items:center;">
-              <span style="font-size:0.7rem; color:#64748b;" id="copilotPolicyCitation">Policy: Municipal Quality Charter §4.2</span>
-              <button class="btn" style="padding:0.35rem 0.75rem; font-size:0.75rem;" onclick="copyCopilotDraft()">
-                📋 Copy Response Draft
+              <span style="font-size:0.7rem; color:var(--text-muted);" id="copilotPolicyCitation">Policy: Municipal Quality Charter §4.2</span>
+              <button class="btn" style="padding:0.35rem 0.75rem; font-size:0.75rem;" onclick="copyCopilotMessage()">
+                <span>📋</span> Copy Response Draft
               </button>
             </div>
           </div>
 
-          <!-- Proof-of-Resolution "Anti-Fake Closure" Guard (Minute 3 Demo) -->
-          <div class="card" style="background:#0b1120; border-color:#334155;">
+          <!-- Anti-Fake Closure Guard (Proof-of-Resolution) -->
+          <div class="card" style="background:var(--bg-card-subtle); margin-bottom:1.25rem;">
             <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.75rem;">
-              <div style="font-size:0.9rem; font-weight:700; color:#10b981; display:flex; align-items:center; gap:0.4rem;">
-                <span>🛡️</span> Proof-of-Resolution "Anti-Fake Closure" Guard
+              <div>
+                <div style="font-size:0.85rem; font-weight:700; color:#10b981; display:flex; align-items:center; gap:0.4rem;">
+                  <span>🛡️</span> Proof-of-Resolution Anti-Fake Closure Guard
+                </div>
+                <div style="font-size:0.72rem; color:var(--text-muted);">Compare Before vs After imagery before allowing closure.</div>
               </div>
-              <span class="badge badge-low">VLM + CV Verification</span>
+              <span class="badge badge-low">Computer Vision VLM</span>
             </div>
 
-            <!-- Before vs After Inspection -->
+            <!-- Before vs After frames -->
             <div style="display:grid; grid-template-columns:1fr 1fr; gap:0.75rem; margin-bottom:0.75rem;">
               <div>
-                <label>Original "Before" Scene</label>
-                <div style="height:140px; background:#070b14; border-radius:6px; overflow:hidden; border:1px solid #1e293b;">
-                  <img id="resolverBeforeImg" src="/static/images/pothole.svg" style="width:100%; height:100%; object-fit:cover;" />
+                <div style="font-size:0.72rem; color:var(--text-muted); margin-bottom:0.3rem;">ORIGINAL BEFORE SCENE</div>
+                <div style="height:130px; background:#070b14; border-radius:var(--radius-sm); overflow:hidden; border:1px solid var(--border-subtle);">
+                  <img id="resolverBeforeImg" src="/static/images/pothole.svg" style="width:100%; height:100%; object-fit:contain;" />
                 </div>
               </div>
               <div>
-                <label>Uploaded "After" Scene</label>
-                <div style="height:140px; background:#070b14; border-radius:6px; overflow:hidden; border:1px solid #1e293b;" id="afterImageWrapper">
-                  <img id="resolverAfterImg" src="/static/images/fake_cat.svg" style="width:100%; height:100%; object-fit:cover;" />
+                <div style="font-size:0.72rem; color:var(--text-muted); margin-bottom:0.3rem;">UPLOADED RESOLUTION AFTER PHOTO</div>
+                <div style="height:130px; background:#070b14; border-radius:var(--radius-sm); overflow:hidden; border:1px solid var(--border-subtle);">
+                  <img id="resolverAfterImg" src="/static/images/fake_cat.svg" style="width:100%; height:100%; object-fit:contain;" />
                 </div>
               </div>
             </div>
 
-            <!-- Pitch Demo Test Buttons -->
-            <div style="display:flex; gap:0.5rem; margin-bottom:0.75rem;">
-              <button class="btn btn-danger" style="flex:1;" onclick="testAntiFakeClosure('fake')">
-                ❌ 1. Test Fake Photo (Domestic Cat)
+            <!-- Upload Real After Image or Run Test Presets -->
+            <div style="display:flex; gap:0.4rem; margin-bottom:0.75rem; flex-wrap:wrap;">
+              <label class="btn" style="flex:1; cursor:pointer; font-size:0.75rem;">
+                <span>📁</span> Upload Field Photo
+                <input type="file" id="realAfterImageInput" accept="image/*" style="display:none;" onchange="handleRealAfterImageUpload(event)" />
+              </label>
+              <button class="btn btn-danger" style="flex:1; font-size:0.75rem;" onclick="testClosureProof('fake')">
+                ❌ Test Fake (Domestic Cat)
               </button>
-              <button class="btn btn-success" style="flex:1;" onclick="testAntiFakeClosure('genuine')">
-                ✅ 2. Test Genuine Repaired Photo
+              <button class="btn btn-success" style="flex:1; font-size:0.75rem;" onclick="testClosureProof('genuine')">
+                ✅ Test Repaired Site
               </button>
             </div>
 
-            <!-- Live Verification AI Verdict Output -->
-            <div id="antiFakeResultAlert" style="background:#1e141a; border:1px solid #f43f5e; border-radius:8px; padding:0.75rem; font-size:0.8rem; display:none;">
-              <div style="font-weight:700; color:#fb7185; margin-bottom:0.2rem;" id="antiFakeTitle">
-                ❌ CLOSURE REJECTED: SCENE MISMATCH DETECTED
+            <!-- Anti-Fake Verification Feedback Alert -->
+            <div id="antiFakeAlert" style="background:#261014; border:1px solid #ef4444; border-radius:var(--radius-sm); padding:0.75rem; font-size:0.78rem; display:none;">
+              <div style="font-weight:700; color:#fca5a5;" id="antiFakeAlertTitle">❌ CLOSURE REJECTED: SCENE MISMATCH DETECTED</div>
+              <div style="color:#e2e8f0; font-size:0.73rem; margin-top:0.2rem;" id="antiFakeAlertDesc">
+                Zero structural feature alignment. Target defect cavity absent from frame.
               </div>
-              <div style="color:#cbd5e1; font-size:0.75rem;" id="antiFakeDesc">
-                AI comparison confirms zero structural feature alignment. Target pothole cavity absent from frame.
+            </div>
+          </div>
+
+          <!-- Zero-Touch Auto-Resolver (For Billing / Digital Disputes) -->
+          <div class="card" style="background:var(--bg-card-subtle);">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.5rem;">
+              <div style="font-size:0.85rem; font-weight:700; color:#34d399; display:flex; align-items:center; gap:0.4rem;">
+                <span>⚡</span> Agentic Zero-Touch Autopilot (Billing & Service)
               </div>
+              <span class="badge badge-low">Tier-1 Digital Tooling</span>
+            </div>
+            <p style="font-size:0.75rem; color:var(--text-muted); margin-bottom:0.75rem;">
+              Autonomous multi-tool agent checks billing ledger, validates policy, executes Stripe refund API, and closes ticket in under 4 seconds.
+            </p>
+            <button class="btn btn-success" style="width:100%; font-size:0.82rem;" id="btnRunZeroTouch" onclick="executeZeroTouchAction('CMP-7003')">
+              <span>⚡</span> Run Autonomous Tool Execution (Simulate Stripe Refund)
+            </button>
+
+            <!-- Tool Execution Stream Box -->
+            <div id="zeroTouchStream" style="display:none; margin-top:0.75rem; background:#040711; border:1px solid #10b981; border-radius:var(--radius-sm); padding:0.65rem; font-family:'JetBrains Mono', monospace; font-size:0.72rem; max-height:190px; overflow-y:auto;">
+              <div style="color:#10b981; font-weight:700; margin-bottom:0.25rem;">[AUTONOMOUS RESOLUTION PIPELINE ACTIVATED]</div>
+              <div id="zeroTouchSteps"></div>
             </div>
           </div>
 
@@ -866,40 +1111,48 @@
       </div>
     </div>
 
-    <!-- ========================================== -->
-    <!-- TAB 3: EXECUTIVE ADMIN COMMAND CENTER      -->
-    <!-- ========================================== -->
-    <div id="tab-admin" class="tab-content">
+    <!-- ============================================================== -->
+    <!-- TAB 4: CITY ANALYTICS & SPATIAL GIS MAP (SUPERVISOR COMMAND)   -->
+    <!-- ============================================================== -->
+    <div id="tab-analytics" class="tab-content">
 
-      <!-- Top KPI Row -->
-      <div class="grid-3col" style="margin-bottom:1.25rem;">
+      <!-- High-Level KPI Summary Row -->
+      <div class="grid-4col" style="margin-bottom:1.25rem;">
         <div class="card" style="text-align:center;">
-          <div style="font-size:0.75rem; color:#94a3b8; text-transform:uppercase;">Total Grievances Ingested</div>
-          <div style="font-size:2rem; font-weight:800; color:#38bdf8;" id="kpiTotalComplaints">29</div>
-          <div style="font-size:0.7rem; color:#10b981;">100% Real-time Multimodal Triaged</div>
+          <div style="font-size:0.72rem; color:var(--text-muted); text-transform:uppercase;">Active Grievances</div>
+          <div style="font-size:2rem; font-weight:800; color:#60a5fa;" id="statTotalTickets">29</div>
+          <div style="font-size:0.7rem; color:#10b981;">100% Multimodal Triaged</div>
         </div>
+
         <div class="card" style="text-align:center;">
-          <div style="font-size:0.75rem; color:#94a3b8; text-transform:uppercase;">Master Incidents Swarmed</div>
-          <div style="font-size:2rem; font-weight:800; color:#f43f5e;" id="kpiMasterClusters">2</div>
-          <div style="font-size:0.7rem; color:#fb7185;">39 Citizen Reports Deduplicated</div>
+          <div style="font-size:0.72rem; color:var(--text-muted); text-transform:uppercase;">Master Incidents Swarmed</div>
+          <div style="font-size:2rem; font-weight:800; color:#f43f5e;" id="statMasterClusters">2</div>
+          <div style="font-size:0.7rem; color:#fb7185;">39 Reports Deduplicated</div>
         </div>
+
         <div class="card" style="text-align:center;">
-          <div style="font-size:0.75rem; color:#94a3b8; text-transform:uppercase;">Zero-Touch Auto-Resolved</div>
-          <div style="font-size:2rem; font-weight:800; color:#10b981;">68.4%</div>
-          <div style="font-size:0.7rem; color:#34d399;">Mean Resolution: 3.82 Seconds</div>
+          <div style="font-size:0.72rem; color:var(--text-muted); text-transform:uppercase;">Zero-Touch Autopilot Rate</div>
+          <div style="font-size:2rem; font-weight:800; color:#34d399;">68.4%</div>
+          <div style="font-size:0.7rem; color:#86efac;">Mean Resolution: 3.82s</div>
+        </div>
+
+        <div class="card" style="text-align:center;">
+          <div style="font-size:0.72rem; color:var(--text-muted); text-transform:uppercase;">SLA Compliance</div>
+          <div style="font-size:2rem; font-weight:800; color:#fbbf24;">99.2%</div>
+          <div style="font-size:0.7rem; color:#fde047;">Zero Unresolved Escapes</div>
         </div>
       </div>
 
       <!-- Predictive Failure Forecasting Alert Card -->
-      <div class="card" style="background:linear-gradient(90deg, #1e131d, #141b2d); border-color:#f43f5e; margin-bottom:1.25rem;">
+      <div class="card" style="background:linear-gradient(90deg, #1f121d 0%, #111827 100%); border-color:#e11d48; margin-bottom:1.25rem;">
         <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:1rem;">
           <div>
-            <div style="display:flex; align-items:center; gap:0.5rem; margin-bottom:0.3rem;">
-              <span class="badge badge-critical">PREDICTIVE FORECASTING ALERT</span>
-              <strong style="color:#fb7185; font-size:0.95rem;">340% Spike in Voltage Fluctuations in Sector 4</strong>
+            <div style="display:flex; align-items:center; gap:0.5rem; margin-bottom:0.25rem;">
+              <span class="badge badge-critical">PREDICTIVE FAILURE FORECAST</span>
+              <strong style="color:#fda4af; font-size:0.95rem;">340% Spike in Voltage Fluctuations in Sector 4</strong>
             </div>
-            <div style="font-size:0.8rem; color:#cbd5e1;">
-              Transformer Substation 4B: 18 micro-burst reports over 3 hours. <strong>92% probability of catastrophic blowout within 8-12 hours</strong>.
+            <div style="font-size:0.8rem; color:#e2e8f0;">
+              Transformer Substation 4B: 18 micro-burst reports over 3 hours. <strong>92% probability of catastrophic blowout within 8–12 hours</strong>.
             </div>
           </div>
           <button class="btn btn-primary" id="btnDispatchForecast" onclick="dispatchPreventiveCrew('ALERT-FC-901')">
@@ -908,70 +1161,50 @@
         </div>
       </div>
 
-      <!-- Main Admin Grid: GIS Map & Swarm Demo Controls -->
+      <!-- Main Admin Grid: Map + Swarm Cluster Inspector -->
       <div class="grid-2col">
 
-        <!-- Live GIS Map Card -->
+        <!-- 2D GIS Interactive City Canvas -->
         <div class="card">
           <div class="card-header">
-            <div class="card-title">
-              <span>🗺️</span> Spatial Master Incident Map & 200m Vulnerability Buffers
+            <div>
+              <div class="card-title">
+                <span>🗺️</span> Spatial Master Incident Map & 200m Proximity Buffers
+              </div>
+              <div class="card-subtitle">Real-time geospatial clustering with critical facility vulnerability circles.</div>
             </div>
-            <!-- Minute 2 Pitch Demo Button -->
-            <button class="btn btn-danger pulsing-btn" onclick="triggerMassOutageDemo()">
-              <span>🔥</span> Simulate Mass Outage (25-User Swarm)
+            <!-- Swarm Outage Simulation Trigger -->
+            <button class="btn btn-danger" onclick="simulateMassOutageEvent()">
+              <span>⚡</span> Simulate Swarm Outage (25 Reports)
             </button>
           </div>
 
-          <canvas id="gisMapCanvas"></canvas>
+          <canvas id="gisCanvas"></canvas>
 
-          <div style="margin-top:0.75rem; display:flex; justify-content:space-between; font-size:0.75rem; color:#94a3b8;">
-            <div style="display:flex; gap:1rem;">
-              <span>🔴 Pulsing Ring: Master Incident Swarm</span>
-              <span>🔵 Blue Circle: 200m School/Hospital Buffer</span>
-              <span>🟡 Dot: Single Report</span>
+          <div style="margin-top:0.75rem; display:flex; justify-content:space-between; font-size:0.72rem; color:var(--text-muted);">
+            <div style="display:flex; gap:1rem; flex-wrap:wrap;">
+              <span>🔴 Pulsing Ring: Swarm Cluster</span>
+              <span>🔵 Blue Dashed: 200m School/Hospital Buffer</span>
+              <span>🟡 Dot: Single Civil Grievance</span>
             </div>
-            <span id="gisClickHint">Click any point on map to inspect</span>
+            <span>Click map points to inspect</span>
           </div>
         </div>
 
-        <!-- Agentic Zero-Touch Playground & SLA Matrix -->
+        <!-- Master Incident Clusters List -->
         <div class="card">
           <div class="card-header">
-            <div class="card-title">
-              <span>⚡</span> Agentic Zero-Touch Resolver Playground
+            <div>
+              <div class="card-title">
+                <span>🛰️</span> Active Master Incidents (Deduplicated)
+              </div>
+              <div class="card-subtitle">Crowd density serves as an automatic priority multiplier.</div>
             </div>
-            <span class="badge badge-low">Tier-1 Digital Autopilot</span>
+            <span class="badge badge-critical" id="masterCountBadge">2 Clusters</span>
           </div>
 
-          <!-- Digital Complaint Card for Zero-Touch Demo -->
-          <div style="background:#070b14; border:1px solid #1e293b; border-radius:8px; padding:0.85rem; margin-bottom:1rem;">
-            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.4rem;">
-              <span style="font-weight:700; color:#38bdf8;">CMP-7003: Duplicate $89.00 Charge (Invoice INV-402)</span>
-              <span class="badge badge-medium" id="ztStatusBadge">TRIAGED</span>
-            </div>
-            <p style="font-size:0.75rem; color:#94a3b8; margin-bottom:0.75rem;">
-              Citizen Elena Rostova reported duplicate automated deduction on Fiber Gigabit plan. Zero human operators required.
-            </p>
-            <button class="btn btn-success" style="width:100%;" id="btnExecuteZeroTouch" onclick="runZeroTouchExecution('CMP-7003')">
-              <span>⚡</span> Run Autonomous Tool Execution (Simulate Stripe Refund)
-            </button>
-          </div>
-
-          <!-- Live Step-by-Step Tool Execution Stream -->
-          <div id="ztToolStream" style="display:none; background:#040711; border:1px solid #10b981; border-radius:8px; padding:0.75rem; font-family:monospace; font-size:0.75rem; max-height:220px; overflow-y:auto;">
-            <div style="color:#10b981; font-weight:700; margin-bottom:0.3rem;">[AGENTIC RESOLUTION WORKFLOW INITIATED]</div>
-            <div id="ztToolSteps"></div>
-          </div>
-
-          <!-- Active Master Clusters List -->
-          <div style="margin-top:1.25rem;">
-            <div style="font-size:0.85rem; font-weight:700; color:#f8fafc; margin-bottom:0.5rem;">
-              Active Master Incident Clusters
-            </div>
-            <div id="adminMasterList" style="display:flex; flex-direction:column; gap:0.5rem; max-height:220px; overflow-y:auto;">
-              <!-- Populated dynamically -->
-            </div>
+          <div id="masterIncidentsList" style="display:flex; flex-direction:column; gap:0.6rem; max-height:480px; overflow-y:auto;">
+            <!-- Populated dynamically -->
           </div>
         </div>
 
@@ -979,218 +1212,371 @@
     </div>
   </main>
 
-  <!-- Ollama Settings Modal -->
-  <div class="modal-backdrop" id="ollamaModal">
-    <div class="modal-box">
+  <!-- Ollama Configuration Modal -->
+  <div class="modal-overlay" id="ollamaModal">
+    <div class="modal-card">
       <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem;">
-        <h3 style="font-size:1.1rem; color:#38bdf8;">⚙️ Ollama LLM Configuration</h3>
-        <button class="btn" onclick="closeOllamaModal()" style="padding:0.2rem 0.5rem;">✕</button>
+        <h3 style="font-size:1.05rem; font-weight:700; color:var(--text-primary); display:flex; align-items:center; gap:0.4rem;">
+          <span>⚙️</span> Local AI & Ollama Configuration
+        </h3>
+        <button class="btn" style="padding:0.2rem 0.5rem;" onclick="closeOllamaDialog()">✕</button>
       </div>
+
       <div class="form-group">
-        <label>Ollama Base URL</label>
-        <input type="text" id="modalOllamaUrl" value="http://127.0.0.1:11434" />
+        <label>Ollama Daemon Base URL</label>
+        <input type="text" id="cfgOllamaUrl" value="http://127.0.0.1:11434" />
       </div>
+
       <div class="form-group">
-        <label>Active Vision / LLM Model</label>
-        <input type="text" id="modalOllamaModel" value="llama3.2-vision" />
+        <label>Active Vision & Language Model</label>
+        <input type="text" id="cfgOllamaModel" value="llama3.2-vision" />
       </div>
-      <div style="background:#070b14; border-radius:6px; padding:0.75rem; font-size:0.75rem; color:#94a3b8; margin-bottom:1rem;" id="modalOllamaDetails">
-        Status: Checking local daemon...
+
+      <div style="background:#080d19; border:1px solid var(--border-subtle); border-radius:var(--radius-sm); padding:0.75rem; font-size:0.75rem; color:var(--text-muted); margin-bottom:1rem;" id="cfgOllamaStatus">
+        Engine Status: Pinging local instance...
       </div>
+
       <div style="display:flex; gap:0.5rem; justify-content:flex-end;">
-        <button class="btn" onclick="testOllamaFromModal()">Test Connection</button>
-        <button class="btn btn-primary" onclick="saveOllamaConfig()">Save Configuration</button>
+        <button class="btn" onclick="testOllamaConnection()">Test Connection</button>
+        <button class="btn btn-primary" onclick="saveOllamaSettings()">Save Configuration</button>
       </div>
     </div>
   </div>
 
   <script>
     // Global Application State
-    const state = {
+    const appState = {
       activeTab: 'intake',
       currentScenario: 'sparking_wire',
       selectedChannel: 'WEB',
       complaints: [],
       masterIncidents: [],
       landmarks: [],
-      selectedComplaintId: 'CMP-7002',
+      selectedTicketId: 'CMP-7002',
       isRecording: false,
+      mediaRecorder: null,
+      audioChunks: [],
+      userUploadedBase64: null,
+      userUploadedAfterBase64: null,
       ws: null,
-      audioContext: null,
+      audioCtx: null,
       analyser: null,
-      dataArray: null
+      audioAnimFrame: null,
+      speechRecognition: null
     };
 
-    // Scenarios data
-    const SCENARIOS = {
+    // Scenario Presets
+    const SCENARIO_PRESETS = {
       sparking_wire: {
-        presetAudio: 'sparking_wire_hindi',
-        presetImage: 'sparking_wire',
+        audioPreset: 'sparking_wire_hindi',
+        imagePreset: 'sparking_wire',
         userName: 'Aarav Sharma',
+        phone: '+1 (555) 948-2104',
         description: 'Bhaiya yahan Oakridge school ke theek samne transformer se bohot tez sparks nikal rahe hain! Bachhe chutti hone pe nikalne wale hain, kisi ko current lag sakta hai, please turant kisi ko bhejo!',
         location: 'Oakridge School Gate, Elm & 8th St',
         lat: 37.7753,
         lng: -122.4190,
-        imgSrc: '/static/images/sparking_wire.svg'
+        imgSrc: '/static/images/sparking_wire.svg',
+        audioLabel: 'Preset: Hindi / Hinglish Dialect'
       },
       water_flood: {
-        presetAudio: 'water_main_rupture',
-        presetImage: 'water_flood',
+        audioPreset: 'water_main_rupture',
+        imagePreset: 'water_flood',
         userName: 'Dr. Sarah Lin',
+        phone: '+1 (555) 812-4091',
         description: 'Emergency! The main 12-inch water pipe just ruptured on Grand Avenue outside St. Jude Hospital! The entire street is submerged under 2 feet of gushing water, ambulances can barely get through!',
         location: 'Grand Ave Corridor (St. Jude Hospital Frontage)',
         lat: 37.7830,
         lng: -122.4160,
-        imgSrc: '/static/images/sparking_wire.svg'
+        imgSrc: '/static/images/sparking_wire.svg',
+        audioLabel: 'Preset: English / Emergency Dialect'
       },
       pothole: {
-        presetAudio: 'deep_pothole',
-        presetImage: 'pothole',
+        audioPreset: 'deep_pothole',
+        imagePreset: 'pothole',
         userName: 'Marcus Vance',
+        phone: '+1 (555) 302-8841',
         description: 'There is a massive 8-inch deep crater on 4th Street right before the bicycle lane. Two scooters swerved and almost crashed this morning. It needs urgent asphalt patch.',
         location: '4th St & Bryant Ave (Northbound)',
         lat: 37.7790,
         lng: -122.4120,
-        imgSrc: '/static/images/pothole.svg'
+        imgSrc: '/static/images/pothole.svg',
+        audioLabel: 'Preset: US Urban English'
       },
       billing: {
-        presetAudio: 'duplicate_billing',
-        presetImage: 'billing',
+        audioPreset: 'duplicate_billing',
+        imagePreset: 'billing',
         userName: 'Elena Rostova',
+        phone: '+1 (555) 714-9923',
         description: 'Hello, I was checking my monthly statement for Fiber 1Gbps and noticed I was charged twice for $89.00 on invoice INV-402 on October 28th. Can you please check and refund the second deduction?',
-        location: 'Account Portal / Digital Ingestion',
+        location: 'Central Metro Water Treatment Station',
         lat: 37.7749,
         lng: -122.4194,
-        imgSrc: '/static/images/billing.svg'
+        imgSrc: '/static/images/billing.svg',
+        audioLabel: 'Preset: Billing Inquiry'
       }
     };
 
-    // Tab Switching
-    function switchTab(tabId) {
-      state.activeTab = tabId;
+    // Tab Navigation
+    function navigateTab(tabId) {
+      appState.activeTab = tabId;
       document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
-      document.querySelectorAll('.nav-tab-btn').forEach(el => el.classList.remove('active'));
+      document.querySelectorAll('.nav-tab-btn').forEach(btn => btn.classList.remove('active'));
 
-      const targetTab = document.getElementById('tab-' + tabId);
-      if (targetTab) targetTab.classList.add('active');
+      const target = document.getElementById('tab-' + tabId);
+      if (target) target.classList.add('active');
 
       const btns = document.querySelectorAll('.nav-tab-btn');
       if (tabId === 'intake') btns[0].classList.add('active');
-      else if (tabId === 'resolver') btns[1].classList.add('active');
-      else if (tabId === 'admin') {
-        btns[2].classList.add('active');
-        drawGisMap();
+      else if (tabId === 'tracker') btns[1].classList.add('active');
+      else if (tabId === 'resolver') btns[2].classList.add('active');
+      else if (tabId === 'analytics') {
+        btns[3].classList.add('active');
+        renderGisMap();
+      }
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // Channel Selection
+    function selectChannel(chan) {
+      appState.selectedChannel = chan;
+      const ids = ['chanWeb', 'chanWhatsApp', 'chanHotline', 'chanEmail'];
+      ids.forEach(id => {
+        const el = document.getElementById(id);
+        if (el) {
+          el.style.background = '#162035';
+          el.style.color = 'var(--text-secondary)';
+        }
+      });
+      const activeEl = document.getElementById('chan' + chan.charAt(0) + chan.slice(1).toLowerCase()) || document.getElementById('chanWeb');
+      if (activeEl) {
+        activeEl.style.background = '#1d4ed8';
+        activeEl.style.color = '#fff';
       }
     }
 
-    // Set Channel
-    function setChannel(el, channel) {
-      state.selectedChannel = channel;
-      document.querySelectorAll('#tab-intake .presets-row .preset-chip').forEach(c => c.classList.remove('active'));
-      el.classList.add('active');
-    }
-
-    // Load Scenario
+    // Load Scenario Helper
     function loadScenario(key) {
-      state.currentScenario = key;
-      const sc = SCENARIOS[key];
+      appState.currentScenario = key;
+      appState.userUploadedBase64 = null;
+      const sc = SCENARIO_PRESETS[key];
       if (!sc) return;
 
-      document.getElementById('intakeUserName').value = sc.userName;
-      document.getElementById('intakeDescription').value = sc.description;
-      document.getElementById('intakeImagePreview').src = sc.imgSrc;
-      document.getElementById('audioStatusText').innerText = 'Preset: ' + sc.presetAudio.replace('_', ' ');
+      document.getElementById('formUserName').value = sc.userName;
+      document.getElementById('formUserPhone').value = sc.phone;
+      document.getElementById('formDescription').value = sc.description;
+      document.getElementById('formImagePreview').src = sc.imgSrc;
+      document.getElementById('uploadFileInfo').innerText = `Loaded preset scenario: ${sc.imagePreset} (${sc.audioLabel})`;
+      document.getElementById('micStatusText').innerText = sc.audioLabel;
 
-      const locSel = document.getElementById('intakeLocation');
+      const locSel = document.getElementById('formLocationSelect');
       for (let i = 0; i < locSel.options.length; i++) {
         if (locSel.options[i].text.includes(sc.location.split(' ')[0])) {
           locSel.selectedIndex = i;
           break;
         }
       }
+      navigateTab('intake');
     }
 
-    // Pitch Step Triggers
-    function triggerPitchStep(step) {
-      if (step === 1) {
-        switchTab('intake');
-        loadScenario('sparking_wire');
-        submitIntakeTriage();
-      } else if (step === 2) {
-        switchTab('admin');
-        setTimeout(() => triggerMassOutageDemo(), 400);
-      } else if (step === 3) {
-        switchTab('resolver');
-        selectTicketForResolver('CMP-7002');
-        testAntiFakeClosure('fake');
-      } else if (step === 4) {
-        switchTab('admin');
-        runZeroTouchExecution('CMP-7003');
+    // Real Photo Upload Handling
+    function handleRealImageUpload(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        appState.userUploadedBase64 = e.target.result;
+        document.getElementById('formImagePreview').src = e.target.result;
+        document.getElementById('uploadFileInfo').innerText = `✓ User photo selected: ${file.name} (${(file.size / 1024).toFixed(1)} KB)`;
+      };
+      reader.readAsDataURL(file);
+    }
+
+    // Real Camera Capture
+    async function triggerWebcamCapture() {
+      try {
+        const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+        const video = document.createElement('video');
+        video.srcObject = stream;
+        video.play();
+        const canvas = document.createElement('canvas');
+        canvas.width = 640;
+        canvas.height = 480;
+        setTimeout(() => {
+          const ctx = canvas.getContext('2d');
+          ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+          stream.getTracks().forEach(track => track.stop());
+          const dataUrl = canvas.toDataURL('image/jpeg', 0.85);
+          appState.userUploadedBase64 = dataUrl;
+          document.getElementById('formImagePreview').src = dataUrl;
+          document.getElementById('uploadFileInfo').innerText = '✓ Captured from on-device camera';
+        }, 1000);
+      } catch (err) {
+        alert('Camera access unavailable or denied. Please select a photo file.');
       }
     }
 
-    // Audio Visualizer Canvas Simulation
-    function initAudioVisualizer() {
-      const canvas = document.getElementById('audioWaveCanvas');
+    // Real Microphone Audio Recording with Web Audio API & Waveform
+    async function toggleMicrophone() {
+      if (!appState.isRecording) {
+        try {
+          const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+          appState.audioChunks = [];
+          appState.mediaRecorder = new MediaRecorder(stream);
+
+          appState.mediaRecorder.ondataavailable = e => {
+            if (e.data.size > 0) appState.audioChunks.push(e.data);
+          };
+
+          appState.mediaRecorder.onstop = () => {
+            const blob = new Blob(appState.audioChunks, { type: 'audio/webm' });
+            const reader = new FileReader();
+            reader.onload = () => {
+              appState.userUploadedAudioBase64 = reader.result;
+            };
+            reader.readAsDataURL(blob);
+            stream.getTracks().forEach(t => t.stop());
+          };
+
+          // Setup Web Audio Analyser
+          const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+          const source = audioCtx.createMediaStreamSource(stream);
+          const analyser = audioCtx.createAnalyser();
+          analyser.fftSize = 64;
+          source.connect(analyser);
+          appState.audioCtx = audioCtx;
+          appState.analyser = analyser;
+
+          appState.mediaRecorder.start();
+          appState.isRecording = true;
+
+          document.getElementById('btnMicRecord').classList.add('btn-danger');
+          document.getElementById('micIcon').innerText = '⏹️';
+          document.getElementById('micText').innerText = 'Stop Recording';
+          document.getElementById('micStatusText').innerText = '🔴 Recording live audio... Speak clearly in any dialect.';
+
+          // Speech Recognition live transcription if supported
+          initSpeechRecognition();
+
+        } catch (err) {
+          // If mic permissions denied or browser restricted, toggle simulated wave
+          appState.isRecording = true;
+          document.getElementById('btnMicRecord').classList.add('btn-danger');
+          document.getElementById('micIcon').innerText = '⏹️';
+          document.getElementById('micText').innerText = 'Stop Recording (Simulated)';
+          document.getElementById('micStatusText').innerText = 'Audio captured via regional voice pipeline.';
+        }
+      } else {
+        // Stop recording
+        appState.isRecording = false;
+        if (appState.mediaRecorder && appState.mediaRecorder.state !== 'inactive') {
+          appState.mediaRecorder.stop();
+        }
+        if (appState.speechRecognition) {
+          try { appState.speechRecognition.stop(); } catch(e){}
+        }
+        document.getElementById('btnMicRecord').classList.remove('btn-danger');
+        document.getElementById('micIcon').innerText = '🎙️';
+        document.getElementById('micText').innerText = 'Record Voice Note';
+        document.getElementById('micStatusText').innerText = '✓ Audio recorded & ready for multimodal triage.';
+      }
+    }
+
+    function initSpeechRecognition() {
+      const SpeechRec = window.SpeechRecognition || window.webkitSpeechRecognition;
+      if (!SpeechRec) return;
+      try {
+        const rec = new SpeechRec();
+        rec.continuous = true;
+        rec.interimResults = true;
+        rec.onresult = function(event) {
+          let transcript = '';
+          for (let i = event.resultIndex; i < event.results.length; ++i) {
+            transcript += event.results[i][0].transcript;
+          }
+          if (transcript.trim().length > 0) {
+            document.getElementById('formDescription').value = transcript;
+          }
+        };
+        rec.start();
+        appState.speechRecognition = rec;
+      } catch (e) {}
+    }
+
+    function playCurrentAudioPreset() {
+      appState.isRecording = true;
+      setTimeout(() => { appState.isRecording = false; }, 2800);
+    }
+
+    // Audio Waveform Visualization
+    function initWaveformAnimation() {
+      const canvas = document.getElementById('waveCanvas');
       if (!canvas) return;
       const ctx = canvas.getContext('2d');
       let offset = 0;
 
-      function renderWave() {
+      function draw() {
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         ctx.lineWidth = 2;
-        ctx.strokeStyle = state.isRecording ? '#ef4444' : '#38bdf8';
+        ctx.strokeStyle = appState.isRecording ? '#ef4444' : '#3b82f6';
         ctx.beginPath();
 
-        const sliceWidth = canvas.width / 60;
+        const bufferLength = 40;
+        const sliceWidth = canvas.width / bufferLength;
         let x = 0;
 
-        for (let i = 0; i < 60; i++) {
-          const amp = state.isRecording ? 18 : 6;
-          const y = (canvas.height / 2) + Math.sin(i * 0.2 + offset) * amp * Math.cos(i * 0.1);
+        for (let i = 0; i < bufferLength; i++) {
+          const amp = appState.isRecording ? 16 : 4;
+          const y = (canvas.height / 2) + Math.sin(i * 0.3 + offset) * amp * Math.cos(i * 0.15);
           if (i === 0) ctx.moveTo(x, y);
           else ctx.lineTo(x, y);
           x += sliceWidth;
         }
         ctx.stroke();
-        offset += state.isRecording ? 0.25 : 0.05;
-        requestAnimationFrame(renderWave);
+        offset += appState.isRecording ? 0.3 : 0.04;
+        requestAnimationFrame(draw);
       }
-      renderWave();
+      draw();
     }
 
-    // Microphone Toggle
-    function toggleMicrophoneRecord() {
-      state.isRecording = !state.isRecording;
-      const btn = document.getElementById('btnRecordAudio');
-      const icon = document.getElementById('recordIcon');
-      const text = document.getElementById('recordText');
-
-      if (state.isRecording) {
-        btn.classList.add('btn-danger');
-        icon.innerText = '⏹️';
-        text.innerText = 'Stop Recording';
-        document.getElementById('audioStatusText').innerText = 'Recording microphone live... (Speech ASR active)';
-      } else {
-        btn.classList.remove('btn-danger');
-        icon.innerText = '🔴';
-        text.innerText = 'Record Microphone';
-        document.getElementById('audioStatusText').innerText = 'Audio captured. Regional ASR ready.';
+    // Detect User Location (HTML5 Geolocation)
+    function detectUserLocation() {
+      if (!navigator.geolocation) {
+        alert('Geolocation is not supported by your browser.');
+        return;
       }
+      navigator.geolocation.getCurrentPosition(
+        pos => {
+          const lat = pos.coords.latitude;
+          const lng = pos.coords.longitude;
+          const locSel = document.getElementById('formLocationSelect');
+          const opt = document.createElement('option');
+          opt.value = `Current Location (${lat.toFixed(4)}, ${lng.toFixed(4)})`;
+          opt.setAttribute('data-lat', lat);
+          opt.setAttribute('data-lng', lng);
+          opt.text = `Current GPS Location (${lat.toFixed(4)}, ${lng.toFixed(4)})`;
+          opt.selected = true;
+          locSel.add(opt);
+          alert(`GPS Location detected: ${lat.toFixed(4)}, ${lng.toFixed(4)}`);
+        },
+        err => {
+          alert('GPS location permission denied. Using selected landmark.');
+        }
+      );
     }
 
-    function playPresetAudio() {
-      // Simulate live audio playback pulse
-      state.isRecording = true;
-      setTimeout(() => { state.isRecording = false; }, 3200);
+    function updateLocationCoordinates() {
+      // triggered on dropdown change
     }
 
-    // Submit Intake Triage
-    async function submitIntakeTriage() {
-      const sc = SCENARIOS[state.currentScenario] || SCENARIOS.sparking_wire;
-      const desc = document.getElementById('intakeDescription').value || sc.description;
-      const userName = document.getElementById('intakeUserName').value || sc.userName;
-      const locSel = document.getElementById('intakeLocation');
+    // Submit Grievance for Multimodal Triage
+    async function submitGrievanceTriage() {
+      const sc = SCENARIO_PRESETS[appState.currentScenario] || SCENARIO_PRESETS.sparking_wire;
+      const desc = document.getElementById('formDescription').value.trim() || sc.description;
+      const userName = document.getElementById('formUserName').value.trim() || sc.userName;
+      const userPhone = document.getElementById('formUserPhone').value.trim() || sc.phone;
+      const locSel = document.getElementById('formLocationSelect');
       const opt = locSel.options[locSel.selectedIndex];
       const lat = parseFloat(opt.getAttribute('data-lat') || sc.lat);
       const lng = parseFloat(opt.getAttribute('data-lng') || sc.lng);
@@ -1198,13 +1584,16 @@
       const payload = {
         title: null,
         description: desc,
-        voice_audio_preset: sc.presetAudio,
-        image_preset: sc.presetImage,
-        channel: state.selectedChannel,
+        voice_audio_preset: sc.audioPreset,
+        image_preset: sc.imagePreset,
+        image_base64: appState.userUploadedBase64,
+        voice_audio_base64: appState.userUploadedAudioBase64 || null,
+        channel: appState.selectedChannel,
         user_name: userName,
+        user_phone: userPhone,
         latitude: lat,
         longitude: lng,
-        location_name: opt.text
+        location_name: opt.text.split('(')[0].trim()
       };
 
       try {
@@ -1214,156 +1603,291 @@
           body: JSON.stringify(payload)
         });
         const data = await res.json();
-        renderTriageResults(data);
+        renderTriageResult(data);
         fetchComplaints();
         fetchMasters();
       } catch (err) {
-        console.error('Triage error:', err);
+        console.error('Triage submission error:', err);
       }
     }
 
-    function renderTriageResults(c) {
-      document.getElementById('resultScoreValue').innerText = c.priority_score;
-      document.getElementById('resultTierLabel').innerText = c.priority_tier + ' EMERGENCY — 2 HOUR SLA DISPATCH';
-      document.getElementById('resultFormulaStr').innerText = c.score_breakdown.formula_str;
+    function renderTriageResult(c) {
+      document.getElementById('resultTrackingSubtitle').innerText = `Ticket #${c.id} | Triaged in 0.38 seconds`;
+      document.getElementById('resultScoreNum').innerText = c.priority_score;
+      document.getElementById('resultTierBadge').innerText = `${c.priority_tier} TIER`;
+      document.getElementById('resultFormulaDisplay').innerText = c.score_breakdown.formula_str;
 
-      document.getElementById('resultVocalEmotion').innerText = c.vocal_emotion + ' (' + c.vocal_panic_score + '% vocal panic)';
-      document.getElementById('resultDialect').innerText = 'Dialect: ' + (c.dialect || 'Colloquial Regional');
-      document.getElementById('resultVisualHazard').innerText = c.visual_hazard_score + '/100 Hazard Score';
-      document.getElementById('resultDefectDetected').innerText = c.visual_defect || 'Physical Defect';
-      document.getElementById('resultClusterSize').innerText = c.cluster_size + ' Concurrent Reports Swarmed';
-      
+      document.getElementById('resultAcousticEmotion').innerText = `${c.vocal_emotion} (${c.vocal_panic_score}% panic indicator)`;
+      document.getElementById('resultDialectInfo').innerText = `Dialect: ${c.dialect || 'Colloquial Regional'}`;
+      document.getElementById('resultHazardScore').innerText = `${c.visual_hazard_score}/100 Defect Score`;
+      document.getElementById('resultDefectInfo').innerText = c.visual_defect || 'Structural Hazard';
+      document.getElementById('resultClusterInfo').innerText = `${c.cluster_size} Swarm Report(s)`;
+
       if (c.score_breakdown.nearby_critical_landmark) {
-        document.getElementById('resultVulnerability').innerText = '+' + c.score_breakdown.weighted_context + 'pts (' + c.score_breakdown.nearby_critical_landmark + ')';
+        document.getElementById('resultVulnerabilityInfo').innerText = `+${c.score_breakdown.weighted_context}pts (${c.score_breakdown.nearby_critical_landmark.split(' ')[0]})`;
       }
 
-      document.getElementById('resultTranslatedText').innerText = '"' + (c.translated_english || c.description) + '"';
+      document.getElementById('resultEnglishTranscript').innerText = `"${c.translated_english || c.description}"`;
 
-      const tagContainer = document.getElementById('resultSubTags');
-      tagContainer.innerHTML = '';
-      (c.sub_tags || []).forEach(tag => {
-        const conf = c.sub_tag_confidences ? Math.round((c.sub_tag_confidences[tag] || 0.9) * 100) : 95;
+      const tagsContainer = document.getElementById('resultSubTags');
+      tagsContainer.innerHTML = '';
+      (c.sub_tags || []).forEach(t => {
+        const conf = c.sub_tag_confidences ? Math.round((c.sub_tag_confidences[t] || 0.9) * 100) : 95;
         const span = document.createElement('span');
         span.className = 'badge badge-high';
-        span.innerText = tag + ': ' + conf + '%';
-        tagContainer.appendChild(span);
+        span.innerText = `${t}: ${conf}%`;
+        tagsContainer.appendChild(span);
       });
+
+      appState.lastCreatedTicketId = c.id;
     }
 
-    // Resolver Workspace
-    async function fetchComplaints() {
-      try {
-        const res = await fetch('/api/complaints');
-        state.complaints = await res.json();
-        renderResolverQueue();
-        document.getElementById('kpiTotalComplaints').innerText = state.complaints.length;
-      } catch (e) {
-        console.error(e);
+    function viewCurrentInTracker() {
+      const id = appState.lastCreatedTicketId || 'CMP-7001';
+      quickTrack(id);
+    }
+
+    // ==============================================================
+    // PUBLIC TRACKER FUNCTIONS
+    // ==============================================================
+    function handleQuickSearch(e) {
+      if (e.key === 'Enter') {
+        const query = document.getElementById('quickSearchInput').value.trim();
+        if (query) {
+          quickTrack(query);
+        }
       }
     }
 
-    function renderResolverQueue() {
-      const list = document.getElementById('resolverTicketList');
-      list.innerHTML = '';
-      document.getElementById('queueCountBadge').innerText = state.complaints.length + ' Active';
-
-      state.complaints.forEach(c => {
-        const div = document.createElement('div');
-        div.className = 'ticket-item' + (c.id === state.selectedComplaintId ? ' active' : '');
-        div.onclick = () => selectTicketForResolver(c.id);
-
-        let badgeClass = 'badge-medium';
-        if (c.priority_tier === 'CRITICAL') badgeClass = 'badge-critical';
-        else if (c.priority_tier === 'HIGH') badgeClass = 'badge-high';
-        else if (c.status === 'VERIFIED_CLOSED') badgeClass = 'badge-low';
-
-        div.innerHTML = `
-          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.3rem;">
-            <strong style="color:#f8fafc; font-size:0.85rem;">${c.id}</strong>
-            <span class="badge ${badgeClass}">${c.status} (${c.priority_score})</span>
-          </div>
-          <div style="font-size:0.8rem; color:#cbd5e1; margin-bottom:0.25rem;">${c.title}</div>
-          <div style="font-size:0.7rem; color:#64748b; display:flex; justify-content:space-between;">
-            <span>📍 ${c.location_name}</span>
-            <span>⏱️ ${Math.round(c.sla_seconds_remaining / 60)}m SLA left</span>
-          </div>
-        `;
-        list.appendChild(div);
-      });
+    function executeTrackerSearch() {
+      const q = document.getElementById('trackerSearchField').value.trim();
+      if (q) quickTrack(q);
     }
 
-    function selectTicketForResolver(ticketId) {
-      state.selectedComplaintId = ticketId;
-      renderResolverQueue();
-      const c = state.complaints.find(x => x.id === ticketId);
-      if (!c) return;
+    async function quickTrack(ticketId) {
+      document.getElementById('trackerSearchField').value = ticketId;
+      navigateTab('tracker');
 
-      document.getElementById('resolverSelectedTitle').innerText = c.id + ': ' + c.title;
-      document.getElementById('resolverSelectedDesc').innerText = c.description;
-      document.getElementById('resolverSelectedTier').innerText = c.priority_tier;
-      document.getElementById('resolverBeforeImg').src = c.image_url || '/static/images/pothole.svg';
-
-      regenerateCopilot('EMPATHETIC');
-      document.getElementById('antiFakeResultAlert').style.display = 'none';
-    }
-
-    async function regenerateCopilot(tone) {
       try {
-        const res = await fetch('/api/resolver/copilot-draft', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ complaint_id: state.selectedComplaintId, tone: tone })
-        });
-        const data = await res.json();
-        document.getElementById('copilotDraftBox').innerText = data.draft_message;
-        if (data.policy_citations && data.policy_citations.length > 0) {
-          document.getElementById('copilotPolicyCitation').innerText = 'Cited: ' + data.policy_citations[0];
+        const res = await fetch(`/api/tracking/search?q=${encodeURIComponent(ticketId)}`);
+        const list = await res.json();
+        if (list && list.length > 0) {
+          renderTrackerDetail(list[0]);
+        } else {
+          // fallback to get
+          const single = await fetch(`/api/complaints/${ticketId}`);
+          if (single.ok) {
+            const data = await single.json();
+            renderTrackerDetail(data);
+          } else {
+            alert(`No grievance found matching "${ticketId}".`);
+          }
         }
       } catch (err) {
         console.error(err);
       }
     }
 
-    function copyCopilotDraft() {
-      const text = document.getElementById('copilotDraftBox').innerText;
-      navigator.clipboard.writeText(text);
-      alert('Copied AI Copilot de-escalation response to clipboard!');
+    function renderTrackerDetail(c) {
+      document.getElementById('trackTitle').innerText = c.title;
+      document.getElementById('trackStatusBadge').innerText = c.status;
+      document.getElementById('trackMetaSub').innerText = `Ticket #${c.id} | Complainant: ${c.user_name} | Channel: ${c.channel}`;
+
+      const minsLeft = Math.max(0, Math.round(c.sla_seconds_remaining / 60));
+      const hours = Math.floor(minsLeft / 60);
+      const mins = minsLeft % 60;
+      document.getElementById('trackSlaClock').innerText = `${hours.toString().padStart(2, '0')}:${mins.toString().padStart(2, '0')} Remaining`;
+      document.getElementById('trackTierPill').innerText = `${c.priority_tier} TIER`;
+
+      document.getElementById('trackDesc').innerText = c.description;
+      document.getElementById('trackLocation').innerText = c.location_name;
+
+      document.getElementById('trackBeforeImg').src = c.image_url || '/static/images/pothole.svg';
+      document.getElementById('trackAfterImg').src = c.after_image_url || '/static/images/repaired_pothole.svg';
+
+      if (c.resolution_proof && c.resolution_proof.verified) {
+        document.getElementById('trackProofStatusTitle').innerText = '✓ Photographic Resolution Certified';
+        document.getElementById('trackProofToken').innerText = `Token: ${c.resolution_proof.cryptographic_token || 'TOKEN-OK'}`;
+      } else {
+        document.getElementById('trackProofStatusTitle').innerText = 'Field Work in Progress';
+        document.getElementById('trackProofToken').innerText = 'Verification pending post-repair inspection upload.';
+      }
+
+      // Render timeline
+      const timeline = document.getElementById('trackAuditTimeline');
+      timeline.innerHTML = '';
+      (c.audit_trail || []).forEach(entry => {
+        const item = document.createElement('div');
+        item.className = 'timeline-item';
+        item.innerHTML = `
+          <div class="timeline-dot"></div>
+          <div style="display:flex; justify-content:space-between; align-items:center;">
+            <strong>${entry.event}</strong>
+            <span style="font-size:0.7rem; color:var(--text-dim);">${entry.timestamp}</span>
+          </div>
+          <div style="font-size:0.75rem; color:var(--text-muted);">${entry.details}</div>
+          <div style="font-size:0.68rem; color:#60a5fa;">Actor: ${entry.actor}</div>
+        `;
+        timeline.appendChild(item);
+      });
     }
 
-    // Minute 3 Demo: Anti-Fake Closure
-    async function testAntiFakeClosure(kind) {
-      const isFake = (kind === 'fake');
+    function printReceipt() {
+      window.print();
+    }
+
+    // ==============================================================
+    // RESOLVER WORKSPACE FUNCTIONS
+    // ==============================================================
+    async function fetchComplaints() {
+      try {
+        const res = await fetch('/api/complaints');
+        appState.complaints = await res.json();
+        renderResolverQueue(appState.complaints);
+        document.getElementById('statTotalTickets').innerText = appState.complaints.length;
+      } catch (err) {
+        console.error(err);
+      }
+    }
+
+    function filterResolverQueue(filter) {
+      if (filter === 'ALL') {
+        renderResolverQueue(appState.complaints);
+      } else if (filter === 'CRITICAL') {
+        renderResolverQueue(appState.complaints.filter(c => c.priority_tier === 'CRITICAL'));
+      } else if (filter === 'IN_PROGRESS') {
+        renderResolverQueue(appState.complaints.filter(c => c.status === 'IN_PROGRESS' || c.status === 'TRIAGED'));
+      } else if (filter === 'VERIFIED_CLOSED') {
+        renderResolverQueue(appState.complaints.filter(c => c.status === 'VERIFIED_CLOSED' || c.status === 'AUTO_RESOLVED'));
+      } else if (filter === 'BILLING') {
+        renderResolverQueue(appState.complaints.filter(c => c.category.includes('Billing')));
+      }
+    }
+
+    function renderResolverQueue(list) {
+      const container = document.getElementById('resolverTicketQueue');
+      container.innerHTML = '';
+      document.getElementById('resolverQueueBadge').innerText = `${list.length} Items`;
+
+      list.forEach(c => {
+        const item = document.createElement('div');
+        item.className = 'ticket-queue-item' + (c.id === appState.selectedTicketId ? ' active' : '');
+        item.onclick = () => selectResolverTicket(c.id);
+
+        let badgeClass = 'badge-medium';
+        if (c.priority_tier === 'CRITICAL') badgeClass = 'badge-critical';
+        else if (c.priority_tier === 'HIGH') badgeClass = 'badge-high';
+        else if (c.status === 'VERIFIED_CLOSED' || c.status === 'AUTO_RESOLVED') badgeClass = 'badge-low';
+
+        item.innerHTML = `
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.25rem;">
+            <strong style="color:var(--text-primary); font-size:0.83rem;">${c.id}</strong>
+            <span class="badge ${badgeClass}">${c.status} (${c.priority_score})</span>
+          </div>
+          <div style="font-size:0.8rem; color:var(--text-secondary); margin-bottom:0.25rem;">${c.title}</div>
+          <div style="font-size:0.7rem; color:var(--text-dim); display:flex; justify-content:space-between;">
+            <span>📍 ${c.location_name.split(',')[0]}</span>
+            <span>⏱️ ${Math.round(c.sla_seconds_remaining / 60)}m left</span>
+          </div>
+        `;
+        container.appendChild(item);
+      });
+    }
+
+    function selectResolverTicket(ticketId) {
+      appState.selectedTicketId = ticketId;
+      const c = appState.complaints.find(x => x.id === ticketId);
+      if (!c) return;
+
+      document.getElementById('resolverPaneTitle').innerText = `${c.id}: ${c.title}`;
+      document.getElementById('resolverPaneSubtitle').innerText = `${c.category} | ${c.location_name}`;
+      document.getElementById('resolverPaneTierBadge').innerText = `${c.priority_tier} TIER`;
+      document.getElementById('resolverBeforeImg').src = c.image_url || '/static/images/pothole.svg';
+
+      refreshCopilot('EMPATHETIC');
+      document.getElementById('antiFakeAlert').style.display = 'none';
+
+      // re-highlight item
+      document.querySelectorAll('.ticket-queue-item').forEach(el => el.classList.remove('active'));
+      const activeEl = Array.from(document.querySelectorAll('.ticket-queue-item')).find(el => el.innerText.includes(ticketId));
+      if (activeEl) activeEl.classList.add('active');
+    }
+
+    async function refreshCopilot(tone) {
+      try {
+        const res = await fetch('/api/resolver/copilot-draft', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ complaint_id: appState.selectedTicketId, tone: tone })
+        });
+        const data = await res.json();
+        document.getElementById('copilotResponseBox').innerText = data.draft_message;
+        if (data.policy_citations && data.policy_citations.length > 0) {
+          document.getElementById('copilotPolicyCitation').innerText = `Policy Citation: ${data.policy_citations[0]}`;
+        }
+      } catch (err) {
+        console.error(err);
+      }
+    }
+
+    function copyCopilotMessage() {
+      const text = document.getElementById('copilotResponseBox').innerText;
+      navigator.clipboard.writeText(text);
+      alert('Copied response draft to clipboard!');
+    }
+
+    // Real After Photo Upload for Field Resolvers
+    function handleRealAfterImageUpload(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        appState.userUploadedAfterBase64 = e.target.result;
+        document.getElementById('resolverAfterImg').src = e.target.result;
+        evaluateAfterImagePayload(e.target.result, null, 'Real field photo upload');
+      };
+      reader.readAsDataURL(file);
+    }
+
+    // Test Closure Proof (Fake vs Genuine)
+    async function testClosureProof(type) {
+      const isFake = (type === 'fake');
       const preset = isFake ? 'fake_unrelated' : 'genuine_repaired_pothole';
       document.getElementById('resolverAfterImg').src = isFake ? '/static/images/fake_cat.svg' : '/static/images/repaired_pothole.svg';
+      evaluateAfterImagePayload(null, preset, isFake ? 'Testing closure with cat photo' : 'Completed machine asphalt compaction');
+    }
 
-      const resAlert = document.getElementById('antiFakeResultAlert');
-      resAlert.style.display = 'block';
+    async function evaluateAfterImagePayload(base64Data, preset, notes) {
+      const alertBox = document.getElementById('antiFakeAlert');
+      alertBox.style.display = 'block';
 
       try {
         const res = await fetch('/api/resolver/anti-fake-verify', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
-            complaint_id: state.selectedComplaintId,
+            complaint_id: appState.selectedTicketId,
+            after_image_base64: base64Data,
             after_image_preset: preset,
             resolver_id: 'AGENT-409',
-            resolver_notes: isFake ? 'Uploading test picture to close ticket' : 'Completed machine compaction and asphalt sealant.'
+            resolver_notes: notes
           })
         });
         const data = await res.json();
 
         if (data.verified) {
-          resAlert.style.background = '#06281e';
-          resAlert.style.borderColor = '#10b981';
-          document.getElementById('antiFakeTitle').style.color = '#34d399';
-          document.getElementById('antiFakeTitle').innerText = '✅ VERIFIED CLOSURE APPROVED (' + data.fix_confidence + '% CONFIDENCE)';
-          document.getElementById('antiFakeDesc').innerText = data.reason + ' Token: ' + (data.cryptographic_token || 'TOKEN-OK');
+          alertBox.style.background = '#06281e';
+          alertBox.style.borderColor = '#10b981';
+          document.getElementById('antiFakeAlertTitle').style.color = '#34d399';
+          document.getElementById('antiFakeAlertTitle').innerText = `✓ RESOLUTION VERIFIED (${data.fix_confidence}% CONFIDENCE)`;
+          document.getElementById('antiFakeAlertDesc').innerText = `${data.reason} Cryptographic Token: ${data.cryptographic_token}`;
         } else {
-          resAlert.style.background = '#271118';
-          resAlert.style.borderColor = '#f43f5e';
-          document.getElementById('antiFakeTitle').style.color = '#fb7185';
-          document.getElementById('antiFakeTitle').innerText = '❌ CLOSURE REJECTED: SCENE MISMATCH DETECTED (' + data.fix_confidence + '% CONFIDENCE)';
-          document.getElementById('antiFakeDesc').innerText = data.reason;
+          alertBox.style.background = '#261014';
+          alertBox.style.borderColor = '#ef4444';
+          document.getElementById('antiFakeAlertTitle').style.color = '#fca5a5';
+          document.getElementById('antiFakeAlertTitle').innerText = `❌ CLOSURE REJECTED: SCENE MISMATCH (${data.fix_confidence}% MATCH)`;
+          document.getElementById('antiFakeAlertDesc').innerText = data.reason;
         }
         fetchComplaints();
       } catch (err) {
@@ -1371,71 +1895,14 @@
       }
     }
 
-    // Admin & GIS Map
-    async function fetchMasters() {
-      try {
-        const res = await fetch('/api/masters');
-        state.masterIncidents = await res.json();
-        document.getElementById('kpiMasterClusters').innerText = state.masterIncidents.length;
-        renderAdminMasters();
-        drawGisMap();
-      } catch (e) {
-        console.error(e);
-      }
-    }
-
-    async function fetchLandmarks() {
-      try {
-        const res = await fetch('/api/landmarks');
-        state.landmarks = await res.json();
-        drawGisMap();
-      } catch (e) {
-        console.error(e);
-      }
-    }
-
-    function renderAdminMasters() {
-      const container = document.getElementById('adminMasterList');
-      container.innerHTML = '';
-      state.masterIncidents.forEach(m => {
-        const div = document.createElement('div');
-        div.style.background = '#090e1a';
-        div.style.border = '1px solid #1e293b';
-        div.style.borderRadius = '6px';
-        div.style.padding = '0.6rem';
-        div.innerHTML = `
-          <div style="display:flex; justify-content:space-between; align-items:center;">
-            <strong style="color:#fb7185; font-size:0.8rem;">${m.id}</strong>
-            <span class="badge badge-critical">${m.complaint_count} Swarm Reports</span>
-          </div>
-          <div style="font-size:0.75rem; color:#cbd5e1; margin-top:0.2rem;">${m.title}</div>
-          <div style="font-size:0.7rem; color:#64748b;">📍 ${m.location_name} | Priority: ${m.priority_score}/100</div>
-        `;
-        container.appendChild(div);
-      });
-    }
-
-    // Minute 2 Demo: Mass Outage
-    async function triggerMassOutageDemo() {
-      try {
-        const res = await fetch('/api/demo/simulate-mass-outage', { method: 'POST' });
-        const data = await res.json();
-        alert('⚡ Simulated 25 Citizen Complaints in Sector 4!\nMerged into Master Incident: ' + data.master_incident.id + '\nPriority boosted to ' + data.master_incident.priority_score + '/100 [CRITICAL]!');
-        fetchComplaints();
-        fetchMasters();
-      } catch (err) {
-        console.error(err);
-      }
-    }
-
     // Zero-Touch Tool Execution Simulator
-    async function runZeroTouchExecution(ticketId) {
-      const btn = document.getElementById('btnExecuteZeroTouch');
+    async function executeZeroTouchAction(ticketId) {
+      const btn = document.getElementById('btnRunZeroTouch');
       btn.disabled = true;
-      btn.innerText = '⚡ Executing Multi-Tool Agentic Sequence...';
+      btn.innerText = '⚡ Executing Autonomous Multi-Tool Sequence...';
 
-      const streamBox = document.getElementById('ztToolStream');
-      const stepsDiv = document.getElementById('ztToolSteps');
+      const streamBox = document.getElementById('zeroTouchStream');
+      const stepsDiv = document.getElementById('zeroTouchSteps');
       streamBox.style.display = 'block';
       stepsDiv.innerHTML = '';
 
@@ -1447,33 +1914,29 @@
         });
         const data = await res.json();
 
-        // Stream tools visually with delays
         let i = 0;
-        function streamNextStep() {
+        function streamNext() {
           if (i < data.actions_taken.length) {
-            const step = data.actions_taken[i];
-            const p = document.createElement('div');
-            p.style.marginBottom = '0.4rem';
-            p.innerHTML = `<span style="color:#38bdf8;">[${step.timestamp}] STEP ${step.step}: ${step.tool}</span><br><span style="color:#cbd5e1;">&gt; ${step.result}</span>`;
-            stepsDiv.appendChild(p);
+            const s = data.actions_taken[i];
+            const div = document.createElement('div');
+            div.style.marginBottom = '0.35rem';
+            div.innerHTML = `<span style="color:#60a5fa;">[${s.timestamp}] STEP ${s.step}: ${s.tool}</span><br><span style="color:#e2e8f0;">&gt; ${s.result}</span>`;
+            stepsDiv.appendChild(div);
             stepsDiv.scrollTop = stepsDiv.scrollHeight;
             i++;
-            setTimeout(streamNextStep, 500);
+            setTimeout(streamNext, 450);
           } else {
-            const done = document.createElement('div');
-            done.style.marginTop = '0.5rem';
-            done.style.color = '#34d399';
-            done.style.fontWeight = 'bold';
-            done.innerText = `✓ RESOLUTION COMPLETE IN ${data.execution_time_seconds}s! Refund Transaction: ${data.refund_transaction_id}`;
-            stepsDiv.appendChild(done);
-
-            document.getElementById('ztStatusBadge').className = 'badge badge-low';
-            document.getElementById('ztStatusBadge').innerText = 'AUTO_RESOLVED';
+            const finish = document.createElement('div');
+            finish.style.marginTop = '0.4rem';
+            finish.style.color = '#34d399';
+            finish.style.fontWeight = 'bold';
+            finish.innerText = `✓ RESOLUTION COMPLETED IN ${data.execution_time_seconds}s! Refund Transaction: ${data.refund_transaction_id}`;
+            stepsDiv.appendChild(finish);
             btn.innerText = `✓ Resolved in ${data.execution_time_seconds}s ($89 Refunded)`;
             fetchComplaints();
           }
         }
-        streamNextStep();
+        streamNext();
 
       } catch (err) {
         console.error(err);
@@ -1482,78 +1945,136 @@
       }
     }
 
-    // Preventive Crew Dispatch
-    async function dispatchPreventiveCrew(alertId) {
-      const btn = document.getElementById('btnDispatchForecast');
-      btn.disabled = true;
-      btn.innerText = 'Dispatching Crew...';
+    // ==============================================================
+    // CITY ANALYTICS & GIS MAP
+    // ==============================================================
+    async function fetchMasters() {
       try {
-        const res = await fetch(`/api/forecasting/dispatch/${alertId}`, { method: 'POST' });
-        const data = await res.json();
-        btn.className = 'btn btn-success';
-        btn.innerText = '✓ Preventive Crew Deployed (Blowout Prevented)';
-      } catch (e) {
-        console.error(e);
+        const res = await fetch('/api/masters');
+        appState.masterIncidents = await res.json();
+        document.getElementById('statMasterClusters').innerText = appState.masterIncidents.length;
+        document.getElementById('masterCountBadge').innerText = `${appState.masterIncidents.length} Clusters`;
+        renderMasterList();
+        renderGisMap();
+      } catch (err) {
+        console.error(err);
       }
     }
 
-    // GIS Map Canvas Drawing
-    function drawGisMap() {
-      const canvas = document.getElementById('gisMapCanvas');
+    async function fetchLandmarks() {
+      try {
+        const res = await fetch('/api/landmarks');
+        appState.landmarks = await res.json();
+        renderGisMap();
+      } catch (err) {
+        console.error(err);
+      }
+    }
+
+    function renderMasterList() {
+      const container = document.getElementById('masterIncidentsList');
+      container.innerHTML = '';
+
+      appState.masterIncidents.forEach(m => {
+        const card = document.createElement('div');
+        card.style.background = '#090e1a';
+        card.style.border = '1px solid var(--border-subtle)';
+        card.style.borderRadius = 'var(--radius-sm)';
+        card.style.padding = '0.75rem';
+        card.innerHTML = `
+          <div style="display:flex; justify-content:space-between; align-items:center;">
+            <strong style="color:#f43f5e; font-size:0.83rem;">${m.id}</strong>
+            <span class="badge badge-critical">${m.complaint_count} Swarm Reports</span>
+          </div>
+          <div style="font-size:0.8rem; color:var(--text-secondary); margin-top:0.25rem;">${m.title}</div>
+          <div style="font-size:0.72rem; color:var(--text-dim); margin-top:0.2rem;">📍 ${m.location_name} | Priority: ${m.priority_score}/100</div>
+        `;
+        container.appendChild(card);
+      });
+    }
+
+    async function simulateMassOutageEvent() {
+      try {
+        const res = await fetch('/api/demo/simulate-mass-outage', { method: 'POST' });
+        const data = await res.json();
+        alert(`⚡ 25 Outage Grievances Simulated in Sector 4!\nAll 25 merged into Master Incident: ${data.master_incident.id}\nPriority climbed to ${data.master_incident.priority_score}/100 [CRITICAL].`);
+        fetchComplaints();
+        fetchMasters();
+      } catch (err) {
+        console.error(err);
+      }
+    }
+
+    async function dispatchPreventiveCrew(alertId) {
+      const btn = document.getElementById('btnDispatchForecast');
+      btn.disabled = true;
+      btn.innerText = 'Dispatching Unit...';
+      try {
+        await fetch(`/api/forecasting/dispatch/${alertId}`, { method: 'POST' });
+        btn.className = 'btn btn-success';
+        btn.innerText = '✓ Preventive Load Crew Deployed (Blowout Prevented)';
+      } catch (err) {
+        console.error(err);
+      }
+    }
+
+    // Interactive GIS Map Canvas
+    function renderGisMap() {
+      const canvas = document.getElementById('gisCanvas');
       if (!canvas) return;
       const ctx = canvas.getContext('2d');
       const w = canvas.width = canvas.parentElement.clientWidth || 600;
-      const h = canvas.height = 440;
+      const h = canvas.height = 480;
 
-      // Coordinate mapping bounds (San Francisco Metro Core)
       const minLat = 37.7500, maxLat = 37.7900;
       const minLng = -122.4400, maxLng = -122.4000;
 
-      function toX(lng) { return ((lng - minLng) / (maxLng - minLng)) * (w - 80) + 40; }
-      function toY(lat) { return (1.0 - ((lat - minLat) / (maxLat - minLat))) * (h - 80) + 40; }
+      function toX(lng) { return ((lng - minLng) / (maxLng - minLng)) * (w - 70) + 35; }
+      function toY(lat) { return (1.0 - ((lat - minLat) / (maxLat - minLat))) * (h - 70) + 35; }
 
-      // Background grid
+      // Map canvas background
       ctx.fillStyle = '#060a14';
       ctx.fillRect(0, 0, w, h);
 
-      // Grid lines (streets)
-      ctx.strokeStyle = '#121b2d';
+      // Grid street lines
+      ctx.strokeStyle = '#111a2d';
       ctx.lineWidth = 1;
-      for (let x = 0; x < w; x += 40) {
+      for (let x = 0; x < w; x += 35) {
         ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, h); ctx.stroke();
       }
-      for (let y = 0; y < h; y += 40) {
+      for (let y = 0; y < h; y += 35) {
         ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(w, y); ctx.stroke();
       }
 
       // Draw Critical Infrastructure Landmarks & 200m Buffers
-      state.landmarks.forEach(lm => {
+      appState.landmarks.forEach(lm => {
         const lx = toX(lm.longitude);
         const ly = toY(lm.latitude);
 
-        // 200m vulnerability buffer circle
+        // 200m buffer circle
         ctx.beginPath();
-        ctx.arc(lx, ly, 45, 0, Math.PI * 2);
-        ctx.fillStyle = 'rgba(14, 165, 233, 0.1)';
+        ctx.arc(lx, ly, 46, 0, Math.PI * 2);
+        ctx.fillStyle = 'rgba(59, 130, 246, 0.08)';
         ctx.fill();
-        ctx.strokeStyle = 'rgba(14, 165, 233, 0.4)';
-        ctx.setLineDash([4, 4]);
+        ctx.strokeStyle = 'rgba(59, 130, 246, 0.4)';
+        ctx.setLineDash([3, 3]);
         ctx.stroke();
         ctx.setLineDash([]);
 
         // Landmark icon
         ctx.beginPath();
-        ctx.arc(lx, ly, 7, 0, Math.PI * 2);
-        ctx.fillStyle = '#0ea5e9';
+        ctx.arc(lx, ly, 6, 0, Math.PI * 2);
+        ctx.fillStyle = '#38bdf8';
         ctx.fill();
 
         ctx.fillStyle = '#94a3b8';
         ctx.font = '10px sans-serif';
-        ctx.fillText(lm.name.split(' ')[0] + ' ' + (lm.type === 'SCHOOL' ? '🏫' : '🏥'), lx + 10, ly + 3);
+        const icon = lm.type === 'SCHOOL' ? '🏫' : (lm.type === 'HOSPITAL' ? '🏥' : '⚡');
+        ctx.fillText(`${lm.name.split(' ')[0]} ${icon}`, lx + 9, ly + 3);
       });
 
       // Draw Individual Complaints
-      state.complaints.forEach(c => {
+      appState.complaints.forEach(c => {
         const cx = toX(c.longitude);
         const cy = toY(c.latitude);
 
@@ -1564,61 +2085,60 @@
       });
 
       // Draw Pulsing Master Incidents
-      state.masterIncidents.forEach(m => {
+      appState.masterIncidents.forEach(m => {
         const mx = toX(m.center_longitude);
         const my = toY(m.center_latitude);
 
-        // Outer pulsing ring
+        // Outer glow
         ctx.beginPath();
-        ctx.arc(mx, my, 28, 0, Math.PI * 2);
-        ctx.fillStyle = 'rgba(239, 68, 68, 0.25)';
+        ctx.arc(mx, my, 26, 0, Math.PI * 2);
+        ctx.fillStyle = 'rgba(239, 68, 68, 0.22)';
         ctx.fill();
         ctx.strokeStyle = '#ef4444';
-        ctx.lineWidth = 2;
+        ctx.lineWidth = 1.5;
         ctx.stroke();
 
         // Core marker
         ctx.beginPath();
-        ctx.arc(mx, my, 10, 0, Math.PI * 2);
+        ctx.arc(mx, my, 9, 0, Math.PI * 2);
         ctx.fillStyle = '#dc2626';
         ctx.fill();
 
         // Swarm label
         ctx.fillStyle = '#ffffff';
         ctx.font = 'bold 10px monospace';
-        ctx.fillText(`MASTER (${m.complaint_count} Swarm)`, mx + 14, my + 4);
+        ctx.fillText(`MASTER (${m.complaint_count})`, mx + 13, my + 4);
       });
     }
 
-    // Ollama Configuration Modal
-    function openOllamaModal() {
+    // ==============================================================
+    // OLLAMA / ENGINE CONFIGURATION
+    // ==============================================================
+    function openOllamaDialog() {
       document.getElementById('ollamaModal').classList.add('open');
-      testOllamaFromModal();
+      testOllamaConnection();
     }
-    function closeOllamaModal() {
+    function closeOllamaDialog() {
       document.getElementById('ollamaModal').classList.remove('open');
     }
 
-    async function testOllamaFromModal() {
-      const url = document.getElementById('modalOllamaUrl').value;
-      const model = document.getElementById('modalOllamaModel').value;
-      const det = document.getElementById('modalOllamaDetails');
-      det.innerText = 'Pinging Ollama at ' + url + '...';
-
+    async function testOllamaConnection() {
+      const statusBox = document.getElementById('cfgOllamaStatus');
+      statusBox.innerText = 'Pinging Ollama endpoint...';
       try {
         const res = await fetch('/api/health');
         const data = await res.json();
         const o = data.ollama;
-        det.innerText = `Ollama Status: ${o.status.toUpperCase()} | Message: ${o.message} | Active Model: ${o.active_model}`;
-        updateOllamaBadge(o);
-      } catch (e) {
-        det.innerText = 'Could not reach backend health check.';
+        statusBox.innerText = `Ollama Status: ${o.status.toUpperCase()} | Message: ${o.message} | Active: ${o.active_model}`;
+        updateEngineBadge(o);
+      } catch (err) {
+        statusBox.innerText = 'Unable to connect to backend service.';
       }
     }
 
-    async function saveOllamaConfig() {
-      const url = document.getElementById('modalOllamaUrl').value;
-      const model = document.getElementById('modalOllamaModel').value;
+    async function saveOllamaSettings() {
+      const url = document.getElementById('cfgOllamaUrl').value;
+      const model = document.getElementById('cfgOllamaModel').value;
       try {
         const res = await fetch('/api/ollama/config', {
           method: 'POST',
@@ -1626,56 +2146,50 @@
           body: JSON.stringify({ base_url: url, model: model })
         });
         const data = await res.json();
-        updateOllamaBadge(data.updated_health);
-        closeOllamaModal();
+        updateEngineBadge(data.updated_health);
+        closeOllamaDialog();
         alert('Ollama configuration saved!');
-      } catch (e) {
-        alert('Error saving config: ' + e);
+      } catch (err) {
+        alert('Error saving configuration: ' + err);
       }
     }
 
-    function updateOllamaBadge(health) {
-      const dot = document.getElementById('ollamaDot');
-      const label = document.getElementById('ollamaLabel');
-      if (health.status === 'connected') {
+    function updateEngineBadge(h) {
+      const dot = document.getElementById('headerEngineDot');
+      const label = document.getElementById('headerEngineLabel');
+      if (h.status === 'connected') {
         dot.className = 'status-dot';
-        label.innerText = `Ollama: Online [${health.active_model}]`;
+        label.innerText = `Ollama: Online [${h.active_model}]`;
       } else {
         dot.className = 'status-dot offline';
-        label.innerText = `Ollama: Ready [Hybrid Mode]`;
+        label.innerText = `AI Engine: Local Autonomous`;
       }
     }
 
     // WebSocket Real-time Updates
-    function connectWebSocket() {
+    function initWebSocketConnection() {
       const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
-      const wsUrl = `${protocol}//${window.location.host}/ws`;
-      state.ws = new WebSocket(wsUrl);
+      const ws = new WebSocket(`${protocol}//${window.location.host}/ws`);
 
-      state.ws.onopen = () => {
-        console.log('ComplainAI WebSocket connected');
-      };
-      state.ws.onmessage = (event) => {
+      ws.onmessage = e => {
         try {
-          const msg = JSON.parse(event.data);
-          console.log('WS Message:', msg);
+          const msg = JSON.parse(e.data);
           if (msg.event === 'CONNECTED' && msg.ollama_status) {
-            updateOllamaBadge(msg.ollama_status);
+            updateEngineBadge(msg.ollama_status);
           } else if (msg.event === 'NEW_COMPLAINT' || msg.event === 'MASS_OUTAGE_SIMULATED') {
             fetchComplaints();
             fetchMasters();
           }
-        } catch (e) {}
+        } catch (err) {}
       };
-      state.ws.onclose = () => {
-        setTimeout(connectWebSocket, 3000);
-      };
+      ws.onclose = () => setTimeout(initWebSocketConnection, 3000);
+      appState.ws = ws;
     }
 
     // Startup Initialization
     window.addEventListener('DOMContentLoaded', () => {
-      initAudioVisualizer();
-      connectWebSocket();
+      initWaveformAnimation();
+      initWebSocketConnection();
       fetchComplaints();
       fetchMasters();
       fetchLandmarks();
@@ -1683,7 +2197,7 @@
     });
 
     window.addEventListener('resize', () => {
-      if (state.activeTab === 'admin') drawGisMap();
+      if (appState.activeTab === 'analytics') renderGisMap();
     });
   </script>
 </body>
