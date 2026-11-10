@@ -1,0 +1,1690 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ComplainAI — Autonomous Multimodal Grievance Intelligence</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⚡</text></svg>">
+  <style>
+    :root {
+      --bg-dark: #090d16;
+      --bg-card: #111827;
+      --bg-card-hover: #1e293b;
+      --border-color: #1f293d;
+      --accent-cyan: #06b6d4;
+      --accent-blue: #3b82f6;
+      --accent-emerald: #10b981;
+      --accent-amber: #f59e0b;
+      --accent-rose: #f43f5e;
+      --accent-purple: #8b5cf6;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    body {
+      background-color: var(--bg-dark);
+      color: var(--text-main);
+      min-height: 100vh;
+      overflow-x: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Scrollbars */
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: var(--bg-dark); }
+    ::-webkit-scrollbar-thumb { background: #334155; border-radius: 3px; }
+
+    /* Top Navigation Header */
+    header {
+      background: rgba(17, 24, 39, 0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border-color);
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      padding: 0.75rem 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      text-decoration: none;
+      color: var(--text-main);
+    }
+    .brand-icon {
+      width: 36px;
+      height: 36px;
+      background: linear-gradient(135deg, var(--accent-cyan), var(--accent-blue));
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.25rem;
+      box-shadow: 0 0 15px rgba(6, 182, 212, 0.4);
+    }
+    .brand-title {
+      font-size: 1.25rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      background: linear-gradient(90deg, #38bdf8, #818cf8);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .brand-subtitle {
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    /* Portal Tabs */
+    .nav-tabs {
+      display: flex;
+      background: #0f172a;
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      padding: 3px;
+      gap: 4px;
+    }
+    .nav-tab-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      padding: 0.5rem 1rem;
+      border-radius: 7px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+      transition: all 0.2s ease;
+    }
+    .nav-tab-btn:hover {
+      color: var(--text-main);
+      background: rgba(255, 255, 255, 0.05);
+    }
+    .nav-tab-btn.active {
+      background: linear-gradient(135deg, #1e293b, #334155);
+      color: #38bdf8;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+      border: 1px solid rgba(56, 189, 248, 0.2);
+    }
+
+    /* Ollama Status Badge */
+    .ollama-badge {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: #0f172a;
+      border: 1px solid var(--border-color);
+      border-radius: 20px;
+      padding: 0.35rem 0.85rem;
+      font-size: 0.75rem;
+      cursor: pointer;
+      transition: border-color 0.2s;
+    }
+    .ollama-badge:hover {
+      border-color: var(--accent-cyan);
+    }
+    .status-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--accent-emerald);
+      box-shadow: 0 0 8px var(--accent-emerald);
+    }
+    .status-dot.offline {
+      background: var(--accent-amber);
+      box-shadow: 0 0 8px var(--accent-amber);
+    }
+
+    /* Pitch Flow Banner */
+    .pitch-banner {
+      background: linear-gradient(90deg, #1e1b4b, #0f172a, #132a3f);
+      border-bottom: 1px solid rgba(99, 102, 241, 0.3);
+      padding: 0.5rem 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 0.8rem;
+    }
+    .pitch-steps {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+    }
+    .pitch-step-pill {
+      background: rgba(255, 255, 255, 0.07);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 20px;
+      padding: 0.2rem 0.65rem;
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .pitch-step-pill:hover {
+      background: rgba(56, 189, 248, 0.2);
+      border-color: #38bdf8;
+      color: #38bdf8;
+    }
+
+    /* Main Container */
+    main {
+      flex: 1;
+      padding: 1.5rem;
+      max-width: 1600px;
+      width: 100%;
+      margin: 0 auto;
+    }
+
+    .tab-content {
+      display: none;
+    }
+    .tab-content.active {
+      display: block;
+      animation: fadeIn 0.3s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Grid Layouts */
+    .grid-2col {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+    }
+    .grid-3col {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 1.25rem;
+    }
+    @media (max-width: 1024px) {
+      .grid-2col, .grid-3col { grid-template-columns: 1fr; }
+    }
+
+    /* Cards */
+    .card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 1.25rem;
+      position: relative;
+    }
+    .card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 1rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      padding-bottom: 0.6rem;
+    }
+    .card-title {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--text-main);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    /* Badges & Pills */
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.25rem;
+      padding: 0.2rem 0.55rem;
+      border-radius: 6px;
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.03em;
+    }
+    .badge-critical { background: rgba(244, 63, 94, 0.15); color: #fb7185; border: 1px solid rgba(244, 63, 94, 0.3); }
+    .badge-high { background: rgba(245, 158, 11, 0.15); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.3); }
+    .badge-medium { background: rgba(59, 130, 246, 0.15); color: #60a5fa; border: 1px solid rgba(59, 130, 246, 0.3); }
+    .badge-low { background: rgba(16, 185, 129, 0.15); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.3); }
+
+    /* Inputs & Form Elements */
+    .form-group {
+      margin-bottom: 1rem;
+    }
+    label {
+      display: block;
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      margin-bottom: 0.35rem;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+    input[type="text"], select, textarea {
+      width: 100%;
+      background: #0b1120;
+      border: 1px solid #1e293b;
+      border-radius: 8px;
+      padding: 0.65rem 0.85rem;
+      color: var(--text-main);
+      font-size: 0.85rem;
+      transition: border-color 0.2s;
+    }
+    input[type="text"]:focus, select:focus, textarea:focus {
+      outline: none;
+      border-color: var(--accent-cyan);
+    }
+
+    /* Buttons */
+    .btn {
+      background: #1e293b;
+      color: var(--text-main);
+      border: 1px solid #334155;
+      padding: 0.6rem 1.1rem;
+      border-radius: 8px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.4rem;
+      transition: all 0.2s ease;
+    }
+    .btn:hover {
+      background: #334155;
+      border-color: #475569;
+    }
+    .btn-primary {
+      background: linear-gradient(135deg, #0284c7, #2563eb);
+      border: 1px solid rgba(56, 189, 248, 0.4);
+      color: white;
+      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+    }
+    .btn-primary:hover {
+      background: linear-gradient(135deg, #0369a1, #1d4ed8);
+      box-shadow: 0 4px 16px rgba(37, 99, 235, 0.5);
+    }
+    .btn-danger {
+      background: linear-gradient(135deg, #dc2626, #b91c1c);
+      border: 1px solid rgba(239, 68, 68, 0.4);
+      color: white;
+    }
+    .btn-success {
+      background: linear-gradient(135deg, #059669, #047857);
+      border: 1px solid rgba(16, 185, 129, 0.4);
+      color: white;
+    }
+
+    /* Preset Quick Buttons */
+    .presets-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+      margin-bottom: 0.75rem;
+    }
+    .preset-chip {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 6px;
+      padding: 0.3rem 0.6rem;
+      font-size: 0.73rem;
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .preset-chip:hover, .preset-chip.active {
+      background: rgba(56, 189, 248, 0.15);
+      border-color: #38bdf8;
+      color: #38bdf8;
+    }
+
+    /* Waveform visualizer canvas */
+    #audioWaveCanvas {
+      width: 100%;
+      height: 48px;
+      background: #090e1a;
+      border-radius: 6px;
+      border: 1px solid #1e293b;
+      margin-top: 0.4rem;
+    }
+
+    /* Image Preview Box */
+    .image-preview-container {
+      width: 100%;
+      height: 220px;
+      background: #0b1120;
+      border: 1px dashed #334155;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      position: relative;
+    }
+    .image-preview-container img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    /* Priority Gauge Meter */
+    .priority-gauge-box {
+      background: linear-gradient(135deg, #0b1120, #131c31);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      padding: 1.25rem;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .gauge-score {
+      font-size: 3.2rem;
+      font-weight: 900;
+      line-height: 1;
+      margin: 0.4rem 0;
+      background: linear-gradient(90deg, #f43f5e, #fbbf24);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .formula-box {
+      background: #070b14;
+      border: 1px solid #1e293b;
+      border-radius: 8px;
+      padding: 0.6rem;
+      font-family: monospace;
+      font-size: 0.75rem;
+      color: #38bdf8;
+      text-align: left;
+      margin-top: 0.75rem;
+      word-break: break-all;
+    }
+
+    /* Live GIS Map Canvas */
+    #gisMapCanvas {
+      width: 100%;
+      height: 440px;
+      background: #060911;
+      border-radius: 8px;
+      border: 1px solid #1e293b;
+      display: block;
+      cursor: crosshair;
+    }
+
+    /* Pulsing Animation for Master Incident pins */
+    @keyframes pulseMaster {
+      0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.7); }
+      70% { transform: scale(1.05); box-shadow: 0 0 0 16px rgba(239, 68, 68, 0); }
+      100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
+    }
+    .pulsing-btn {
+      animation: pulseMaster 2s infinite;
+    }
+
+    /* Ticket List */
+    .ticket-list {
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+      max-height: 520px;
+      overflow-y: auto;
+    }
+    .ticket-item {
+      background: #0e1526;
+      border: 1px solid #1e293b;
+      border-radius: 8px;
+      padding: 0.85rem;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .ticket-item:hover, .ticket-item.active {
+      border-color: var(--accent-cyan);
+      background: #142038;
+    }
+
+    /* Timeline Stepper */
+    .timeline {
+      position: relative;
+      padding-left: 1.5rem;
+      margin-top: 1rem;
+    }
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 6px;
+      top: 5px;
+      bottom: 5px;
+      width: 2px;
+      background: #334155;
+    }
+    .timeline-step {
+      position: relative;
+      margin-bottom: 1rem;
+      font-size: 0.8rem;
+    }
+    .timeline-dot {
+      position: absolute;
+      left: -1.5rem;
+      top: 2px;
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: var(--accent-cyan);
+      border: 2px solid var(--bg-card);
+    }
+
+    /* Live Modal */
+    .modal-backdrop {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0, 0, 0, 0.8);
+      backdrop-filter: blur(4px);
+      z-index: 100;
+      align-items: center;
+      justify-content: center;
+    }
+    .modal-backdrop.open { display: flex; }
+    .modal-box {
+      background: var(--bg-card);
+      border: 1px solid var(--border-color);
+      border-radius: 12px;
+      max-width: 600px;
+      width: 90%;
+      padding: 1.5rem;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Navigation Header -->
+  <header>
+    <a href="#" class="brand">
+      <div class="brand-icon">⚡</div>
+      <div>
+        <div class="brand-title">ComplainAI</div>
+        <div class="brand-subtitle">Autonomous Multimodal Grievance Intelligence</div>
+      </div>
+    </a>
+
+    <!-- Role-Based Navigation Tabs -->
+    <div class="nav-tabs">
+      <button class="nav-tab-btn active" onclick="switchTab('intake')">
+        <span>📱</span> Citizen Intake ("Snap & Speak")
+      </button>
+      <button class="nav-tab-btn" onclick="switchTab('resolver')">
+        <span>🛠️</span> Resolver Workspace (Anti-Fake & Copilot)
+      </button>
+      <button class="nav-tab-btn" onclick="switchTab('admin')">
+        <span>⚡</span> Admin Command (GIS Swarm & Forecast)
+      </button>
+    </div>
+
+    <!-- Ollama Status Badge -->
+    <div class="ollama-badge" onclick="openOllamaModal()">
+      <div class="status-dot" id="ollamaDot"></div>
+      <span id="ollamaLabel">Ollama: Checking...</span>
+      <span style="color:#64748b; font-size:0.65rem;">⚙️</span>
+    </div>
+  </header>
+
+  <!-- Pitch Flow Quick Action Bar -->
+  <div class="pitch-banner">
+    <div style="font-weight:700; color:#38bdf8; display:flex; align-items:center; gap:0.4rem;">
+      <span>🏆 3-Minute Live Pitch Storyboard:</span>
+    </div>
+    <div class="pitch-steps">
+      <div class="pitch-step-pill" onclick="triggerPitchStep(1)">
+        <strong>Min 1:</strong> Snap & Speak Multimodal Triage
+      </div>
+      <div class="pitch-step-pill" onclick="triggerPitchStep(2)">
+        <strong>Min 2:</strong> Simulate Crowd Swarm Outage
+      </div>
+      <div class="pitch-step-pill" onclick="triggerPitchStep(3)">
+        <strong>Min 3:</strong> Anti-Fake Closure Verification
+      </div>
+      <div class="pitch-step-pill" onclick="triggerPitchStep(4)">
+        <strong>Zero-Touch:</strong> 4-Second Auto-Refund
+      </div>
+    </div>
+  </div>
+
+  <main>
+    <!-- ========================================== -->
+    <!-- TAB 1: CITIZEN INTAKE ("SNAP & SPEAK")      -->
+    <!-- ========================================== -->
+    <div id="tab-intake" class="tab-content active">
+      <div class="grid-2col">
+
+        <!-- Left Form: Multimodal Submission -->
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">
+              <span>🎙️</span> Zero-Input "Snap & Speak" Intake
+            </div>
+            <span class="badge badge-medium">Omnichannel Portal</span>
+          </div>
+
+          <!-- Channel Selector -->
+          <div class="form-group">
+            <label>Submission Channel</label>
+            <div class="presets-row">
+              <div class="preset-chip active" onclick="setChannel(this, 'WEB')">🌐 Web Portal</div>
+              <div class="preset-chip" onclick="setChannel(this, 'WHATSAPP')">💬 WhatsApp Intake</div>
+              <div class="preset-chip" onclick="setChannel(this, 'PHONE_VOICE')">📞 Voice Hotline</div>
+              <div class="preset-chip" onclick="setChannel(this, 'EMAIL')">✉️ Email Parsing</div>
+            </div>
+          </div>
+
+          <!-- Quick Demo Presets -->
+          <div class="form-group">
+            <label>Demo Audio & Image Scenarios</label>
+            <div class="presets-row">
+              <div class="preset-chip active" onclick="loadScenario('sparking_wire')">⚡ 1. Sparking Wire (Hindi/Oakridge School)</div>
+              <div class="preset-chip" onclick="loadScenario('water_flood')">💧 2. Water Main Rupture (Hospital St)</div>
+              <div class="preset-chip" onclick="loadScenario('pothole')">🕳️ 3. Deep 8" Pothole (Bike Lane)</div>
+              <div class="preset-chip" onclick="loadScenario('billing')">💳 4. Double Charge $89 (Auto-Refund)</div>
+            </div>
+          </div>
+
+          <!-- Voice Note Input -->
+          <div class="form-group">
+            <label>Voice Note / Regional Dialect Recording</label>
+            <div style="display:flex; gap:0.5rem; align-items:center;">
+              <button class="btn" id="btnRecordAudio" onclick="toggleMicrophoneRecord()">
+                <span id="recordIcon">🔴</span> <span id="recordText">Record Microphone</span>
+              </button>
+              <button class="btn" onclick="playPresetAudio()">
+                <span>🔊</span> Play Audio Clip
+              </button>
+              <span id="audioStatusText" style="font-size:0.75rem; color:#94a3b8;">Preset: Hindi/Hinglish Voice Note</span>
+            </div>
+            <canvas id="audioWaveCanvas"></canvas>
+          </div>
+
+          <!-- Scene Photo / Defect View -->
+          <div class="form-group">
+            <label>Scene Photo / Inspection Image</label>
+            <div class="image-preview-container" id="imagePreviewBox">
+              <img id="intakeImagePreview" src="/static/images/sparking_wire.svg" alt="Defect Scene" />
+            </div>
+          </div>
+
+          <!-- Text Transcription & Notes -->
+          <div class="form-group">
+            <label>Raw Transcript / Description</label>
+            <textarea id="intakeDescription" rows="3" placeholder="Transcribed speech or text will appear here..."></textarea>
+          </div>
+
+          <!-- Citizen & Location details -->
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:0.75rem; margin-bottom:1rem;">
+            <div>
+              <label>Citizen Name</label>
+              <input type="text" id="intakeUserName" value="Aarav Sharma" />
+            </div>
+            <div>
+              <label>Location Landmark</label>
+              <select id="intakeLocation">
+                <option value="Oakridge School Gate, Elm & 8th St" data-lat="37.7753" data-lng="-122.4190">Oakridge School (65m proximity)</option>
+                <option value="Grand Ave Corridor (St. Jude Hospital Frontage)" data-lat="37.7830" data-lng="-122.4160">St. Jude Hospital (80m proximity)</option>
+                <option value="Sector 4 Electrical Grid Substation Zone" data-lat="37.7650" data-lng="-122.4300">Sector 4 Transformer Grid</option>
+                <option value="4th St & Bryant Ave (Northbound)" data-lat="37.7790" data-lng="-122.4120">4th Street Bike Lane</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Submit Button -->
+          <button class="btn btn-primary" style="width:100%; font-size:0.95rem; padding:0.85rem;" onclick="submitIntakeTriage()">
+            <span>⚡</span> Submit with AI Multimodal Triage (Ollama)
+          </button>
+        </div>
+
+        <!-- Right Side: Real-time AI Triage Analysis & Dynamic Formula -->
+        <div class="card" id="triageResultCard">
+          <div class="card-header">
+            <div class="card-title">
+              <span>🧠</span> AI Multimodal Diagnostic Breakdown
+            </div>
+            <span class="badge badge-critical" id="resultPriorityBadge">CRITICAL TIER</span>
+          </div>
+
+          <!-- Priority Gauge -->
+          <div class="priority-gauge-box">
+            <div style="font-size:0.8rem; text-transform:uppercase; color:#94a3b8; letter-spacing:0.05em;">
+              Calibrated Multi-Factor Priority Index ($P_{\text{score}}$)
+            </div>
+            <div class="gauge-score" id="resultScoreValue">94.2</div>
+            <div style="font-size:0.85rem; font-weight:700; color:#fb7185;" id="resultTierLabel">
+              CRITICAL EMERGENCY — 2 HOUR SLA DISPATCH
+            </div>
+            <!-- Dynamic Math Formula -->
+            <div class="formula-box" id="resultFormulaStr">
+              P_score = (0.35 × 92) + (0.30 × 94) + (0.15 × 32) + (0.20 × 95) = 94.2/100
+            </div>
+          </div>
+
+          <!-- Explainable Breakdown Cards -->
+          <div style="display:grid; grid-template-columns:1fr 1fr; gap:0.75rem; margin-top:1rem;">
+            <div class="card" style="padding:0.75rem; background:#0b1120;">
+              <div style="font-size:0.7rem; color:#94a3b8;">ACOUSTIC DISTRESS & ASR</div>
+              <div style="font-weight:700; font-size:0.85rem; color:#f87171;" id="resultVocalEmotion">
+                Panicked (92% vocal tremor)
+              </div>
+              <div style="font-size:0.7rem; color:#64748b; margin-top:0.2rem;" id="resultDialect">
+                Dialect: Urban Hinglish Colloquial
+              </div>
+            </div>
+
+            <div class="card" style="padding:0.75rem; background:#0b1120;">
+              <div style="font-size:0.7rem; color:#94a3b8;">COMPUTER VISION HAZARD</div>
+              <div style="font-weight:700; font-size:0.85rem; color:#f59e0b;" id="resultVisualHazard">
+                94/100 Arc Flash Hazard
+              </div>
+              <div style="font-size:0.7rem; color:#64748b; margin-top:0.2rem;" id="resultDefectDetected">
+                Exposed 4.8kV Conductor
+              </div>
+            </div>
+
+            <div class="card" style="padding:0.75rem; background:#0b1120;">
+              <div style="font-size:0.7rem; color:#94a3b8;">SWARM CLUSTER FACTOR</div>
+              <div style="font-weight:700; font-size:0.85rem; color:#38bdf8;" id="resultClusterSize">
+                3 Concurrent Reports
+              </div>
+              <div style="font-size:0.7rem; color:#64748b; margin-top:0.2rem;">
+                Radius: 350m Spatial Buffer
+              </div>
+            </div>
+
+            <div class="card" style="padding:0.75rem; background:#0b1120;">
+              <div style="font-size:0.7rem; color:#94a3b8;">VULNERABILITY BOOST (GIS)</div>
+              <div style="font-weight:700; font-size:0.85rem; color:#a855f7;" id="resultVulnerability">
+                +19.4pts (Oakridge School @ 65m)
+              </div>
+              <div style="font-size:0.7rem; color:#64748b; margin-top:0.2rem;">
+                Pedestrian & Minor Risk Zone
+              </div>
+            </div>
+          </div>
+
+          <!-- English Translation & Category -->
+          <div style="margin-top:1rem; background:#0e1526; border-radius:8px; padding:0.75rem; border:1px solid #1e293b;">
+            <div style="font-size:0.75rem; font-weight:700; color:#38bdf8; margin-bottom:0.25rem;">
+              Autonomous ASR Translation:
+            </div>
+            <div style="font-size:0.82rem; color:#cbd5e1; font-style:italic;" id="resultTranslatedText">
+              "Brothers, right in front of Oakridge School, intense sparks are flying from the transformer! Kids are about to leave for recess, someone could get electrocuted, please send someone immediately!"
+            </div>
+            <div style="margin-top:0.5rem; display:flex; gap:0.4rem; flex-wrap:wrap;" id="resultSubTags">
+              <span class="badge badge-critical">High-Voltage Hazard: 98%</span>
+              <span class="badge badge-high">Fire Risk: 91%</span>
+              <span class="badge badge-medium">Pedestrian Exposure: 89%</span>
+            </div>
+          </div>
+
+          <!-- Citizen Tracking Timeline -->
+          <div class="timeline" id="intakeTimeline">
+            <div class="timeline-step">
+              <div class="timeline-dot"></div>
+              <strong>Grievance Submitted & Verified</strong>
+              <div style="color:#64748b; font-size:0.7rem;">Automated Ollama multimodal triage complete</div>
+            </div>
+            <div class="timeline-step">
+              <div class="timeline-dot" style="background:#f59e0b;"></div>
+              <strong>Rapid Emergency Crew Dispatched</strong>
+              <div style="color:#64748b; font-size:0.7rem;">Tier 1 High-Voltage Unit en route (ETA 12 mins)</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- TAB 2: RESOLVER WORKSPACE (ANTI-FAKE & COPILOT) -->
+    <!-- ========================================== -->
+    <div id="tab-resolver" class="tab-content">
+      <div class="grid-2col">
+
+        <!-- Resolver Queue -->
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">
+              <span>📋</span> Field Dispatch Task Queue
+            </div>
+            <span class="badge badge-high" id="queueCountBadge">3 Assigned</span>
+          </div>
+          <div class="ticket-list" id="resolverTicketList">
+            <!-- Dynamically populated -->
+          </div>
+        </div>
+
+        <!-- Resolver Action & Inspection Pane -->
+        <div class="card" id="resolverDetailPane">
+          <div class="card-header">
+            <div class="card-title">
+              <span>🔍</span> Investigation & Resolution Guard
+            </div>
+            <span class="badge badge-critical" id="resolverSelectedTier">CRITICAL</span>
+          </div>
+
+          <h3 id="resolverSelectedTitle" style="font-size:1rem; margin-bottom:0.4rem;">
+            CMP-7002: Severe 8-Inch Asphalt Crater on 4th Street Bicycle Lane
+          </h3>
+          <p id="resolverSelectedDesc" style="font-size:0.8rem; color:#94a3b8; margin-bottom:1rem;">
+            Deep cavity with exposed sub-base rock. Cyclists and scooters are swerving into oncoming vehicular traffic to avoid it.
+          </p>
+
+          <!-- Empathy-First AI Copilot Card -->
+          <div class="card" style="background:#0b1120; border-color:#2a374a; margin-bottom:1.25rem;">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.5rem;">
+              <div style="font-size:0.85rem; font-weight:700; color:#38bdf8; display:flex; align-items:center; gap:0.4rem;">
+                <span>🤖</span> Empathy-First De-Escalation AI Copilot
+              </div>
+              <div class="presets-row" style="margin-bottom:0;">
+                <button class="preset-chip active" onclick="regenerateCopilot('EMPATHETIC')">Empathetic</button>
+                <button class="preset-chip" onclick="regenerateCopilot('FORMAL')">Formal</button>
+                <button class="preset-chip" onclick="regenerateCopilot('ACTION_ORIENTED')">Action-Oriented</button>
+              </div>
+            </div>
+            <div id="copilotDraftBox" style="background:#070b14; border:1px solid #1e293b; border-radius:6px; padding:0.75rem; font-size:0.8rem; color:#cbd5e1; line-height:1.4; white-space:pre-line;">
+              Dear Citizen,
+              We hear how urgent and disruptive this situation is. We have dispatched our senior road repair crew with immediate priority.
+            </div>
+            <div style="margin-top:0.5rem; display:flex; justify-content:space-between; align-items:center;">
+              <span style="font-size:0.7rem; color:#64748b;" id="copilotPolicyCitation">Policy: Municipal Quality Charter §4.2</span>
+              <button class="btn" style="padding:0.35rem 0.75rem; font-size:0.75rem;" onclick="copyCopilotDraft()">
+                📋 Copy Response Draft
+              </button>
+            </div>
+          </div>
+
+          <!-- Proof-of-Resolution "Anti-Fake Closure" Guard (Minute 3 Demo) -->
+          <div class="card" style="background:#0b1120; border-color:#334155;">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.75rem;">
+              <div style="font-size:0.9rem; font-weight:700; color:#10b981; display:flex; align-items:center; gap:0.4rem;">
+                <span>🛡️</span> Proof-of-Resolution "Anti-Fake Closure" Guard
+              </div>
+              <span class="badge badge-low">VLM + CV Verification</span>
+            </div>
+
+            <!-- Before vs After Inspection -->
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:0.75rem; margin-bottom:0.75rem;">
+              <div>
+                <label>Original "Before" Scene</label>
+                <div style="height:140px; background:#070b14; border-radius:6px; overflow:hidden; border:1px solid #1e293b;">
+                  <img id="resolverBeforeImg" src="/static/images/pothole.svg" style="width:100%; height:100%; object-fit:cover;" />
+                </div>
+              </div>
+              <div>
+                <label>Uploaded "After" Scene</label>
+                <div style="height:140px; background:#070b14; border-radius:6px; overflow:hidden; border:1px solid #1e293b;" id="afterImageWrapper">
+                  <img id="resolverAfterImg" src="/static/images/fake_cat.svg" style="width:100%; height:100%; object-fit:cover;" />
+                </div>
+              </div>
+            </div>
+
+            <!-- Pitch Demo Test Buttons -->
+            <div style="display:flex; gap:0.5rem; margin-bottom:0.75rem;">
+              <button class="btn btn-danger" style="flex:1;" onclick="testAntiFakeClosure('fake')">
+                ❌ 1. Test Fake Photo (Domestic Cat)
+              </button>
+              <button class="btn btn-success" style="flex:1;" onclick="testAntiFakeClosure('genuine')">
+                ✅ 2. Test Genuine Repaired Photo
+              </button>
+            </div>
+
+            <!-- Live Verification AI Verdict Output -->
+            <div id="antiFakeResultAlert" style="background:#1e141a; border:1px solid #f43f5e; border-radius:8px; padding:0.75rem; font-size:0.8rem; display:none;">
+              <div style="font-weight:700; color:#fb7185; margin-bottom:0.2rem;" id="antiFakeTitle">
+                ❌ CLOSURE REJECTED: SCENE MISMATCH DETECTED
+              </div>
+              <div style="color:#cbd5e1; font-size:0.75rem;" id="antiFakeDesc">
+                AI comparison confirms zero structural feature alignment. Target pothole cavity absent from frame.
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ========================================== -->
+    <!-- TAB 3: EXECUTIVE ADMIN COMMAND CENTER      -->
+    <!-- ========================================== -->
+    <div id="tab-admin" class="tab-content">
+
+      <!-- Top KPI Row -->
+      <div class="grid-3col" style="margin-bottom:1.25rem;">
+        <div class="card" style="text-align:center;">
+          <div style="font-size:0.75rem; color:#94a3b8; text-transform:uppercase;">Total Grievances Ingested</div>
+          <div style="font-size:2rem; font-weight:800; color:#38bdf8;" id="kpiTotalComplaints">29</div>
+          <div style="font-size:0.7rem; color:#10b981;">100% Real-time Multimodal Triaged</div>
+        </div>
+        <div class="card" style="text-align:center;">
+          <div style="font-size:0.75rem; color:#94a3b8; text-transform:uppercase;">Master Incidents Swarmed</div>
+          <div style="font-size:2rem; font-weight:800; color:#f43f5e;" id="kpiMasterClusters">2</div>
+          <div style="font-size:0.7rem; color:#fb7185;">39 Citizen Reports Deduplicated</div>
+        </div>
+        <div class="card" style="text-align:center;">
+          <div style="font-size:0.75rem; color:#94a3b8; text-transform:uppercase;">Zero-Touch Auto-Resolved</div>
+          <div style="font-size:2rem; font-weight:800; color:#10b981;">68.4%</div>
+          <div style="font-size:0.7rem; color:#34d399;">Mean Resolution: 3.82 Seconds</div>
+        </div>
+      </div>
+
+      <!-- Predictive Failure Forecasting Alert Card -->
+      <div class="card" style="background:linear-gradient(90deg, #1e131d, #141b2d); border-color:#f43f5e; margin-bottom:1.25rem;">
+        <div style="display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:1rem;">
+          <div>
+            <div style="display:flex; align-items:center; gap:0.5rem; margin-bottom:0.3rem;">
+              <span class="badge badge-critical">PREDICTIVE FORECASTING ALERT</span>
+              <strong style="color:#fb7185; font-size:0.95rem;">340% Spike in Voltage Fluctuations in Sector 4</strong>
+            </div>
+            <div style="font-size:0.8rem; color:#cbd5e1;">
+              Transformer Substation 4B: 18 micro-burst reports over 3 hours. <strong>92% probability of catastrophic blowout within 8-12 hours</strong>.
+            </div>
+          </div>
+          <button class="btn btn-primary" id="btnDispatchForecast" onclick="dispatchPreventiveCrew('ALERT-FC-901')">
+            <span>🛡️</span> Dispatch Preventive Load-Shedding Crew
+          </button>
+        </div>
+      </div>
+
+      <!-- Main Admin Grid: GIS Map & Swarm Demo Controls -->
+      <div class="grid-2col">
+
+        <!-- Live GIS Map Card -->
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">
+              <span>🗺️</span> Spatial Master Incident Map & 200m Vulnerability Buffers
+            </div>
+            <!-- Minute 2 Pitch Demo Button -->
+            <button class="btn btn-danger pulsing-btn" onclick="triggerMassOutageDemo()">
+              <span>🔥</span> Simulate Mass Outage (25-User Swarm)
+            </button>
+          </div>
+
+          <canvas id="gisMapCanvas"></canvas>
+
+          <div style="margin-top:0.75rem; display:flex; justify-content:space-between; font-size:0.75rem; color:#94a3b8;">
+            <div style="display:flex; gap:1rem;">
+              <span>🔴 Pulsing Ring: Master Incident Swarm</span>
+              <span>🔵 Blue Circle: 200m School/Hospital Buffer</span>
+              <span>🟡 Dot: Single Report</span>
+            </div>
+            <span id="gisClickHint">Click any point on map to inspect</span>
+          </div>
+        </div>
+
+        <!-- Agentic Zero-Touch Playground & SLA Matrix -->
+        <div class="card">
+          <div class="card-header">
+            <div class="card-title">
+              <span>⚡</span> Agentic Zero-Touch Resolver Playground
+            </div>
+            <span class="badge badge-low">Tier-1 Digital Autopilot</span>
+          </div>
+
+          <!-- Digital Complaint Card for Zero-Touch Demo -->
+          <div style="background:#070b14; border:1px solid #1e293b; border-radius:8px; padding:0.85rem; margin-bottom:1rem;">
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.4rem;">
+              <span style="font-weight:700; color:#38bdf8;">CMP-7003: Duplicate $89.00 Charge (Invoice INV-402)</span>
+              <span class="badge badge-medium" id="ztStatusBadge">TRIAGED</span>
+            </div>
+            <p style="font-size:0.75rem; color:#94a3b8; margin-bottom:0.75rem;">
+              Citizen Elena Rostova reported duplicate automated deduction on Fiber Gigabit plan. Zero human operators required.
+            </p>
+            <button class="btn btn-success" style="width:100%;" id="btnExecuteZeroTouch" onclick="runZeroTouchExecution('CMP-7003')">
+              <span>⚡</span> Run Autonomous Tool Execution (Simulate Stripe Refund)
+            </button>
+          </div>
+
+          <!-- Live Step-by-Step Tool Execution Stream -->
+          <div id="ztToolStream" style="display:none; background:#040711; border:1px solid #10b981; border-radius:8px; padding:0.75rem; font-family:monospace; font-size:0.75rem; max-height:220px; overflow-y:auto;">
+            <div style="color:#10b981; font-weight:700; margin-bottom:0.3rem;">[AGENTIC RESOLUTION WORKFLOW INITIATED]</div>
+            <div id="ztToolSteps"></div>
+          </div>
+
+          <!-- Active Master Clusters List -->
+          <div style="margin-top:1.25rem;">
+            <div style="font-size:0.85rem; font-weight:700; color:#f8fafc; margin-bottom:0.5rem;">
+              Active Master Incident Clusters
+            </div>
+            <div id="adminMasterList" style="display:flex; flex-direction:column; gap:0.5rem; max-height:220px; overflow-y:auto;">
+              <!-- Populated dynamically -->
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </main>
+
+  <!-- Ollama Settings Modal -->
+  <div class="modal-backdrop" id="ollamaModal">
+    <div class="modal-box">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem;">
+        <h3 style="font-size:1.1rem; color:#38bdf8;">⚙️ Ollama LLM Configuration</h3>
+        <button class="btn" onclick="closeOllamaModal()" style="padding:0.2rem 0.5rem;">✕</button>
+      </div>
+      <div class="form-group">
+        <label>Ollama Base URL</label>
+        <input type="text" id="modalOllamaUrl" value="http://127.0.0.1:11434" />
+      </div>
+      <div class="form-group">
+        <label>Active Vision / LLM Model</label>
+        <input type="text" id="modalOllamaModel" value="llama3.2-vision" />
+      </div>
+      <div style="background:#070b14; border-radius:6px; padding:0.75rem; font-size:0.75rem; color:#94a3b8; margin-bottom:1rem;" id="modalOllamaDetails">
+        Status: Checking local daemon...
+      </div>
+      <div style="display:flex; gap:0.5rem; justify-content:flex-end;">
+        <button class="btn" onclick="testOllamaFromModal()">Test Connection</button>
+        <button class="btn btn-primary" onclick="saveOllamaConfig()">Save Configuration</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Global Application State
+    const state = {
+      activeTab: 'intake',
+      currentScenario: 'sparking_wire',
+      selectedChannel: 'WEB',
+      complaints: [],
+      masterIncidents: [],
+      landmarks: [],
+      selectedComplaintId: 'CMP-7002',
+      isRecording: false,
+      ws: null,
+      audioContext: null,
+      analyser: null,
+      dataArray: null
+    };
+
+    // Scenarios data
+    const SCENARIOS = {
+      sparking_wire: {
+        presetAudio: 'sparking_wire_hindi',
+        presetImage: 'sparking_wire',
+        userName: 'Aarav Sharma',
+        description: 'Bhaiya yahan Oakridge school ke theek samne transformer se bohot tez sparks nikal rahe hain! Bachhe chutti hone pe nikalne wale hain, kisi ko current lag sakta hai, please turant kisi ko bhejo!',
+        location: 'Oakridge School Gate, Elm & 8th St',
+        lat: 37.7753,
+        lng: -122.4190,
+        imgSrc: '/static/images/sparking_wire.svg'
+      },
+      water_flood: {
+        presetAudio: 'water_main_rupture',
+        presetImage: 'water_flood',
+        userName: 'Dr. Sarah Lin',
+        description: 'Emergency! The main 12-inch water pipe just ruptured on Grand Avenue outside St. Jude Hospital! The entire street is submerged under 2 feet of gushing water, ambulances can barely get through!',
+        location: 'Grand Ave Corridor (St. Jude Hospital Frontage)',
+        lat: 37.7830,
+        lng: -122.4160,
+        imgSrc: '/static/images/sparking_wire.svg'
+      },
+      pothole: {
+        presetAudio: 'deep_pothole',
+        presetImage: 'pothole',
+        userName: 'Marcus Vance',
+        description: 'There is a massive 8-inch deep crater on 4th Street right before the bicycle lane. Two scooters swerved and almost crashed this morning. It needs urgent asphalt patch.',
+        location: '4th St & Bryant Ave (Northbound)',
+        lat: 37.7790,
+        lng: -122.4120,
+        imgSrc: '/static/images/pothole.svg'
+      },
+      billing: {
+        presetAudio: 'duplicate_billing',
+        presetImage: 'billing',
+        userName: 'Elena Rostova',
+        description: 'Hello, I was checking my monthly statement for Fiber 1Gbps and noticed I was charged twice for $89.00 on invoice INV-402 on October 28th. Can you please check and refund the second deduction?',
+        location: 'Account Portal / Digital Ingestion',
+        lat: 37.7749,
+        lng: -122.4194,
+        imgSrc: '/static/images/billing.svg'
+      }
+    };
+
+    // Tab Switching
+    function switchTab(tabId) {
+      state.activeTab = tabId;
+      document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+      document.querySelectorAll('.nav-tab-btn').forEach(el => el.classList.remove('active'));
+
+      const targetTab = document.getElementById('tab-' + tabId);
+      if (targetTab) targetTab.classList.add('active');
+
+      const btns = document.querySelectorAll('.nav-tab-btn');
+      if (tabId === 'intake') btns[0].classList.add('active');
+      else if (tabId === 'resolver') btns[1].classList.add('active');
+      else if (tabId === 'admin') {
+        btns[2].classList.add('active');
+        drawGisMap();
+      }
+    }
+
+    // Set Channel
+    function setChannel(el, channel) {
+      state.selectedChannel = channel;
+      document.querySelectorAll('#tab-intake .presets-row .preset-chip').forEach(c => c.classList.remove('active'));
+      el.classList.add('active');
+    }
+
+    // Load Scenario
+    function loadScenario(key) {
+      state.currentScenario = key;
+      const sc = SCENARIOS[key];
+      if (!sc) return;
+
+      document.getElementById('intakeUserName').value = sc.userName;
+      document.getElementById('intakeDescription').value = sc.description;
+      document.getElementById('intakeImagePreview').src = sc.imgSrc;
+      document.getElementById('audioStatusText').innerText = 'Preset: ' + sc.presetAudio.replace('_', ' ');
+
+      const locSel = document.getElementById('intakeLocation');
+      for (let i = 0; i < locSel.options.length; i++) {
+        if (locSel.options[i].text.includes(sc.location.split(' ')[0])) {
+          locSel.selectedIndex = i;
+          break;
+        }
+      }
+    }
+
+    // Pitch Step Triggers
+    function triggerPitchStep(step) {
+      if (step === 1) {
+        switchTab('intake');
+        loadScenario('sparking_wire');
+        submitIntakeTriage();
+      } else if (step === 2) {
+        switchTab('admin');
+        setTimeout(() => triggerMassOutageDemo(), 400);
+      } else if (step === 3) {
+        switchTab('resolver');
+        selectTicketForResolver('CMP-7002');
+        testAntiFakeClosure('fake');
+      } else if (step === 4) {
+        switchTab('admin');
+        runZeroTouchExecution('CMP-7003');
+      }
+    }
+
+    // Audio Visualizer Canvas Simulation
+    function initAudioVisualizer() {
+      const canvas = document.getElementById('audioWaveCanvas');
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+      let offset = 0;
+
+      function renderWave() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.lineWidth = 2;
+        ctx.strokeStyle = state.isRecording ? '#ef4444' : '#38bdf8';
+        ctx.beginPath();
+
+        const sliceWidth = canvas.width / 60;
+        let x = 0;
+
+        for (let i = 0; i < 60; i++) {
+          const amp = state.isRecording ? 18 : 6;
+          const y = (canvas.height / 2) + Math.sin(i * 0.2 + offset) * amp * Math.cos(i * 0.1);
+          if (i === 0) ctx.moveTo(x, y);
+          else ctx.lineTo(x, y);
+          x += sliceWidth;
+        }
+        ctx.stroke();
+        offset += state.isRecording ? 0.25 : 0.05;
+        requestAnimationFrame(renderWave);
+      }
+      renderWave();
+    }
+
+    // Microphone Toggle
+    function toggleMicrophoneRecord() {
+      state.isRecording = !state.isRecording;
+      const btn = document.getElementById('btnRecordAudio');
+      const icon = document.getElementById('recordIcon');
+      const text = document.getElementById('recordText');
+
+      if (state.isRecording) {
+        btn.classList.add('btn-danger');
+        icon.innerText = '⏹️';
+        text.innerText = 'Stop Recording';
+        document.getElementById('audioStatusText').innerText = 'Recording microphone live... (Speech ASR active)';
+      } else {
+        btn.classList.remove('btn-danger');
+        icon.innerText = '🔴';
+        text.innerText = 'Record Microphone';
+        document.getElementById('audioStatusText').innerText = 'Audio captured. Regional ASR ready.';
+      }
+    }
+
+    function playPresetAudio() {
+      // Simulate live audio playback pulse
+      state.isRecording = true;
+      setTimeout(() => { state.isRecording = false; }, 3200);
+    }
+
+    // Submit Intake Triage
+    async function submitIntakeTriage() {
+      const sc = SCENARIOS[state.currentScenario] || SCENARIOS.sparking_wire;
+      const desc = document.getElementById('intakeDescription').value || sc.description;
+      const userName = document.getElementById('intakeUserName').value || sc.userName;
+      const locSel = document.getElementById('intakeLocation');
+      const opt = locSel.options[locSel.selectedIndex];
+      const lat = parseFloat(opt.getAttribute('data-lat') || sc.lat);
+      const lng = parseFloat(opt.getAttribute('data-lng') || sc.lng);
+
+      const payload = {
+        title: null,
+        description: desc,
+        voice_audio_preset: sc.presetAudio,
+        image_preset: sc.presetImage,
+        channel: state.selectedChannel,
+        user_name: userName,
+        latitude: lat,
+        longitude: lng,
+        location_name: opt.text
+      };
+
+      try {
+        const res = await fetch('/api/complaints/triage', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+        const data = await res.json();
+        renderTriageResults(data);
+        fetchComplaints();
+        fetchMasters();
+      } catch (err) {
+        console.error('Triage error:', err);
+      }
+    }
+
+    function renderTriageResults(c) {
+      document.getElementById('resultScoreValue').innerText = c.priority_score;
+      document.getElementById('resultTierLabel').innerText = c.priority_tier + ' EMERGENCY — 2 HOUR SLA DISPATCH';
+      document.getElementById('resultFormulaStr').innerText = c.score_breakdown.formula_str;
+
+      document.getElementById('resultVocalEmotion').innerText = c.vocal_emotion + ' (' + c.vocal_panic_score + '% vocal panic)';
+      document.getElementById('resultDialect').innerText = 'Dialect: ' + (c.dialect || 'Colloquial Regional');
+      document.getElementById('resultVisualHazard').innerText = c.visual_hazard_score + '/100 Hazard Score';
+      document.getElementById('resultDefectDetected').innerText = c.visual_defect || 'Physical Defect';
+      document.getElementById('resultClusterSize').innerText = c.cluster_size + ' Concurrent Reports Swarmed';
+      
+      if (c.score_breakdown.nearby_critical_landmark) {
+        document.getElementById('resultVulnerability').innerText = '+' + c.score_breakdown.weighted_context + 'pts (' + c.score_breakdown.nearby_critical_landmark + ')';
+      }
+
+      document.getElementById('resultTranslatedText').innerText = '"' + (c.translated_english || c.description) + '"';
+
+      const tagContainer = document.getElementById('resultSubTags');
+      tagContainer.innerHTML = '';
+      (c.sub_tags || []).forEach(tag => {
+        const conf = c.sub_tag_confidences ? Math.round((c.sub_tag_confidences[tag] || 0.9) * 100) : 95;
+        const span = document.createElement('span');
+        span.className = 'badge badge-high';
+        span.innerText = tag + ': ' + conf + '%';
+        tagContainer.appendChild(span);
+      });
+    }
+
+    // Resolver Workspace
+    async function fetchComplaints() {
+      try {
+        const res = await fetch('/api/complaints');
+        state.complaints = await res.json();
+        renderResolverQueue();
+        document.getElementById('kpiTotalComplaints').innerText = state.complaints.length;
+      } catch (e) {
+        console.error(e);
+      }
+    }
+
+    function renderResolverQueue() {
+      const list = document.getElementById('resolverTicketList');
+      list.innerHTML = '';
+      document.getElementById('queueCountBadge').innerText = state.complaints.length + ' Active';
+
+      state.complaints.forEach(c => {
+        const div = document.createElement('div');
+        div.className = 'ticket-item' + (c.id === state.selectedComplaintId ? ' active' : '');
+        div.onclick = () => selectTicketForResolver(c.id);
+
+        let badgeClass = 'badge-medium';
+        if (c.priority_tier === 'CRITICAL') badgeClass = 'badge-critical';
+        else if (c.priority_tier === 'HIGH') badgeClass = 'badge-high';
+        else if (c.status === 'VERIFIED_CLOSED') badgeClass = 'badge-low';
+
+        div.innerHTML = `
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.3rem;">
+            <strong style="color:#f8fafc; font-size:0.85rem;">${c.id}</strong>
+            <span class="badge ${badgeClass}">${c.status} (${c.priority_score})</span>
+          </div>
+          <div style="font-size:0.8rem; color:#cbd5e1; margin-bottom:0.25rem;">${c.title}</div>
+          <div style="font-size:0.7rem; color:#64748b; display:flex; justify-content:space-between;">
+            <span>📍 ${c.location_name}</span>
+            <span>⏱️ ${Math.round(c.sla_seconds_remaining / 60)}m SLA left</span>
+          </div>
+        `;
+        list.appendChild(div);
+      });
+    }
+
+    function selectTicketForResolver(ticketId) {
+      state.selectedComplaintId = ticketId;
+      renderResolverQueue();
+      const c = state.complaints.find(x => x.id === ticketId);
+      if (!c) return;
+
+      document.getElementById('resolverSelectedTitle').innerText = c.id + ': ' + c.title;
+      document.getElementById('resolverSelectedDesc').innerText = c.description;
+      document.getElementById('resolverSelectedTier').innerText = c.priority_tier;
+      document.getElementById('resolverBeforeImg').src = c.image_url || '/static/images/pothole.svg';
+
+      regenerateCopilot('EMPATHETIC');
+      document.getElementById('antiFakeResultAlert').style.display = 'none';
+    }
+
+    async function regenerateCopilot(tone) {
+      try {
+        const res = await fetch('/api/resolver/copilot-draft', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ complaint_id: state.selectedComplaintId, tone: tone })
+        });
+        const data = await res.json();
+        document.getElementById('copilotDraftBox').innerText = data.draft_message;
+        if (data.policy_citations && data.policy_citations.length > 0) {
+          document.getElementById('copilotPolicyCitation').innerText = 'Cited: ' + data.policy_citations[0];
+        }
+      } catch (err) {
+        console.error(err);
+      }
+    }
+
+    function copyCopilotDraft() {
+      const text = document.getElementById('copilotDraftBox').innerText;
+      navigator.clipboard.writeText(text);
+      alert('Copied AI Copilot de-escalation response to clipboard!');
+    }
+
+    // Minute 3 Demo: Anti-Fake Closure
+    async function testAntiFakeClosure(kind) {
+      const isFake = (kind === 'fake');
+      const preset = isFake ? 'fake_unrelated' : 'genuine_repaired_pothole';
+      document.getElementById('resolverAfterImg').src = isFake ? '/static/images/fake_cat.svg' : '/static/images/repaired_pothole.svg';
+
+      const resAlert = document.getElementById('antiFakeResultAlert');
+      resAlert.style.display = 'block';
+
+      try {
+        const res = await fetch('/api/resolver/anti-fake-verify', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            complaint_id: state.selectedComplaintId,
+            after_image_preset: preset,
+            resolver_id: 'AGENT-409',
+            resolver_notes: isFake ? 'Uploading test picture to close ticket' : 'Completed machine compaction and asphalt sealant.'
+          })
+        });
+        const data = await res.json();
+
+        if (data.verified) {
+          resAlert.style.background = '#06281e';
+          resAlert.style.borderColor = '#10b981';
+          document.getElementById('antiFakeTitle').style.color = '#34d399';
+          document.getElementById('antiFakeTitle').innerText = '✅ VERIFIED CLOSURE APPROVED (' + data.fix_confidence + '% CONFIDENCE)';
+          document.getElementById('antiFakeDesc').innerText = data.reason + ' Token: ' + (data.cryptographic_token || 'TOKEN-OK');
+        } else {
+          resAlert.style.background = '#271118';
+          resAlert.style.borderColor = '#f43f5e';
+          document.getElementById('antiFakeTitle').style.color = '#fb7185';
+          document.getElementById('antiFakeTitle').innerText = '❌ CLOSURE REJECTED: SCENE MISMATCH DETECTED (' + data.fix_confidence + '% CONFIDENCE)';
+          document.getElementById('antiFakeDesc').innerText = data.reason;
+        }
+        fetchComplaints();
+      } catch (err) {
+        console.error(err);
+      }
+    }
+
+    // Admin & GIS Map
+    async function fetchMasters() {
+      try {
+        const res = await fetch('/api/masters');
+        state.masterIncidents = await res.json();
+        document.getElementById('kpiMasterClusters').innerText = state.masterIncidents.length;
+        renderAdminMasters();
+        drawGisMap();
+      } catch (e) {
+        console.error(e);
+      }
+    }
+
+    async function fetchLandmarks() {
+      try {
+        const res = await fetch('/api/landmarks');
+        state.landmarks = await res.json();
+        drawGisMap();
+      } catch (e) {
+        console.error(e);
+      }
+    }
+
+    function renderAdminMasters() {
+      const container = document.getElementById('adminMasterList');
+      container.innerHTML = '';
+      state.masterIncidents.forEach(m => {
+        const div = document.createElement('div');
+        div.style.background = '#090e1a';
+        div.style.border = '1px solid #1e293b';
+        div.style.borderRadius = '6px';
+        div.style.padding = '0.6rem';
+        div.innerHTML = `
+          <div style="display:flex; justify-content:space-between; align-items:center;">
+            <strong style="color:#fb7185; font-size:0.8rem;">${m.id}</strong>
+            <span class="badge badge-critical">${m.complaint_count} Swarm Reports</span>
+          </div>
+          <div style="font-size:0.75rem; color:#cbd5e1; margin-top:0.2rem;">${m.title}</div>
+          <div style="font-size:0.7rem; color:#64748b;">📍 ${m.location_name} | Priority: ${m.priority_score}/100</div>
+        `;
+        container.appendChild(div);
+      });
+    }
+
+    // Minute 2 Demo: Mass Outage
+    async function triggerMassOutageDemo() {
+      try {
+        const res = await fetch('/api/demo/simulate-mass-outage', { method: 'POST' });
+        const data = await res.json();
+        alert('⚡ Simulated 25 Citizen Complaints in Sector 4!\nMerged into Master Incident: ' + data.master_incident.id + '\nPriority boosted to ' + data.master_incident.priority_score + '/100 [CRITICAL]!');
+        fetchComplaints();
+        fetchMasters();
+      } catch (err) {
+        console.error(err);
+      }
+    }
+
+    // Zero-Touch Tool Execution Simulator
+    async function runZeroTouchExecution(ticketId) {
+      const btn = document.getElementById('btnExecuteZeroTouch');
+      btn.disabled = true;
+      btn.innerText = '⚡ Executing Multi-Tool Agentic Sequence...';
+
+      const streamBox = document.getElementById('ztToolStream');
+      const stepsDiv = document.getElementById('ztToolSteps');
+      streamBox.style.display = 'block';
+      stepsDiv.innerHTML = '';
+
+      try {
+        const res = await fetch('/api/resolver/zero-touch-execute', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ complaint_id: ticketId })
+        });
+        const data = await res.json();
+
+        // Stream tools visually with delays
+        let i = 0;
+        function streamNextStep() {
+          if (i < data.actions_taken.length) {
+            const step = data.actions_taken[i];
+            const p = document.createElement('div');
+            p.style.marginBottom = '0.4rem';
+            p.innerHTML = `<span style="color:#38bdf8;">[${step.timestamp}] STEP ${step.step}: ${step.tool}</span><br><span style="color:#cbd5e1;">&gt; ${step.result}</span>`;
+            stepsDiv.appendChild(p);
+            stepsDiv.scrollTop = stepsDiv.scrollHeight;
+            i++;
+            setTimeout(streamNextStep, 500);
+          } else {
+            const done = document.createElement('div');
+            done.style.marginTop = '0.5rem';
+            done.style.color = '#34d399';
+            done.style.fontWeight = 'bold';
+            done.innerText = `✓ RESOLUTION COMPLETE IN ${data.execution_time_seconds}s! Refund Transaction: ${data.refund_transaction_id}`;
+            stepsDiv.appendChild(done);
+
+            document.getElementById('ztStatusBadge').className = 'badge badge-low';
+            document.getElementById('ztStatusBadge').innerText = 'AUTO_RESOLVED';
+            btn.innerText = `✓ Resolved in ${data.execution_time_seconds}s ($89 Refunded)`;
+            fetchComplaints();
+          }
+        }
+        streamNextStep();
+
+      } catch (err) {
+        console.error(err);
+        btn.disabled = false;
+        btn.innerText = 'Run Autonomous Tool Execution';
+      }
+    }
+
+    // Preventive Crew Dispatch
+    async function dispatchPreventiveCrew(alertId) {
+      const btn = document.getElementById('btnDispatchForecast');
+      btn.disabled = true;
+      btn.innerText = 'Dispatching Crew...';
+      try {
+        const res = await fetch(`/api/forecasting/dispatch/${alertId}`, { method: 'POST' });
+        const data = await res.json();
+        btn.className = 'btn btn-success';
+        btn.innerText = '✓ Preventive Crew Deployed (Blowout Prevented)';
+      } catch (e) {
+        console.error(e);
+      }
+    }
+
+    // GIS Map Canvas Drawing
+    function drawGisMap() {
+      const canvas = document.getElementById('gisMapCanvas');
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+      const w = canvas.width = canvas.parentElement.clientWidth || 600;
+      const h = canvas.height = 440;
+
+      // Coordinate mapping bounds (San Francisco Metro Core)
+      const minLat = 37.7500, maxLat = 37.7900;
+      const minLng = -122.4400, maxLng = -122.4000;
+
+      function toX(lng) { return ((lng - minLng) / (maxLng - minLng)) * (w - 80) + 40; }
+      function toY(lat) { return (1.0 - ((lat - minLat) / (maxLat - minLat))) * (h - 80) + 40; }
+
+      // Background grid
+      ctx.fillStyle = '#060a14';
+      ctx.fillRect(0, 0, w, h);
+
+      // Grid lines (streets)
+      ctx.strokeStyle = '#121b2d';
+      ctx.lineWidth = 1;
+      for (let x = 0; x < w; x += 40) {
+        ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, h); ctx.stroke();
+      }
+      for (let y = 0; y < h; y += 40) {
+        ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(w, y); ctx.stroke();
+      }
+
+      // Draw Critical Infrastructure Landmarks & 200m Buffers
+      state.landmarks.forEach(lm => {
+        const lx = toX(lm.longitude);
+        const ly = toY(lm.latitude);
+
+        // 200m vulnerability buffer circle
+        ctx.beginPath();
+        ctx.arc(lx, ly, 45, 0, Math.PI * 2);
+        ctx.fillStyle = 'rgba(14, 165, 233, 0.1)';
+        ctx.fill();
+        ctx.strokeStyle = 'rgba(14, 165, 233, 0.4)';
+        ctx.setLineDash([4, 4]);
+        ctx.stroke();
+        ctx.setLineDash([]);
+
+        // Landmark icon
+        ctx.beginPath();
+        ctx.arc(lx, ly, 7, 0, Math.PI * 2);
+        ctx.fillStyle = '#0ea5e9';
+        ctx.fill();
+
+        ctx.fillStyle = '#94a3b8';
+        ctx.font = '10px sans-serif';
+        ctx.fillText(lm.name.split(' ')[0] + ' ' + (lm.type === 'SCHOOL' ? '🏫' : '🏥'), lx + 10, ly + 3);
+      });
+
+      // Draw Individual Complaints
+      state.complaints.forEach(c => {
+        const cx = toX(c.longitude);
+        const cy = toY(c.latitude);
+
+        ctx.beginPath();
+        ctx.arc(cx, cy, 4, 0, Math.PI * 2);
+        ctx.fillStyle = c.priority_tier === 'CRITICAL' ? '#f43f5e' : (c.priority_tier === 'HIGH' ? '#f59e0b' : '#38bdf8');
+        ctx.fill();
+      });
+
+      // Draw Pulsing Master Incidents
+      state.masterIncidents.forEach(m => {
+        const mx = toX(m.center_longitude);
+        const my = toY(m.center_latitude);
+
+        // Outer pulsing ring
+        ctx.beginPath();
+        ctx.arc(mx, my, 28, 0, Math.PI * 2);
+        ctx.fillStyle = 'rgba(239, 68, 68, 0.25)';
+        ctx.fill();
+        ctx.strokeStyle = '#ef4444';
+        ctx.lineWidth = 2;
+        ctx.stroke();
+
+        // Core marker
+        ctx.beginPath();
+        ctx.arc(mx, my, 10, 0, Math.PI * 2);
+        ctx.fillStyle = '#dc2626';
+        ctx.fill();
+
+        // Swarm label
+        ctx.fillStyle = '#ffffff';
+        ctx.font = 'bold 10px monospace';
+        ctx.fillText(`MASTER (${m.complaint_count} Swarm)`, mx + 14, my + 4);
+      });
+    }
+
+    // Ollama Configuration Modal
+    function openOllamaModal() {
+      document.getElementById('ollamaModal').classList.add('open');
+      testOllamaFromModal();
+    }
+    function closeOllamaModal() {
+      document.getElementById('ollamaModal').classList.remove('open');
+    }
+
+    async function testOllamaFromModal() {
+      const url = document.getElementById('modalOllamaUrl').value;
+      const model = document.getElementById('modalOllamaModel').value;
+      const det = document.getElementById('modalOllamaDetails');
+      det.innerText = 'Pinging Ollama at ' + url + '...';
+
+      try {
+        const res = await fetch('/api/health');
+        const data = await res.json();
+        const o = data.ollama;
+        det.innerText = `Ollama Status: ${o.status.toUpperCase()} | Message: ${o.message} | Active Model: ${o.active_model}`;
+        updateOllamaBadge(o);
+      } catch (e) {
+        det.innerText = 'Could not reach backend health check.';
+      }
+    }
+
+    async function saveOllamaConfig() {
+      const url = document.getElementById('modalOllamaUrl').value;
+      const model = document.getElementById('modalOllamaModel').value;
+      try {
+        const res = await fetch('/api/ollama/config', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ base_url: url, model: model })
+        });
+        const data = await res.json();
+        updateOllamaBadge(data.updated_health);
+        closeOllamaModal();
+        alert('Ollama configuration saved!');
+      } catch (e) {
+        alert('Error saving config: ' + e);
+      }
+    }
+
+    function updateOllamaBadge(health) {
+      const dot = document.getElementById('ollamaDot');
+      const label = document.getElementById('ollamaLabel');
+      if (health.status === 'connected') {
+        dot.className = 'status-dot';
+        label.innerText = `Ollama: Online [${health.active_model}]`;
+      } else {
+        dot.className = 'status-dot offline';
+        label.innerText = `Ollama: Ready [Hybrid Mode]`;
+      }
+    }
+
+    // WebSocket Real-time Updates
+    function connectWebSocket() {
+      const protocol = window.location.protocol === 'https:' ? 'wss:' : 'ws:';
+      const wsUrl = `${protocol}//${window.location.host}/ws`;
+      state.ws = new WebSocket(wsUrl);
+
+      state.ws.onopen = () => {
+        console.log('ComplainAI WebSocket connected');
+      };
+      state.ws.onmessage = (event) => {
+        try {
+          const msg = JSON.parse(event.data);
+          console.log('WS Message:', msg);
+          if (msg.event === 'CONNECTED' && msg.ollama_status) {
+            updateOllamaBadge(msg.ollama_status);
+          } else if (msg.event === 'NEW_COMPLAINT' || msg.event === 'MASS_OUTAGE_SIMULATED') {
+            fetchComplaints();
+            fetchMasters();
+          }
+        } catch (e) {}
+      };
+      state.ws.onclose = () => {
+        setTimeout(connectWebSocket, 3000);
+      };
+    }
+
+    // Startup Initialization
+    window.addEventListener('DOMContentLoaded', () => {
+      initAudioVisualizer();
+      connectWebSocket();
+      fetchComplaints();
+      fetchMasters();
+      fetchLandmarks();
+      loadScenario('sparking_wire');
+    });
+
+    window.addEventListener('resize', () => {
+      if (state.activeTab === 'admin') drawGisMap();
+    });
+  </script>
+</body>
+</html>

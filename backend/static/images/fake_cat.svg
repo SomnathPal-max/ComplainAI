@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 400" width="100%" height="100%">
+  <!-- Unrelated Living Room Scene with a Pet Cat -->
+  <rect width="600" height="400" fill="#fef3c7" />
+  <rect y="260" width="600" height="140" fill="#d97706" opacity="0.3" />
+  <!-- Sofa Backrest -->
+  <rect x="50" y="140" width="500" height="130" rx="15" fill="#f87171" opacity="0.8" />
+  <!-- Cute Domestic Cat (Completely unrelated to pothole or street!) -->
+  <circle cx="300" cy="220" r="45" fill="#f97316" />
+  <circle cx="300" cy="160" r="32" fill="#f97316" />
+  <!-- Ears -->
+  <polygon points="275,145 285,115 295,140" fill="#ea580c" />
+  <polygon points="305,140 315,115 325,145" fill="#ea580c" />
+  <!-- Eyes -->
+  <circle cx="290" cy="155" r="4" fill="#0f172a" />
+  <circle cx="310" cy="155" r="4" fill="#0f172a" />
+  <text x="210" y="320" fill="#b91c1c" font-family="system-ui" font-weight="bold" font-size="16">Uploaded Random Photo: Domestic Cat</text>
+  <!-- Red Rejection Cross -->
+  <line x1="80" y1="60" x2="520" y2="340" stroke="#dc2626" stroke-width="8" opacity="0.6" />
+  <line x1="520" y1="60" x2="80" y2="340" stroke="#dc2626" stroke-width="8" opacity="0.6" />
+  <rect x="110" y="20" width="380" height="36" rx="4" fill="#ef4444" />
+  <text x="130" y="44" fill="#ffffff" font-family="monospace" font-weight="bold" font-size="14">❌ FRAUD DETECTED: 0% SCENE MATCH</text>
+</svg>
