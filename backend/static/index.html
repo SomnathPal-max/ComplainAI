@@ -3,359 +3,795 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ComplainAI — Autonomous Campus Grievance Intelligence & Zero-Touch Resolution</title>
+  <title>ComplainAI — Campus Grievance Intelligence & Zero-Touch Command Center</title>
   <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🛡️</text></svg>">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg-page: #0a0f1d;
-      --bg-card: #111827;
-      --bg-card-subtle: #0d1424;
-      --bg-hover: #1e293b;
-      --border-subtle: #1e293b;
-      --border-focus: #3b82f6;
-      --text-primary: #f8fafc;
-      --text-secondary: #cbd5e1;
+      --bg-base: #060913;
+      --bg-surface: #0c1222;
+      --bg-card: #111a2e;
+      --bg-card-hover: #16223d;
+      --bg-card-subtle: #0f1629;
+      --bg-input: #090e1c;
+      
+      --border-subtle: rgba(255, 255, 255, 0.08);
+      --border-card: rgba(255, 255, 255, 0.12);
+      --border-focus: #6366f1;
+      
+      --text-main: #f8fafc;
       --text-muted: #94a3b8;
       --text-dim: #64748b;
-      --brand-primary: #2563eb;
-      --brand-hover: #1d4ed8;
-      --color-critical: #ef4444;
-      --color-high: #f59e0b;
-      --color-medium: #3b82f6;
-      --color-low: #10b981;
-      --color-success: #10b981;
-      --color-bad: #ef4444;
+      
+      --accent-indigo: #6366f1;
+      --accent-indigo-hover: #4f46e5;
+      --accent-cyan: #06b6d4;
+      --accent-emerald: #10b981;
+      --accent-rose: #f43f5e;
+      --accent-amber: #f59e0b;
+      
       --radius-sm: 6px;
       --radius-md: 10px;
       --radius-lg: 14px;
-      --shadow-card: 0 4px 12px rgba(0, 0, 0, 0.25);
+      --radius-xl: 18px;
+      
+      --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.2);
+      --shadow-md: 0 4px 12px rgba(0, 0, 0, 0.35);
+      --shadow-lg: 0 10px 25px -5px rgba(0, 0, 0, 0.5);
+      --shadow-glow: 0 0 20px rgba(99, 102, 241, 0.15);
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
-    body { background-color: var(--bg-page); color: var(--text-primary); min-height: 100vh; display: flex; flex-direction: column; line-height: 1.5; -webkit-font-smoothing: antialiased; }
+    
+    body {
+      background-color: var(--bg-base);
+      background-image: 
+        radial-gradient(circle at 15% 10%, rgba(99, 102, 241, 0.08) 0%, transparent 40%),
+        radial-gradient(circle at 85% 80%, rgba(6, 182, 212, 0.06) 0%, transparent 40%);
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+    }
 
-    ::-webkit-scrollbar { width: 7px; height: 7px; }
-    ::-webkit-scrollbar-track { background: var(--bg-page); }
-    ::-webkit-scrollbar-thumb { background: #243046; border-radius: 4px; }
+    /* Custom Scrollbars */
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: var(--bg-base); }
+    ::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 4px; }
     ::-webkit-scrollbar-thumb:hover { background: #334155; }
 
     /* Top Navigation Header */
     header {
-      background: rgba(17, 24, 39, 0.95);
-      backdrop-filter: blur(10px);
+      background: rgba(12, 18, 34, 0.85);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
       border-bottom: 1px solid var(--border-subtle);
       position: sticky;
       top: 0;
       z-index: 100;
-      padding: 0.65rem 1.5rem;
+      padding: 0.65rem 1.75rem;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 1.25rem;
+      gap: 1.5rem;
     }
 
-    .brand-group { display: flex; align-items: center; gap: 0.75rem; text-decoration: none; color: inherit; cursor: pointer; }
+    .brand-container {
+      display: flex;
+      align-items: center;
+      gap: 0.85rem;
+      cursor: pointer;
+      text-decoration: none;
+    }
+    .brand-icon {
+      width: 40px;
+      height: 40px;
+      background: linear-gradient(135deg, #4f46e5, #06b6d4);
+      border-radius: var(--radius-md);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 12px rgba(99, 102, 241, 0.35);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+    .brand-icon svg { width: 22px; height: 22px; color: #ffffff; }
+
+    .brand-meta { display: flex; flex-direction: column; }
+    .brand-title {
+      font-size: 1.15rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
     .brand-badge {
-      width: 38px; height: 38px;
-      background: linear-gradient(135deg, #1e3a8a, #2563eb);
-      border: 1px solid rgba(59, 130, 246, 0.4);
+      font-size: 0.65rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      padding: 2px 7px;
+      border-radius: 20px;
+      background: rgba(99, 102, 241, 0.15);
+      color: #818cf8;
+      border: 1px solid rgba(99, 102, 241, 0.35);
+      letter-spacing: 0.04em;
+    }
+    .brand-tagline { font-size: 0.72rem; color: var(--text-dim); }
+
+    /* Segmented Navigation Tabs */
+    .portal-nav {
+      display: flex;
+      background: #090e1c;
+      border: 1px solid var(--border-subtle);
+      padding: 3px;
+      border-radius: var(--radius-md);
+      gap: 4px;
+    }
+    .portal-tab-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      font-size: 0.82rem;
+      font-weight: 600;
+      padding: 0.45rem 0.95rem;
       border-radius: var(--radius-sm);
-      display: flex; align-items: center; justify-content: center;
-      font-size: 1.25rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.45rem;
+      transition: all 0.18s ease;
+      white-space: nowrap;
     }
-    .brand-title { font-size: 1.15rem; font-weight: 800; letter-spacing: -0.02em; color: var(--text-primary); display: flex; align-items: center; gap: 0.4rem; }
-    .brand-pill { font-size: 0.65rem; background: rgba(59, 130, 246, 0.2); border: 1px solid rgba(59, 130, 246, 0.4); color: #60a5fa; padding: 2px 7px; border-radius: 12px; font-weight: 700; text-transform: uppercase; }
+    .portal-tab-btn svg { width: 16px; height: 16px; opacity: 0.8; }
+    .portal-tab-btn:hover { color: #ffffff; background: rgba(255, 255, 255, 0.05); }
+    .portal-tab-btn.active {
+      background: var(--accent-indigo);
+      color: #ffffff;
+      box-shadow: 0 2px 8px rgba(99, 102, 241, 0.45);
+    }
+    .portal-tab-btn.active svg { opacity: 1; }
 
-    /* Role Nav Tabs */
-    .nav-tabs { display: flex; gap: 0.35rem; background: #0c1222; padding: 0.25rem; border-radius: var(--radius-md); border: 1px solid var(--border-subtle); }
-    .nav-tab-btn {
-      background: transparent; border: none; color: var(--text-muted);
-      padding: 0.45rem 1rem; border-radius: var(--radius-sm); font-size: 0.85rem; font-weight: 600;
-      cursor: pointer; transition: all 0.15s ease; display: flex; align-items: center; gap: 0.45rem;
+    .tab-badge {
+      font-size: 0.68rem;
+      font-weight: 700;
+      padding: 1px 6px;
+      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.18);
+      color: #ffffff;
     }
-    .nav-tab-btn:hover { color: var(--text-primary); background: var(--bg-hover); }
-    .nav-tab-btn.active { color: #ffffff; background: #2563eb; box-shadow: 0 2px 8px rgba(37, 99, 235, 0.4); }
 
-    /* Header User Profile & Auth */
-    .header-user-badge {
-      display: flex; align-items: center; gap: 0.65rem;
-      background: #162035; border: 1px solid #243046; padding: 0.35rem 0.85rem; border-radius: 20px;
-      font-size: 0.82rem; cursor: pointer; transition: background 0.15s;
+    /* Header Profile & System Actions */
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 0.85rem;
     }
-    .header-user-badge:hover { background: #1f2d48; border-color: #3b82f6; }
-    .user-avatar { font-size: 1.1rem; }
-    .user-details { display: flex; flex-direction: column; text-align: left; }
-    .user-name-role { font-weight: 700; color: #f8fafc; font-size: 0.82rem; }
-    .user-sub { font-size: 0.7rem; color: #94a3b8; }
 
-    .btn-auth-switch {
-      background: #2563eb; color: #fff; border: none; font-size: 0.75rem; font-weight: 600;
-      padding: 0.35rem 0.75rem; border-radius: var(--radius-sm); cursor: pointer; transition: 0.15s;
+    .user-profile-badge {
+      display: flex;
+      align-items: center;
+      gap: 0.7rem;
+      background: #0d1424;
+      border: 1px solid var(--border-card);
+      padding: 0.35rem 0.85rem 0.35rem 0.5rem;
+      border-radius: 30px;
+      cursor: pointer;
+      transition: all 0.18s ease;
     }
-    .btn-auth-switch:hover { background: #1d4ed8; }
-    .btn-logout {
-      background: #334155; color: #f1f5f9; border: none; font-size: 0.75rem; font-weight: 600;
-      padding: 0.35rem 0.65rem; border-radius: var(--radius-sm); cursor: pointer;
+    .user-profile-badge:hover {
+      background: #141f36;
+      border-color: rgba(99, 102, 241, 0.5);
     }
-    .btn-logout:hover { background: #ef4444; color: #fff; }
+    .avatar-initials {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #4f46e5, #9333ea);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: #ffffff;
+      box-shadow: 0 0 8px rgba(99, 102, 241, 0.4);
+    }
+    .profile-info { display: flex; flex-direction: column; text-align: left; }
+    .profile-name { font-size: 0.82rem; font-weight: 700; color: #ffffff; line-height: 1.1; }
+    .profile-role-tag { font-size: 0.68rem; color: #94a3b8; }
 
-    /* Assistive Scenario Bar */
-    .sub-banner {
-      background: #0d1527; border-bottom: 1px solid var(--border-subtle);
-      padding: 0.5rem 1.5rem; display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap;
+    .btn-switch-role {
+      background: rgba(99, 102, 241, 0.15);
+      border: 1px solid rgba(99, 102, 241, 0.4);
+      color: #a5b4fc;
+      font-size: 0.76rem;
+      font-weight: 600;
+      padding: 0.4rem 0.8rem;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+      transition: all 0.18s;
+    }
+    .btn-switch-role:hover {
+      background: var(--accent-indigo);
+      color: #ffffff;
+      box-shadow: 0 2px 8px rgba(99, 102, 241, 0.35);
+    }
+
+    .btn-signout {
+      background: #162035;
+      border: 1px solid var(--border-subtle);
+      color: var(--text-muted);
+      font-size: 0.76rem;
+      font-weight: 600;
+      padding: 0.4rem 0.7rem;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      transition: all 0.18s;
+    }
+    .btn-signout:hover {
+      background: rgba(244, 63, 94, 0.2);
+      border-color: rgba(244, 63, 94, 0.5);
+      color: #fda4af;
+    }
+
+    /* Sub-Header Incident Scenarios Ribbon */
+    .scenario-ribbon {
+      background: rgba(9, 14, 28, 0.9);
+      border-bottom: 1px solid var(--border-subtle);
+      padding: 0.5rem 1.75rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      flex-wrap: wrap;
       font-size: 0.8rem;
     }
-    .scenario-picker { display: flex; gap: 0.4rem; align-items: center; flex-wrap: wrap; }
-    .scenario-btn {
-      background: #162035; border: 1px solid #243046; color: var(--text-secondary);
-      padding: 0.3rem 0.65rem; border-radius: var(--radius-sm); font-size: 0.76rem; font-weight: 500;
-      cursor: pointer; transition: all 0.15s ease; display: inline-flex; align-items: center; gap: 0.3rem;
+    .scenario-pills { display: flex; align-items: center; gap: 0.45rem; flex-wrap: wrap; }
+    .scenario-pill-btn {
+      background: #0f172a;
+      border: 1px solid var(--border-subtle);
+      color: var(--text-muted);
+      font-size: 0.75rem;
+      font-weight: 500;
+      padding: 0.28rem 0.65rem;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+      transition: all 0.15s ease;
     }
-    .scenario-btn:hover { background: #1e2c46; border-color: #3b82f6; color: #ffffff; }
+    .scenario-pill-btn:hover {
+      background: #1e293b;
+      border-color: var(--accent-indigo);
+      color: #ffffff;
+    }
 
-    main { max-width: 1540px; width: 100%; margin: 0 auto; padding: 1.5rem; flex: 1; }
+    /* Main Container */
+    main {
+      max-width: 1560px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 1.5rem 1.75rem;
+      flex: 1;
+    }
+
     .tab-content { display: none; }
-    .tab-content.active { display: block; animation: fadeIn 0.2s ease; }
-    @keyframes fadeIn { from { opacity: 0; transform: translateY(4px); } to { opacity: 1; transform: translateY(0); } }
+    .tab-content.active { display: block; animation: fadeIn 0.22s ease forwards; }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
 
-    /* Grid Layouts */
+    /* Grid Layout Systems */
     .grid-2col { display: grid; grid-template-columns: 1.15fr 0.85fr; gap: 1.5rem; }
     .grid-3col { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.25rem; }
-    .grid-4col { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; }
-    @media (max-width: 1024px) {
+    .grid-4col { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.25rem; }
+    @media (max-width: 1100px) {
       .grid-2col, .grid-3col, .grid-4col { grid-template-columns: 1fr; }
     }
 
     /* Cards */
     .card {
-      background: var(--bg-card); border: 1px solid var(--border-subtle);
-      border-radius: var(--radius-lg); padding: 1.25rem; box-shadow: var(--shadow-card);
-      margin-bottom: 1.25rem;
+      background: var(--bg-card);
+      border: 1px solid var(--border-card);
+      border-radius: var(--radius-lg);
+      padding: 1.35rem;
+      box-shadow: var(--shadow-md);
+      position: relative;
+      margin-bottom: 1.35rem;
     }
     .card-header {
-      display: flex; justify-content: space-between; align-items: flex-start;
-      margin-bottom: 1.1rem; padding-bottom: 0.75rem; border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 1.15rem;
+      padding-bottom: 0.85rem;
+      border-bottom: 1px solid var(--border-subtle);
     }
-    .card-title { font-size: 1.05rem; font-weight: 700; color: var(--text-primary); display: flex; align-items: center; gap: 0.5rem; }
+    .card-title-group { display: flex; flex-direction: column; }
+    .card-title {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: #ffffff;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      letter-spacing: -0.01em;
+    }
     .card-subtitle { font-size: 0.78rem; color: var(--text-muted); margin-top: 0.2rem; }
 
-    /* Forms */
-    .form-group { margin-bottom: 1rem; }
-    label { display: block; font-size: 0.78rem; font-weight: 600; color: var(--text-secondary); margin-bottom: 0.35rem; }
-    input[type="text"], input[type="email"], select, textarea {
-      width: 100%; background: #0c1222; border: 1px solid #1e293b; color: var(--text-primary);
-      padding: 0.55rem 0.8rem; border-radius: var(--radius-sm); font-size: 0.85rem; outline: none; transition: border-color 0.15s ease;
+    /* KPI Summary Stat Cards */
+    .kpi-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-card);
+      border-radius: var(--radius-lg);
+      padding: 1.2rem;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      overflow: hidden;
+      box-shadow: var(--shadow-sm);
     }
-    input[type="text"]:focus, select:focus, textarea:focus { border-color: var(--border-focus); background: #0e1529; }
-    textarea { resize: vertical; min-height: 80px; }
+    .kpi-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+    }
+    .kpi-card.accent-indigo::before { background: var(--accent-indigo); }
+    .kpi-card.accent-cyan::before { background: var(--accent-cyan); }
+    .kpi-card.accent-emerald::before { background: var(--accent-emerald); }
+    .kpi-card.accent-amber::before { background: var(--accent-amber); }
+
+    .kpi-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.4rem; }
+    .kpi-title { font-size: 0.74rem; font-weight: 700; text-transform: uppercase; color: var(--text-dim); letter-spacing: 0.05em; }
+    .kpi-icon { width: 18px; height: 18px; opacity: 0.6; }
+    .kpi-metric {
+      font-size: 2rem;
+      font-weight: 800;
+      font-family: 'JetBrains Mono', monospace;
+      color: #ffffff;
+      line-height: 1.1;
+      margin-bottom: 0.3rem;
+    }
+    .kpi-footer { font-size: 0.73rem; color: var(--text-muted); display: flex; align-items: center; gap: 0.35rem; }
+
+    /* Form Inputs */
+    .form-group { margin-bottom: 1.1rem; }
+    label {
+      display: block;
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      margin-bottom: 0.4rem;
+      letter-spacing: 0.01em;
+    }
+    input[type="text"], input[type="email"], select, textarea {
+      width: 100%;
+      background: var(--bg-input);
+      border: 1px solid var(--border-subtle);
+      color: #ffffff;
+      padding: 0.6rem 0.85rem;
+      border-radius: var(--radius-sm);
+      font-size: 0.85rem;
+      outline: none;
+      transition: all 0.18s ease;
+    }
+    input[type="text"]:focus, input[type="email"]:focus, select:focus, textarea:focus {
+      border-color: var(--border-focus);
+      box-shadow: 0 0 0 2px rgba(99, 102, 241, 0.25);
+      background: #0d1428;
+    }
+    textarea { resize: vertical; min-height: 85px; }
+
+    /* Interactive Dropzone for Photo & Video Proof */
+    .dropzone-box {
+      border: 2px dashed rgba(255, 255, 255, 0.15);
+      background: rgba(9, 14, 28, 0.6);
+      border-radius: var(--radius-md);
+      padding: 1.25rem;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      position: relative;
+    }
+    .dropzone-box:hover {
+      border-color: var(--accent-indigo);
+      background: rgba(99, 102, 241, 0.05);
+    }
+    .dropzone-icon {
+      width: 42px;
+      height: 42px;
+      margin: 0 auto 0.65rem;
+      background: #162038;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #818cf8;
+    }
+    .dropzone-icon svg { width: 22px; height: 22px; }
+    .dropzone-text { font-size: 0.85rem; font-weight: 600; color: #ffffff; margin-bottom: 0.2rem; }
+    .dropzone-hint { font-size: 0.72rem; color: var(--text-dim); }
+
+    /* Media Preview Frame */
+    .media-preview-container {
+      width: 100%;
+      height: 200px;
+      background: #050811;
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 0.75rem;
+    }
+    .media-preview-container img, .media-preview-container video {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
 
     /* Buttons */
     .btn {
-      display: inline-flex; align-items: center; justify-content: center; gap: 0.45rem;
-      background: var(--bg-hover); color: var(--text-primary); border: 1px solid var(--border-subtle);
-      padding: 0.55rem 1rem; border-radius: var(--radius-sm); font-size: 0.84rem; font-weight: 600;
-      cursor: pointer; transition: all 0.15s ease; text-decoration: none;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.5rem;
+      font-size: 0.84rem;
+      font-weight: 600;
+      padding: 0.55rem 1.15rem;
+      border-radius: var(--radius-sm);
+      border: 1px solid transparent;
+      cursor: pointer;
+      transition: all 0.18s ease;
+      text-decoration: none;
     }
-    .btn:hover { background: #2a3854; border-color: #3b82f6; }
-    .btn-primary { background: #2563eb; color: #ffffff; border-color: #3b82f6; }
-    .btn-primary:hover { background: #1d4ed8; }
-    .btn-success { background: #059669; color: #ffffff; border-color: #10b981; }
+    .btn svg { width: 16px; height: 16px; }
+    .btn-primary {
+      background: linear-gradient(135deg, #4f46e5, #4338ca);
+      color: #ffffff;
+      border-color: rgba(255, 255, 255, 0.15);
+      box-shadow: 0 4px 12px rgba(79, 70, 229, 0.35);
+    }
+    .btn-primary:hover {
+      background: linear-gradient(135deg, #4338ca, #3730a3);
+      box-shadow: 0 4px 16px rgba(79, 70, 229, 0.5);
+    }
+    .btn-success {
+      background: linear-gradient(135deg, #059669, #047857);
+      color: #ffffff;
+      box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+    }
     .btn-success:hover { background: #047857; }
-    .btn-danger { background: #dc2626; color: #ffffff; border-color: #ef4444; }
-    .btn-danger:hover { background: #b91c1c; }
-    .btn-warning { background: #d97706; color: #ffffff; border-color: #f59e0b; }
-    .btn-warning:hover { background: #b45309; }
+    .btn-danger {
+      background: linear-gradient(135deg, #e11d48, #be123c);
+      color: #ffffff;
+      box-shadow: 0 4px 12px rgba(225, 29, 72, 0.3);
+    }
+    .btn-danger:hover { background: #be123c; }
+    .btn-secondary {
+      background: #162038;
+      border-color: var(--border-subtle);
+      color: var(--text-main);
+    }
+    .btn-secondary:hover {
+      background: #1f2d4d;
+      border-color: rgba(255, 255, 255, 0.2);
+    }
 
-    /* Badges */
+    /* Badges & Tags */
     .badge {
-      display: inline-flex; align-items: center; gap: 0.3rem; padding: 0.2rem 0.55rem;
-      border-radius: 6px; font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.02em;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      padding: 0.2rem 0.6rem;
+      border-radius: 6px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.03em;
+      text-transform: uppercase;
     }
-    .badge-critical { background: rgba(239, 68, 68, 0.2); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.4); }
-    .badge-high { background: rgba(245, 158, 11, 0.2); color: #fbbf24; border: 1px solid rgba(245, 158, 11, 0.4); }
-    .badge-medium { background: rgba(59, 130, 246, 0.2); color: #60a5fa; border: 1px solid rgba(59, 130, 246, 0.4); }
-    .badge-low { background: rgba(16, 185, 129, 0.2); color: #34d399; border: 1px solid rgba(16, 185, 129, 0.4); }
-    .badge-rank { background: linear-gradient(135deg, #7c3aed, #2563eb); color: #ffffff; font-weight: 800; border: 1px solid #a78bfa; padding: 3px 8px; border-radius: 12px; font-size: 0.75rem; }
-    .badge-good { background: rgba(16, 185, 129, 0.25); color: #34d399; border: 1px solid #10b981; font-weight: 800; }
-    .badge-bad { background: rgba(239, 68, 68, 0.25); color: #f87171; border: 1px solid #ef4444; font-weight: 800; }
-
-    /* KPI Stat Boxes */
-    .kpi-card {
-      background: var(--bg-card); border: 1px solid var(--border-subtle);
-      border-radius: var(--radius-md); padding: 1rem 1.25rem; display: flex; flex-direction: column; gap: 0.3rem;
+    .badge-rank {
+      background: linear-gradient(135deg, #4f46e5, #7c3aed);
+      color: #ffffff;
+      font-weight: 800;
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      box-shadow: 0 2px 8px rgba(124, 58, 237, 0.35);
+      font-family: 'JetBrains Mono', monospace;
     }
-    .kpi-label { font-size: 0.74rem; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.04em; }
-    .kpi-val { font-size: 1.8rem; font-weight: 800; color: #f8fafc; font-family: 'JetBrains Mono', monospace; line-height: 1.1; }
-    .kpi-sub { font-size: 0.72rem; color: var(--text-dim); }
-
-    /* Media Preview Box (Images & Videos) */
-    .preview-box {
-      width: 100%; height: 210px; background: #060a14; border: 1px solid #1f293d;
-      border-radius: var(--radius-md); overflow: hidden; position: relative;
-      display: flex; align-items: center; justify-content: center;
+    .badge-critical {
+      background: rgba(244, 63, 94, 0.15);
+      color: #fda4af;
+      border: 1px solid rgba(244, 63, 94, 0.4);
     }
-    .preview-box img, .preview-box video { width: 100%; height: 100%; object-fit: cover; }
-
-    /* Verdict Alert Banner (Good Fix vs Bad Fix) */
-    .verdict-banner {
-      padding: 1.1rem; border-radius: var(--radius-md); margin-bottom: 1rem;
-      border: 1px solid; animation: pulseGlow 1.5s infinite alternate;
+    .badge-high {
+      background: rgba(245, 158, 11, 0.15);
+      color: #fde68a;
+      border: 1px solid rgba(245, 158, 11, 0.4);
     }
-    .verdict-good { background: rgba(16, 185, 129, 0.12); border-color: #10b981; color: #a7f3d0; }
-    .verdict-bad { background: rgba(239, 68, 68, 0.12); border-color: #ef4444; color: #fecaca; }
-    .verdict-title { font-size: 1.05rem; font-weight: 800; display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.35rem; }
-    .verdict-score { font-family: 'JetBrains Mono', monospace; font-size: 1.3rem; font-weight: 800; }
-
-    /* Ranked Complaint List Item */
-    .ranked-item {
-      background: #0d1424; border: 1px solid var(--border-subtle);
-      border-radius: var(--radius-md); padding: 0.85rem 1rem; margin-bottom: 0.65rem;
-      cursor: pointer; transition: all 0.15s ease; display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+    .badge-medium {
+      background: rgba(99, 102, 241, 0.15);
+      color: #c7d2fe;
+      border: 1px solid rgba(99, 102, 241, 0.4);
     }
-    .ranked-item:hover { background: #162035; border-color: #3b82f6; transform: translateX(3px); }
-    .ranked-item.selected { background: #192742; border-color: #3b82f6; box-shadow: 0 0 0 1px #3b82f6; }
-
-    /* Modal Overlay */
-    .modal-overlay {
-      position: fixed; inset: 0; background: rgba(0, 0, 0, 0.75); backdrop-filter: blur(5px);
-      z-index: 500; display: none; align-items: center; justify-content: center; padding: 1.5rem;
+    .badge-good {
+      background: rgba(16, 185, 129, 0.2);
+      color: #6ee7b7;
+      border: 1px solid rgba(16, 185, 129, 0.45);
+      font-weight: 800;
     }
-    .modal-overlay.open { display: flex; }
-    .modal-box {
-      background: #111827; border: 1px solid #1e293b; border-radius: var(--radius-lg);
-      width: 100%; max-width: 680px; max-height: 90vh; overflow-y: auto; padding: 1.5rem;
-      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5);
+    .badge-bad {
+      background: rgba(244, 63, 94, 0.2);
+      color: #fda4af;
+      border: 1px solid rgba(244, 63, 94, 0.45);
+      font-weight: 800;
     }
 
-    /* Scorecard Table */
-    .scorecard-table { width: 100%; border-collapse: collapse; font-size: 0.82rem; }
-    .scorecard-table th { background: #0c1222; text-align: left; padding: 0.65rem 0.8rem; color: var(--text-muted); font-size: 0.72rem; text-transform: uppercase; border-bottom: 1px solid #1e293b; }
-    .scorecard-table td { padding: 0.75rem 0.8rem; border-bottom: 1px solid #162035; color: var(--text-secondary); }
-    .scorecard-table tr:hover td { background: #131c30; color: #fff; }
+    /* Ranked Complaint Feed Items */
+    .ranked-feed-item {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      padding: 0.95rem 1.15rem;
+      margin-bottom: 0.65rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      transition: all 0.18s ease;
+    }
+    .ranked-feed-item:hover {
+      background: var(--bg-card-hover);
+      border-color: rgba(99, 102, 241, 0.45);
+      transform: translateX(3px);
+    }
+    .ranked-feed-item.selected {
+      background: #141f36;
+      border-color: var(--accent-indigo);
+      box-shadow: 0 0 0 1px var(--accent-indigo), 0 4px 12px rgba(99, 102, 241, 0.25);
+    }
 
-    /* Timeline & Audit */
-    .timeline-item { position: relative; padding-left: 1.25rem; margin-bottom: 0.75rem; border-left: 2px solid #243046; }
-    .timeline-dot { position: absolute; left: -5px; top: 3px; width: 8px; height: 8px; border-radius: 50%; background: #3b82f6; }
+    /* AI Verdict Result Card */
+    .verdict-card {
+      border-radius: var(--radius-md);
+      padding: 1.15rem;
+      margin-top: 1.15rem;
+      border: 1px solid;
+      animation: fadeIn 0.25s ease forwards;
+    }
+    .verdict-card.good-fix {
+      background: rgba(16, 185, 129, 0.08);
+      border-color: rgba(16, 185, 129, 0.5);
+      box-shadow: 0 4px 16px rgba(16, 185, 129, 0.15);
+    }
+    .verdict-card.bad-fix {
+      background: rgba(244, 63, 94, 0.08);
+      border-color: rgba(244, 63, 94, 0.5);
+      box-shadow: 0 4px 16px rgba(244, 63, 94, 0.15);
+    }
+
+    /* Faculty Performance Table */
+    .executive-table { width: 100%; border-collapse: collapse; font-size: 0.83rem; }
+    .executive-table th {
+      text-align: left;
+      padding: 0.75rem 1rem;
+      color: var(--text-dim);
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+    .executive-table td {
+      padding: 0.85rem 1rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+      color: var(--text-muted);
+    }
+    .executive-table tr:hover td {
+      background: rgba(255, 255, 255, 0.03);
+      color: #ffffff;
+    }
+
+    /* Modal Sheet */
+    .modal-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(3, 6, 13, 0.82);
+      backdrop-filter: blur(8px);
+      z-index: 500;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+    }
+    .modal-backdrop.open { display: flex; animation: fadeIn 0.2s ease forwards; }
+    .modal-window {
+      background: #0f1629;
+      border: 1px solid var(--border-card);
+      border-radius: var(--radius-xl);
+      width: 100%;
+      max-width: 650px;
+      max-height: 90vh;
+      overflow-y: auto;
+      padding: 1.75rem;
+      box-shadow: var(--shadow-lg);
+    }
+
+    /* Floating Toast Notification */
+    #toastContainer {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      z-index: 1000;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      pointer-events: none;
+    }
+    .toast-pill {
+      background: #111a2e;
+      border: 1px solid var(--border-card);
+      color: #ffffff;
+      padding: 0.75rem 1.15rem;
+      border-radius: var(--radius-md);
+      font-size: 0.83rem;
+      font-weight: 600;
+      box-shadow: var(--shadow-lg);
+      display: flex;
+      align-items: center;
+      gap: 0.65rem;
+      animation: toastIn 0.25s ease forwards;
+      pointer-events: auto;
+    }
+    @keyframes toastIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
   </style>
 </head>
 <body>
 
   <!-- ============================================================== -->
-  <!-- TOP NAVIGATION HEADER WITH ROLE SIGN-IN / LOGOUT               -->
+  <!-- 1. EXECUTIVE APPLICATION HEADER                                -->
   <!-- ============================================================== -->
   <header>
-    <div class="brand-group" onclick="navigateTab('student')">
-      <div class="brand-badge">🛡️</div>
-      <div>
+    <div class="brand-container" onclick="navigatePortal('student')">
+      <div class="brand-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+          <path d="M9 12l2 2 4-4"/>
+        </svg>
+      </div>
+      <div class="brand-meta">
         <div class="brand-title">
-          ComplainAI <span class="brand-pill">Campus v2.0</span>
+          ComplainAI <span class="brand-badge">Campus Command</span>
         </div>
-        <div style="font-size:0.7rem; color:var(--text-muted);">Grievance Intelligence & Zero-Touch Resolution</div>
+        <div class="brand-tagline">Autonomous Multimodal Grievance Intelligence & Zero-Touch Resolution</div>
       </div>
     </div>
 
-    <!-- Role / Portal Navigation Tabs -->
-    <nav class="nav-tabs">
-      <button class="nav-tab-btn active" id="tabBtnStudent" onclick="navigateTab('student')">
-        <span>🎓</span> Student Portal
+    <!-- Segmented Navigation Bar -->
+    <nav class="portal-nav">
+      <button class="portal-tab-btn active" id="navStudentBtn" onclick="navigatePortal('student')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c0 2 2 3 6 3s6-1 6-3v-5"/></svg>
+        Student Portal
       </button>
-      <button class="nav-tab-btn" id="tabBtnFaculty" onclick="navigateTab('faculty')">
-        <span>👨‍🏫</span> Faculty & Staff Queue
+      <button class="portal-tab-btn" id="navFacultyBtn" onclick="navigatePortal('faculty')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        Faculty & Staff Queue
+        <span class="tab-badge" id="navFacultyBadge">4</span>
       </button>
-      <button class="nav-tab-btn" id="tabBtnHOD" onclick="navigateTab('hod')">
-        <span>🏛️</span> Admin / HOD Oversight
+      <button class="portal-tab-btn" id="navHODBtn" onclick="navigatePortal('hod')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="2" width="16" height="20" rx="2" ry="2"/><line x1="9" y1="22" x2="9" y2="22.01"/><line x1="15" y1="22" x2="15" y2="22.01"/><line x1="9" y1="18" x2="9" y2="18.01"/><line x1="15" y1="18" x2="15" y2="18.01"/><line x1="9" y1="14" x2="9" y2="14.01"/><line x1="15" y1="14" x2="15" y2="14.01"/><line x1="9" y1="10" x2="9" y2="10.01"/><line x1="15" y1="10" x2="15" y2="10.01"/><line x1="9" y1="6" x2="9" y2="6.01"/><line x1="15" y1="6" x2="15" y2="6.01"/></svg>
+        HOD / Dean Oversight
       </button>
-      <button class="nav-tab-btn" id="tabBtnCampusMap" onclick="navigateTab('map')">
-        <span>🗺️</span> Campus Map & Swarms
+      <button class="portal-tab-btn" id="navMapBtn" onclick="navigatePortal('map')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"/><line x1="8" y1="2" x2="8" y2="18"/><line x1="16" y1="6" x2="16" y2="22"/></svg>
+        Campus GIS Map
       </button>
     </nav>
 
-    <!-- Active User & Authentication Switcher -->
-    <div style="display:flex; align-items:center; gap:0.6rem;">
-      <div class="header-user-badge" onclick="openAuthModal()" title="Click to Switch Portal Profile or Log In">
-        <span class="user-avatar" id="hdrUserAvatar">🎓</span>
-        <div class="user-details">
-          <div class="user-name-role" id="hdrUserName">Aarav Sharma</div>
-          <div class="user-sub" id="hdrUserRole">Student (Roll: 21CS042)</div>
+    <!-- Header Actions & Active Role -->
+    <div class="header-actions">
+      <div class="user-profile-badge" onclick="openAuthDialog()" title="Switch institutional profile or role">
+        <div class="avatar-initials" id="headerAvatar">AS</div>
+        <div class="profile-info">
+          <span class="profile-name" id="headerUserName">Aarav Sharma</span>
+          <span class="profile-role-tag" id="headerRoleTag">Student (21CS042)</span>
         </div>
       </div>
-      <button class="btn-auth-switch" onclick="openAuthModal()">Switch Role</button>
-      <button class="btn-logout" onclick="logoutUser()" title="Sign out session">Logout</button>
+      <button class="btn-switch-role" onclick="openAuthDialog()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
+        Switch Role
+      </button>
+      <button class="btn-signout" onclick="signOutActiveUser()" title="Logout of current session">Logout</button>
     </div>
   </header>
 
-  <!-- Assistive Scenario Bar -->
-  <div class="sub-banner">
-    <div style="display:flex; align-items:center; gap:0.4rem; color:var(--text-secondary);">
-      <span>⚡</span> <strong>Campus Incident Presets:</strong>
+  <!-- ============================================================== -->
+  <!-- 2. QUICK INCIDENT SCENARIO SIMULATOR RIBBON                    -->
+  <!-- ============================================================== -->
+  <div class="scenario-ribbon">
+    <div style="display:flex; align-items:center; gap:0.5rem; color:var(--text-muted);">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#6366f1" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+      <span style="font-weight:700; color:#cbd5e1; font-size:0.75rem;">Verified Demo Scenarios:</span>
     </div>
-    <div class="scenario-picker">
-      <button class="scenario-btn" onclick="loadCollegeScenario('exam_wire')">
-        ⚡ 1. Sparking Conduit (Exam Hall) [Rank #1]
+    <div class="scenario-pills">
+      <button class="scenario-pill-btn" onclick="applyPresetScenario('exam_wire')">
+        ⚡ 1. Sparking Conduit (Exam Hall) [Rank #1 Critical]
       </button>
-      <button class="scenario-btn" onclick="loadCollegeScenario('hostel_water')">
-        💧 2. Block 3 Water Main Rupture [Rank #2]
+      <button class="scenario-pill-btn" onclick="applyPresetScenario('hostel_water')">
+        💧 2. Girls Hostel Riser Pipe Breach [Rank #2 High]
       </button>
-      <button class="scenario-btn" onclick="loadCollegeScenario('lab_server')">
-        💻 3. CS Lab 4 Power Trip (Video Proof)
+      <button class="scenario-pill-btn" onclick="applyPresetScenario('lab_server')">
+        💻 3. CS Lab Server Trip (Video Evidence)
       </button>
-      <button class="scenario-btn" onclick="loadCollegeScenario('fee_double')">
-        💳 4. Semester Fee Double Deduction
+      <button class="scenario-pill-btn" onclick="applyPresetScenario('fee_double')">
+        💳 4. Tuition Double Charge ($89 Refund)
       </button>
     </div>
   </div>
 
   <main>
     <!-- ============================================================== -->
-    <!-- TAB 1: 🎓 STUDENT PORTAL (FILE COMPLAINT & MY STATUS)           -->
+    <!-- TAB 1: 🎓 STUDENT PORTAL                                      -->
     <!-- ============================================================== -->
-    <div id="tab-student" class="tab-content active">
+    <div id="portal-student" class="tab-content active">
       <div class="grid-2col">
 
-        <!-- Form Card: Student Grievance Submission -->
+        <!-- Left: File a Complaint Card -->
         <div class="card">
           <div class="card-header">
-            <div>
-              <div class="card-title"><span>🎓</span> File a Campus Grievance</div>
-              <div class="card-subtitle">Report infrastructure, hostel, lab, academic, or fee problems with photo/video proof.</div>
+            <div class="card-title-group">
+              <div class="card-title">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#6366f1" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><polyline points="10 9 9 9 8 9"/></svg>
+                Submit Campus Grievance with Proof
+              </div>
+              <div class="card-subtitle">Zero-input intake: Voice notes in regional dialects, photo capture, or video proof.</div>
             </div>
-            <span class="badge badge-medium">Student Submission Portal</span>
+            <span class="badge badge-medium">Student Ingestion</span>
           </div>
 
-          <form id="studentComplaintForm" onsubmit="handleStudentSubmit(event)">
-            <div class="grid-2col" style="margin-bottom:0.8rem;">
+          <form id="grievanceForm" onsubmit="submitStudentGrievance(event)">
+            <div class="grid-2col" style="margin-bottom:0.75rem;">
               <div class="form-group">
                 <label>Student Full Name</label>
-                <input type="text" id="studName" value="Aarav Sharma" required />
+                <input type="text" id="inStudentName" value="Aarav Sharma" required />
               </div>
               <div class="form-group">
                 <label>Roll Number</label>
-                <input type="text" id="studRoll" value="21CS042" required />
+                <input type="text" id="inStudentRoll" value="21CS042" required />
               </div>
             </div>
 
-            <div class="grid-2col" style="margin-bottom:0.8rem;">
+            <div class="grid-2col" style="margin-bottom:0.75rem;">
               <div class="form-group">
                 <label>Academic Department</label>
-                <select id="studDept">
+                <select id="inStudentDept">
                   <option value="Computer Science & Engineering">Computer Science & Engineering</option>
                   <option value="Electronics & Communication">Electronics & Communication</option>
                   <option value="Mechanical Engineering">Mechanical Engineering</option>
-                  <option value="Civil & Infrastructure">Civil & Infrastructure</option>
+                  <option value="Civil & Environmental Engineering">Civil & Environmental Engineering</option>
                   <option value="Biotechnology">Biotechnology</option>
                 </select>
               </div>
               <div class="form-group">
                 <label>Campus Location / Block</label>
-                <select id="studLocation">
+                <select id="inStudentLocation">
                   <option value="Oakridge School & Campus Main Examination Hall">Exam Hall Complex A</option>
                   <option value="Girls Hostel Block 3 Ground & 2nd Floor">Girls Hostel Block 3</option>
                   <option value="Campus CS Lab Building & Server Room 204">CS Lab Complex (Room 204)</option>
                   <option value="Main University Library & Reading Hall">Central Library</option>
-                  <option value="Campus Dining Hall & Canteen">Student Mess & Canteen</option>
+                  <option value="Campus Dining Hall & Canteen">Student Mess & Dining Hall</option>
                   <option value="Bicycle Lane & North Campus Perimeter">North Campus Bike Path</option>
                 </select>
               </div>
@@ -363,7 +799,7 @@
 
             <div class="form-group">
               <label>Grievance Category</label>
-              <select id="studCategory">
+              <select id="inStudentCategory">
                 <option value="Public Safety & Electrical">Campus Safety & Electrical Hazards</option>
                 <option value="Hostel & Student Living">Hostel & Student Living (Water / Room)</option>
                 <option value="Labs & Academic Infrastructure">Labs & Academic Infrastructure</option>
@@ -374,52 +810,55 @@
 
             <div class="form-group">
               <label>Complaint Title</label>
-              <input type="text" id="studTitle" value="Active Arc-Flashing Electrical Conduit Outside Examination Hall" required />
+              <input type="text" id="inStudentTitle" value="Active Arc-Flashing Electrical Conduit Outside Examination Hall" required />
             </div>
 
             <div class="form-group">
-              <label>Detailed Description</label>
-              <textarea id="studDescription" required>Exposed utility conduit detached from ceiling and violently sparking outside Examination Hall A. Semester final bell ringing soon!</textarea>
+              <label>Description (or regional speech transcript)</label>
+              <textarea id="inStudentDesc" required>Exposed utility conduit detached from ceiling and violently sparking outside Examination Hall A. Semester final bell ringing in 25 mins!</textarea>
             </div>
 
-            <!-- Multimodal Proof Section: Photo OR Video Upload -->
+            <!-- Drag & Drop Zone for Photo OR Video Proof -->
             <div class="form-group">
-              <label>Photo or Video Evidence Proof (Mandatory for Rapid Triage)</label>
-              <div class="preview-box" id="studPreviewBox">
-                <img id="studImagePreview" src="/static/images/sparking_wire.svg" alt="Proof Preview" />
-                <video id="studVideoPreview" controls style="display:none;"></video>
+              <label>Upload Photographic or Video Proof of Defect</label>
+              <div class="dropzone-box" onclick="document.getElementById('fileProofInput').click()">
+                <div class="dropzone-icon">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                </div>
+                <div class="dropzone-text" id="dropzoneLabel">Click or Drag & Drop Photo or Video Evidence</div>
+                <div class="dropzone-hint">Supports MP4, WebM, PNG, JPG (Auto-analyzed by Computer Vision Hazard Engine)</div>
+                <input type="file" id="fileProofInput" accept="image/*,video/*" style="display:none;" onchange="onStudentProofSelected(event)" />
               </div>
 
-              <div style="display:flex; gap:0.5rem; margin-top:0.6rem;">
-                <label class="btn" style="flex:1; cursor:pointer;">
-                  <span>📁</span> Select Photo / Video File
-                  <input type="file" id="studProofFileInput" accept="image/*,video/*" style="display:none;" onchange="handleStudentProofUpload(event)" />
-                </label>
-                <button type="button" class="btn" onclick="triggerPresetProof('sparking_wire')">⚡ Sparking Wire</button>
-                <button type="button" class="btn" onclick="triggerPresetProof('water_flood')">💧 Water Leak</button>
+              <!-- Media Preview Frame -->
+              <div class="media-preview-container" id="proofPreviewContainer">
+                <img id="imgProofPreview" src="/static/images/sparking_wire.svg" alt="Proof Preview" />
+                <video id="vidProofPreview" controls style="display:none;"></video>
               </div>
-              <div id="studProofStatus" style="font-size:0.75rem; color:#60a5fa; margin-top:0.35rem;">Proof type: PHOTO (sparking_wire.svg)</div>
             </div>
 
-            <button type="submit" id="btnSubmitStudent" class="btn btn-primary" style="width:100%; padding:0.75rem; font-size:0.95rem;">
-              <span>🚀</span> Submit Grievance for Autonomous AI Triage & Ranking
+            <button type="submit" id="btnSubmitGrievance" class="btn btn-primary" style="width:100%; padding:0.8rem; font-size:0.95rem;">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg>
+              Run AI Multimodal Triage & Compute Priority Index
             </button>
           </form>
         </div>
 
-        <!-- Right Column: My Grievances & Live Timeline -->
+        <!-- Right: My Submitted Grievances & Live Resolution Ledger -->
         <div>
           <div class="card">
             <div class="card-header">
-              <div>
-                <div class="card-title"><span>📋</span> My Submitted Grievances</div>
-                <div class="card-subtitle">Track priority scores, assigned faculty, and AI-scanned resolution proof.</div>
+              <div class="card-title-group">
+                <div class="card-title">
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#06b6d4" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+                  My Active Grievances & Resolution Feed
+                </div>
+                <div class="card-subtitle">Real-time tracking of AI priority, assigned resolver, and resolution verification.</div>
               </div>
-              <button class="btn" style="font-size:0.72rem; padding:0.25rem 0.6rem;" onclick="loadStudentComplaints()">Refresh</button>
+              <button class="btn btn-secondary" style="font-size:0.75rem; padding:0.3rem 0.75rem;" onclick="refreshStudentComplaints()">Refresh</button>
             </div>
-            <div id="studentComplaintsContainer">
-              <!-- Loaded dynamically via JS -->
-              <div style="text-align:center; padding:2rem; color:var(--text-muted);">Loading student complaints...</div>
+            <div id="studentGrievanceFeed">
+              <!-- Dynamically populated via JS -->
             </div>
           </div>
         </div>
@@ -428,219 +867,245 @@
     </div>
 
     <!-- ============================================================== -->
-    <!-- TAB 2: 👨‍🏫 FACULTY & STAFF PORTAL (RANKED QUEUE & PROOF SCAN) -->
+    <!-- TAB 2: 👨‍🏫 FACULTY & STAFF RESOLUTION PORTAL                   -->
     <!-- ============================================================== -->
-    <div id="tab-faculty" class="tab-content">
+    <div id="portal-faculty" class="tab-content">
       <div class="grid-2col">
 
-        <!-- Left Column: AI-Scanned & Ranked Complaint Queue -->
+        <!-- Left: AI-Scanned & Ranked Resolution Queue -->
         <div class="card">
           <div class="card-header">
-            <div>
-              <div class="card-title"><span>👨‍🏫</span> AI-Scanned & Ranked Grievance Queue</div>
-              <div class="card-subtitle">AI scans all student submissions, scoring urgency & ranking tickets (#1, #2, etc.).</div>
+            <div class="card-title-group">
+              <div class="card-title">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#6366f1" stroke-width="2"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+                AI-Scanned & Globally Ranked Queue
+              </div>
+              <div class="card-subtitle">Scored and ranked via dynamic priority formula with vulnerability multipliers.</div>
             </div>
-            <span class="badge badge-rank">Dynamic AI Priority</span>
+            <span class="badge badge-rank">Dynamic Queue</span>
           </div>
 
           <div id="facultyRankedQueue">
-            <!-- Populated dynamically via JS -->
-            <div style="text-align:center; padding:2rem; color:var(--text-muted);">Scanning complaints database...</div>
+            <!-- Populated via JS -->
           </div>
         </div>
 
-        <!-- Right Column: Resolution & Proof Submission Console -->
+        <!-- Right: Resolution & Proof Verification Console -->
         <div class="card">
           <div class="card-header">
-            <div>
-              <div class="card-title"><span>🛠️</span> Resolution & Proof Submission Console</div>
+            <div class="card-title-group">
+              <div class="card-title">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+                Resolution Console & AI Proof Scanner
+              </div>
               <div class="card-subtitle">Submit after-repair photo/video. AI scans proof and evaluates GOOD vs BAD fix.</div>
             </div>
-            <span class="badge badge-medium" id="facultyActiveTicketBadge">CMP-7001</span>
+            <span class="badge badge-medium" id="facultyActiveTicketPill">CMP-7001</span>
           </div>
 
-          <!-- Active Ticket Details -->
-          <div style="background:#0c1222; border:1px solid #1e293b; border-radius:var(--radius-md); padding:1rem; margin-bottom:1rem;">
-            <div style="display:flex; justify-content:space-between; margin-bottom:0.4rem;">
-              <span id="facTicketRank" class="badge badge-rank">Rank #1</span>
-              <span id="facTicketPriority" class="badge badge-critical">Priority: 94.8 / 100</span>
+          <!-- Active Ticket Metadata Card -->
+          <div style="background:#090e1c; border:1px solid var(--border-subtle); border-radius:var(--radius-md); padding:1rem; margin-bottom:1rem;">
+            <div style="display:flex; justify-content:space-between; margin-bottom:0.45rem;">
+              <span id="facTicketRankBadge" class="badge badge-rank">Rank #1</span>
+              <span id="facTicketPriorityBadge" class="badge badge-critical">Priority: 94.8 / 100 [CRITICAL]</span>
             </div>
-            <h4 id="facTicketTitle" style="font-size:0.95rem; margin-bottom:0.35rem; color:#f8fafc;">Active Arc-Flashing Electrical Conduit</h4>
-            <p id="facTicketDesc" style="font-size:0.78rem; color:#94a3b8; margin-bottom:0.5rem;">Exposed utility conduit detached from ceiling and sparking.</p>
-            <div style="font-size:0.72rem; color:#64748b; display:flex; gap:1rem;">
-              <span>Student: <strong id="facTicketStudent" style="color:#cbd5e1;">Aarav Sharma (21CS042)</strong></span>
-              <span>Location: <strong id="facTicketLocation" style="color:#cbd5e1;">Exam Hall Complex</strong></span>
+            <h4 id="facTicketTitle" style="font-size:0.95rem; font-weight:700; color:#ffffff; margin-bottom:0.35rem;">Active Arc-Flashing Electrical Conduit</h4>
+            <p id="facTicketDesc" style="font-size:0.78rem; color:#94a3b8; margin-bottom:0.6rem;">Exposed utility conduit detached from ceiling and sparking violently.</p>
+            <div style="display:flex; gap:1.25rem; font-size:0.74rem; color:var(--text-dim);">
+              <span>Student: <strong id="facTicketStudent" style="color:#e2e8f0;">Aarav Sharma (21CS042)</strong></span>
+              <span>Location: <strong id="facTicketLocation" style="color:#e2e8f0;">Exam Hall Complex A</strong></span>
             </div>
           </div>
 
-          <!-- Student Initial Proof (Before Photo/Video) -->
+          <!-- Student Initial Proof (Before) -->
           <div class="form-group">
-            <label>Student's Initial Proof (Before Photo/Video):</label>
-            <div class="preview-box" style="height:140px;">
-              <img id="facBeforePreview" src="/static/images/sparking_wire.svg" alt="Before Evidence" />
+            <label>Student's Initial Evidence (Before Photo/Video):</label>
+            <div class="media-preview-container" style="height:140px;">
+              <img id="facBeforePreviewImg" src="/static/images/sparking_wire.svg" alt="Before Evidence" />
             </div>
           </div>
 
-          <!-- Faculty Resolution Proof (After Photo/Video) -->
+          <!-- Faculty After Proof Upload -->
           <div class="form-group">
-            <label>Faculty Proof of Work (Upload "After" Photo/Video):</label>
-            <div class="preview-box" style="height:150px;" id="facAfterPreviewBox">
-              <img id="facAfterPreview" src="/static/images/genuine_repaired_wire.svg" alt="After Repair Preview" />
+            <label>Faculty Proof of Work (Upload "After" Photo/Video Evidence):</label>
+            <div class="media-preview-container" style="height:150px;" id="facAfterPreviewBox">
+              <img id="facAfterPreviewImg" src="/static/images/genuine_repaired_wire.svg" alt="After Remediation" />
             </div>
 
-            <div style="margin-top:0.6rem; display:flex; flex-direction:column; gap:0.4rem;">
-              <label class="btn" style="cursor:pointer; width:100%;">
-                <span>📁</span> Upload Faculty Repair Photo/Video File
-                <input type="file" id="facProofFileInput" accept="image/*,video/*" style="display:none;" onchange="handleFacultyProofUpload(event)" />
-              </label>
+            <div style="display:flex; gap:0.5rem; margin-top:0.65rem;">
+              <button type="button" class="btn btn-secondary" style="flex:1;" onclick="document.getElementById('facProofFileInput').click()">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                Select Real File (Photo/Video)
+              </button>
+              <input type="file" id="facProofFileInput" accept="image/*,video/*" style="display:none;" onchange="onFacultyProofSelected(event)" />
+            </div>
 
-              <!-- Quick Evaluation Test Presets -->
-              <div style="font-size:0.7rem; color:#94a3b8; margin-top:0.3rem;">Simulate Proof Scenarios for Demo:</div>
-              <div style="display:flex; gap:0.35rem; flex-wrap:wrap;">
-                <button type="button" class="scenario-btn" style="background:#064e3b; color:#6ee7b7; border-color:#059669;" onclick="setFacultyPreset('genuine_repaired_wire')">
-                  ✓ Certified Wire Repair (Good Fix)
-                </button>
-                <button type="button" class="scenario-btn" style="background:#451a03; color:#fde047; border-color:#b45309;" onclick="setFacultyPreset('college_bad_tape_patch')">
-                  ⚠️ Makeshift Tape Patch (Bad Fix)
-                </button>
-                <button type="button" class="scenario-btn" style="background:#4c0519; color:#fda4af; border-color:#be123c;" onclick="setFacultyPreset('fake_unrelated')">
-                  ❌ Unrelated Pet Photo (Fake Closure)
-                </button>
-              </div>
+            <!-- Demo Scenarios for Good Fix vs Bad Fix -->
+            <div style="font-size:0.72rem; color:var(--text-dim); margin:0.6rem 0 0.35rem;">Simulate Remediation Types for Demo:</div>
+            <div style="display:flex; gap:0.4rem; flex-wrap:wrap;">
+              <button type="button" class="scenario-pill-btn" style="background:#064e3b; color:#a7f3d0; border-color:#059669;" onclick="setFacultyPresetMode('genuine_repaired_wire')">
+                ✓ Certified Wire Repair (Good Fix: 98%)
+              </button>
+              <button type="button" class="scenario-pill-btn" style="background:#451a03; color:#fde68a; border-color:#b45309;" onclick="setFacultyPresetMode('college_bad_tape_patch')">
+                ⚠️ Makeshift Tape Patch (Bad Fix: 22%)
+              </button>
+              <button type="button" class="scenario-pill-btn" style="background:#4c0519; color:#fca5a5; border-color:#be123c;" onclick="setFacultyPresetMode('fake_unrelated')">
+                ❌ Unrelated Photo (Fraud / Reject)
+              </button>
             </div>
           </div>
 
           <div class="form-group">
-            <label>Technician / Faculty Work Notes</label>
-            <textarea id="facNotes" placeholder="Describe the remediation work performed...">Conduit safely re-sheathed in fire-retardant conduit, junction locked, and ground fault loop resistance tested to 0.04 ohms.</textarea>
+            <label>Technician / Faculty Remediation Notes</label>
+            <textarea id="facNotesInput">Conduit safely re-sheathed in fire-retardant conduit, junction locked, and ground fault loop resistance tested to 0.04 ohms.</textarea>
           </div>
 
-          <!-- AI Proof Scanner Trigger Button -->
-          <button type="button" id="btnScanProof" class="btn btn-primary" style="width:100%; padding:0.75rem; font-size:0.95rem;" onclick="submitFacultyProofEvaluation()">
-            <span>🔍</span> AI Scan & Evaluate Proof of Work (Good vs Bad)
+          <button type="button" id="btnScanFacultyProof" class="btn btn-primary" style="width:100%; padding:0.8rem;" onclick="executeProofScan()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            AI Scan Proof & Evaluate Remediation Quality
           </button>
 
-          <!-- AI Verdict Banner Area -->
-          <div id="aiVerdictContainer" style="margin-top:1rem; display:none;">
-            <!-- Rendered by JS -->
-          </div>
+          <!-- Result Verdict Banner Area -->
+          <div id="aiVerdictBox" style="display:none;"></div>
         </div>
 
       </div>
     </div>
 
     <!-- ============================================================== -->
-    <!-- TAB 3: 🏛️ ADMIN & HOD OVERSIGHT PORTAL                          -->
+    <!-- TAB 3: 🏛️ ADMIN & HOD COMMAND PORTAL                           -->
     <!-- ============================================================== -->
-    <div id="tab-hod" class="tab-content">
+    <div id="portal-hod" class="tab-content">
       
-      <!-- Top Operational Metrics & Turnaround Time -->
-      <div class="grid-4col" style="margin-bottom:1.25rem;">
-        <div class="kpi-card">
-          <span class="kpi-label">Total Campus Grievances</span>
-          <span class="kpi-val" id="kpiTotalGrievances">--</span>
-          <span class="kpi-sub">Across All Departments</span>
+      <!-- Top 4 KPI Metrics -->
+      <div class="grid-4col" style="margin-bottom:1.5rem;">
+        <div class="kpi-card accent-indigo">
+          <div class="kpi-header">
+            <span class="kpi-title">Total Campus Grievances</span>
+            <svg class="kpi-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/></svg>
+          </div>
+          <div class="kpi-metric" id="kpiTotalCount">--</div>
+          <div class="kpi-footer">Across all 6 academic departments</div>
         </div>
-        <div class="kpi-card">
-          <span class="kpi-label">Average Turnaround Time</span>
-          <span class="kpi-val" id="kpiAvgTurnaround" style="color:#38bdf8;">--</span>
-          <span class="kpi-sub">From Filing to Resolution</span>
+
+        <div class="kpi-card accent-cyan">
+          <div class="kpi-header">
+            <span class="kpi-title">Avg Turnaround Time</span>
+            <svg class="kpi-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          </div>
+          <div class="kpi-metric" id="kpiTurnaroundTime" style="color:#38bdf8;">--</div>
+          <div class="kpi-footer">From student report to verified fix</div>
         </div>
-        <div class="kpi-card">
-          <span class="kpi-label">AI Repair Quality Index</span>
-          <span class="kpi-val" id="kpiQualityIndex" style="color:#34d399;">96.4%</span>
-          <span class="kpi-sub">Verified Good Fix Ratio</span>
+
+        <div class="kpi-card accent-emerald">
+          <div class="kpi-header">
+            <span class="kpi-title">AI Repair Quality Index</span>
+            <svg class="kpi-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+          <div class="kpi-metric" style="color:#34d399;">96.8%</div>
+          <div class="kpi-footer">Computer Vision remediation fidelity</div>
         </div>
-        <div class="kpi-card">
-          <span class="kpi-label">Active / Pending Rework</span>
-          <span class="kpi-val" id="kpiPendingCount" style="color:#fbbf24;">--</span>
-          <span class="kpi-sub">Assigned to Faculty/Staff</span>
+
+        <div class="kpi-card accent-amber">
+          <div class="kpi-header">
+            <span class="kpi-title">Active / Rework Required</span>
+            <svg class="kpi-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/></svg>
+          </div>
+          <div class="kpi-metric" id="kpiPendingCount" style="color:#fde68a;">--</div>
+          <div class="kpi-footer">Assigned to facilities engineers</div>
         </div>
       </div>
 
       <div class="grid-2col">
 
-        <!-- Faculty Performance Scorecards -->
+        <!-- Faculty Scorecards -->
         <div class="card">
           <div class="card-header">
-            <div>
-              <div class="card-title"><span>📊</span> Faculty & Staff Performance Scorecards</div>
-              <div class="card-subtitle">Tracking turnaround speed, quality scores, and Good vs Bad fix count.</div>
+            <div class="card-title-group">
+              <div class="card-title">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#6366f1" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
+                Faculty & Staff Performance Scorecards
+              </div>
+              <div class="card-subtitle">Monitors turnaround duration, AI remediation quality, and good vs bad fixes.</div>
             </div>
-            <button class="btn" style="font-size:0.72rem; padding:0.25rem 0.6rem;" onclick="loadHODOverview()">Refresh</button>
+            <button class="btn btn-secondary" style="font-size:0.75rem; padding:0.3rem 0.75rem;" onclick="refreshHODData()">Refresh</button>
           </div>
 
           <div style="overflow-x:auto;">
-            <table class="scorecard-table">
+            <table class="executive-table">
               <thead>
                 <tr>
                   <th>Faculty Member</th>
-                  <th>Department / Role</th>
-                  <th>Tasks</th>
-                  <th>Avg Turnaround</th>
+                  <th>Department</th>
+                  <th>Resolved</th>
+                  <th>Avg Time</th>
                   <th>AI Quality</th>
                   <th>Rating</th>
                 </tr>
               </thead>
-              <tbody id="facultyScorecardsBody">
-                <!-- Loaded via JS -->
+              <tbody id="scorecardsTableBody">
+                <!-- Dynamically loaded -->
               </tbody>
             </table>
           </div>
         </div>
 
-        <!-- HOD Work Review & Endorsement Console (Before vs After) -->
+        <!-- HOD Review & Work Endorsement (Before vs After) -->
         <div class="card">
           <div class="card-header">
-            <div>
-              <div class="card-title"><span>🏛️</span> Work Inspection & Endorsement Console</div>
-              <div class="card-subtitle">Review Before vs After proof, turnaround time, and approve or request rework.</div>
+            <div class="card-title-group">
+              <div class="card-title">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#10b981" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                Work Inspection & Institutional Sign-Off
+              </div>
+              <div class="card-subtitle">Review Before vs After proof, turnaround speed, and approve or request rework.</div>
             </div>
             <span class="badge badge-medium" id="hodReviewTicketPill">CMP-7005</span>
           </div>
 
-          <div id="hodReviewDetails" style="background:#0c1222; border:1px solid #1e293b; border-radius:var(--radius-md); padding:0.9rem; margin-bottom:1rem;">
-            <h4 id="hodTicketTitle" style="font-size:0.9rem; color:#f8fafc; margin-bottom:0.3rem;">Server Rack Thermal Trip in CS Lab 4</h4>
-            <div style="font-size:0.75rem; color:#94a3b8; display:flex; justify-content:space-between;">
-              <span>Faculty: <strong id="hodTicketFaculty" style="color:#cbd5e1;">Prof. Rajesh Verma</strong></span>
-              <span>Turnaround Time: <strong id="hodTicketTime" style="color:#38bdf8;">42 Minutes</strong></span>
+          <div style="background:#090e1c; border:1px solid var(--border-subtle); border-radius:var(--radius-md); padding:0.9rem; margin-bottom:1rem;">
+            <h4 id="hodInspectionTitle" style="font-size:0.92rem; font-weight:700; color:#ffffff; margin-bottom:0.25rem;">Server Rack Thermal Trip in CS Lab 4</h4>
+            <div style="display:flex; justify-content:space-between; font-size:0.75rem; color:var(--text-dim);">
+              <span>Faculty: <strong id="hodInspectionFaculty" style="color:#e2e8f0;">Prof. Rajesh Verma</strong></span>
+              <span>Time Taken: <strong id="hodInspectionTime" style="color:#38bdf8;">42 Minutes</strong></span>
             </div>
           </div>
 
-          <!-- Side-by-Side Proof Comparison -->
+          <!-- Side-by-Side Before vs After Inspection -->
           <div style="display:grid; grid-template-columns:1fr 1fr; gap:0.75rem; margin-bottom:1rem;">
             <div>
               <div style="font-size:0.75rem; font-weight:700; color:#cbd5e1; margin-bottom:0.3rem;">Student's Proof (Before)</div>
-              <div class="preview-box" style="height:130px;">
-                <img id="hodBeforeImg" src="/static/images/sparking_wire.svg" alt="Before Repair" />
+              <div class="media-preview-container" style="height:130px;">
+                <img id="hodBeforeImg" src="/static/images/sparking_wire.svg" alt="Before Evidence" />
               </div>
             </div>
             <div>
               <div style="font-size:0.75rem; font-weight:700; color:#34d399; margin-bottom:0.3rem;">Faculty Proof (After)</div>
-              <div class="preview-box" style="height:130px;">
+              <div class="media-preview-container" style="height:130px;">
                 <img id="hodAfterImg" src="/static/images/genuine_repaired_wire.svg" alt="After Repair" />
               </div>
             </div>
           </div>
 
           <!-- AI Evaluation Summary -->
-          <div id="hodAiEvaluationBox" style="background:rgba(16, 185, 129, 0.1); border:1px solid #10b981; border-radius:var(--radius-sm); padding:0.75rem; font-size:0.78rem; margin-bottom:1rem; color:#a7f3d0;">
+          <div id="hodQualityDiagnosis" style="background:rgba(16, 185, 129, 0.1); border:1px solid rgba(16, 185, 129, 0.4); border-radius:var(--radius-sm); padding:0.75rem; font-size:0.78rem; margin-bottom:1rem; color:#a7f3d0;">
             <strong>AI Quality Rating: 97.8% (GOOD FIX)</strong><br />
             Remediation validated with 94% background keypoint coherence. Ready for HOD sign-off.
           </div>
 
-          <!-- HOD Action Buttons -->
           <div class="form-group">
-            <label>HOD Formal Remarks & Directive</label>
-            <textarea id="hodFeedbackInput" placeholder="Enter remarks for faculty...">Work verified to institutional specifications. Commended for prompt remediation before practicals.</textarea>
+            <label>HOD Institutional Feedback & Directive</label>
+            <textarea id="hodFeedbackInput">Work verified to institutional specifications. Commended for prompt remediation before semester practicals.</textarea>
           </div>
 
           <div style="display:flex; gap:0.75rem;">
-            <button class="btn btn-success" style="flex:1;" onclick="executeHODReview('APPROVED_EXCELLENT')">
-              <span>✓</span> Approve & Commend Work
+            <button class="btn btn-success" style="flex:1;" onclick="executeHODDecision('APPROVED_EXCELLENT')">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+              Approve & Endorse Work
             </button>
-            <button class="btn btn-danger" style="flex:1;" onclick="executeHODReview('REJECTED_REWORK')">
-              <span>⚠️</span> Request Rework to Faculty
+            <button class="btn btn-danger" style="flex:1;" onclick="executeHODDecision('REJECTED_REWORK')">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>
+              Request Faculty Rework
             </button>
           </div>
         </div>
@@ -651,20 +1116,24 @@
     <!-- ============================================================== -->
     <!-- TAB 4: 🗺️ CAMPUS GIS MAP & SWARM INCIDENTS                     -->
     <!-- ============================================================== -->
-    <div id="tab-map" class="tab-content">
+    <div id="portal-map" class="tab-content">
       <div class="card">
         <div class="card-header">
-          <div>
-            <div class="card-title"><span>🗺️</span> Campus GIS Infrastructure & Swarm Incident Map</div>
-            <div class="card-subtitle">Real-time geospatial tracking with 200m safety buffers around exam halls, labs, & hostels.</div>
+          <div class="card-title-group">
+            <div class="card-title">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#6366f1" stroke-width="2"><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"/></svg>
+              Geospatial Campus Infrastructure & Swarm Incident Map
+            </div>
+            <div class="card-subtitle">200m safety buffers around critical academic assets & automatic crowd-density clustering.</div>
           </div>
-          <button class="btn btn-warning" onclick="simulateMassOutageSwarm()">
-            <span>⚡</span> Simulate Campus Outage Swarm (25 Reports)
+          <button class="btn btn-primary" onclick="simulateCrowdSwarm()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
+            Simulate Campus Outage Swarm (25 Students)
           </button>
         </div>
 
         <div style="position:relative; width:100%; border-radius:var(--radius-md); overflow:hidden;">
-          <canvas id="campusGisCanvas" style="width:100%; height:500px; background:#060a14;"></canvas>
+          <canvas id="campusCanvas" style="width:100%; height:520px; background:#060a14;"></canvas>
         </div>
       </div>
     </div>
@@ -672,124 +1141,136 @@
   </main>
 
   <!-- ============================================================== -->
-  <!-- ROLE AUTHENTICATION & LOGIN MODAL                             -->
+  <!-- 3. ROLE AUTHENTICATION & LOGIN MODAL DIALOG                    -->
   <!-- ============================================================== -->
-  <div id="authModal" class="modal-overlay">
-    <div class="modal-box">
+  <div id="authDialog" class="modal-backdrop">
+    <div class="modal-window">
       <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1.25rem;">
-        <h3 style="font-size:1.15rem; color:#fff;">🔐 Choose Your Campus Portal Role</h3>
-        <button class="btn" onclick="closeAuthModal()" style="padding:0.2rem 0.5rem;">✕</button>
+        <h3 style="font-size:1.15rem; font-weight:800; color:#ffffff;">🔐 Switch Campus Portal Profile</h3>
+        <button class="btn btn-secondary" onclick="closeAuthDialog()" style="padding:0.2rem 0.6rem;">✕</button>
       </div>
 
-      <p style="font-size:0.82rem; color:var(--text-muted); margin-bottom:1.25rem;">
-        Select an authorized institutional profile below to immediately access the respective portal, or sign in with custom credentials.
+      <p style="font-size:0.82rem; color:var(--text-muted); margin-bottom:1.35rem;">
+        Select an authorized institutional profile to immediately switch dashboard views, or log in with your university credentials.
       </p>
 
-      <div style="display:flex; flex-direction:column; gap:0.85rem; margin-bottom:1.25rem;">
+      <div style="display:flex; flex-direction:column; gap:0.85rem; margin-bottom:1.35rem;">
         <!-- Card 1: Student -->
-        <div class="ranked-item" onclick="fastLogin('student@college.edu', 'STUDENT')">
-          <div style="display:flex; align-items:center; gap:0.75rem;">
-            <div style="font-size:1.6rem;">🎓</div>
+        <div class="ranked-feed-item" onclick="triggerFastLogin('student@college.edu', 'STUDENT')">
+          <div style="display:flex; align-items:center; gap:0.85rem;">
+            <div class="avatar-initials" style="background:linear-gradient(135deg, #2563eb, #38bdf8);">AS</div>
             <div>
-              <div style="font-weight:700; color:#fff; font-size:0.92rem;">Aarav Sharma — Student</div>
-              <div style="font-size:0.75rem; color:#94a3b8;">Roll: 21CS042 | Dept of Computer Science (Year 4)</div>
+              <div style="font-weight:700; color:#ffffff; font-size:0.92rem;">Aarav Sharma — Student</div>
+              <div style="font-size:0.75rem; color:#94a3b8;">Roll: 21CS042 | Computer Science & Engineering (Year 4)</div>
             </div>
           </div>
-          <button class="btn btn-primary" style="font-size:0.78rem;">Sign in as Student →</button>
+          <button class="btn btn-primary" style="font-size:0.78rem;">Enter Portal →</button>
         </div>
 
         <!-- Card 2: Faculty -->
-        <div class="ranked-item" onclick="fastLogin('faculty@college.edu', 'FACULTY')">
-          <div style="display:flex; align-items:center; gap:0.75rem;">
-            <div style="font-size:1.6rem;">👨‍🏫</div>
+        <div class="ranked-feed-item" onclick="triggerFastLogin('faculty@college.edu', 'FACULTY')">
+          <div style="display:flex; align-items:center; gap:0.85rem;">
+            <div class="avatar-initials" style="background:linear-gradient(135deg, #059669, #10b981);">RV</div>
             <div>
-              <div style="font-weight:700; color:#fff; font-size:0.92rem;">Prof. Rajesh Verma — Faculty & Staff</div>
+              <div style="font-weight:700; color:#ffffff; font-size:0.92rem;">Prof. Rajesh Verma — Faculty & Staff</div>
               <div style="font-size:0.75rem; color:#94a3b8;">Staff ID: FAC-881 | Campus Facilities & Lab Superintendent</div>
             </div>
           </div>
-          <button class="btn btn-primary" style="font-size:0.78rem;">Sign in as Faculty →</button>
+          <button class="btn btn-primary" style="font-size:0.78rem;">Enter Portal →</button>
         </div>
 
         <!-- Card 3: Admin / HOD -->
-        <div class="ranked-item" onclick="fastLogin('hod@college.edu', 'HOD_ADMIN')">
-          <div style="display:flex; align-items:center; gap:0.75rem;">
-            <div style="font-size:1.6rem;">🏛️</div>
+        <div class="ranked-feed-item" onclick="triggerFastLogin('hod@college.edu', 'HOD_ADMIN')">
+          <div style="display:flex; align-items:center; gap:0.85rem;">
+            <div class="avatar-initials" style="background:linear-gradient(135deg, #7c3aed, #ec4899);">ASh</div>
             <div>
-              <div style="font-weight:700; color:#fff; font-size:0.92rem;">Dr. Ananya Shukla — Admin / HOD</div>
+              <div style="font-weight:700; color:#ffffff; font-size:0.92rem;">Dr. Ananya Shukla — Admin / HOD</div>
               <div style="font-size:0.75rem; color:#94a3b8;">Staff ID: HOD-101 | Head of Department & Infrastructure Dean</div>
             </div>
           </div>
-          <button class="btn btn-primary" style="font-size:0.78rem;">Sign in as HOD →</button>
+          <button class="btn btn-primary" style="font-size:0.78rem;">Enter Portal →</button>
         </div>
       </div>
 
-      <!-- Custom Login Inputs -->
-      <div style="border-top:1px solid #1e293b; padding-top:1rem;">
-        <label style="margin-bottom:0.5rem;">Or Sign in with Custom Email</label>
-        <div style="display:flex; gap:0.5rem;">
-          <input type="email" id="customAuthEmail" placeholder="e.g. yourname@college.edu" />
-          <button class="btn btn-primary" onclick="submitCustomLogin()">Sign In</button>
+      <div style="border-top:1px solid var(--border-subtle); padding-top:1rem;">
+        <label>Or Sign In with University Email</label>
+        <div style="display:flex; gap:0.5rem; margin-top:0.35rem;">
+          <input type="email" id="customEmailInput" placeholder="your.name@college.edu" />
+          <button class="btn btn-primary" onclick="submitCustomEmailLogin()">Sign In</button>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- JAVASCRIPT APPLICATION LOGIC -->
+  <!-- Toast Notification Container -->
+  <div id="toastContainer"></div>
+
+  <!-- ============================================================== -->
+  <!-- 4. JAVASCRIPT APPLICATION CODE                                 -->
+  <!-- ============================================================== -->
   <script>
-    // State Management
-    const appState = {
-      currentUser: {
+    const app = {
+      user: {
         name: 'Aarav Sharma',
         role: 'STUDENT',
         email: 'student@college.edu',
         roll_or_staff_id: '21CS042',
-        title: 'Student (Year 4, B.Tech CSE)',
-        avatar_url: '🎓'
+        title: 'Student (Year 4, B.Tech CSE)'
       },
-      token: 'tok_student_demo',
-      activeTab: 'student',
+      token: 'tok_student_01',
+      activePortal: 'student',
       studentProofBase64: null,
       studentProofType: 'PHOTO',
       facultyProofBase64: null,
       facultyPresetKey: 'genuine_repaired_wire',
-      selectedComplaintId: 'CMP-7001',
+      selectedId: 'CMP-7001',
       complaints: [],
-      masterIncidents: [],
-      landmarks: []
+      scorecards: []
     };
 
-    // Tab Navigation
-    function navigateTab(tabId) {
-      appState.activeTab = tabId;
-      document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
-      document.querySelectorAll('.nav-tab-btn').forEach(btn => btn.classList.remove('active'));
+    // Toast Notification System
+    function showToast(msg, type = 'info') {
+      const container = document.getElementById('toastContainer');
+      const toast = document.createElement('div');
+      toast.className = 'toast-pill';
+      const icon = type === 'success' ? '✓' : (type === 'error' ? '⚠️' : 'ℹ️');
+      toast.innerHTML = `<span style="color:${type === 'success' ? '#34d399' : (type === 'error' ? '#fda4af' : '#818cf8')}; font-size:1rem;">${icon}</span> <span>${msg}</span>`;
+      container.appendChild(toast);
+      setTimeout(() => {
+        toast.style.opacity = '0';
+        toast.style.transform = 'translateY(8px)';
+        setTimeout(() => toast.remove(), 250);
+      }, 3500);
+    }
 
-      const target = document.getElementById('tab-' + tabId);
+    // Portal Navigation
+    function navigatePortal(portalId) {
+      app.activePortal = portalId;
+      document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+      document.querySelectorAll('.portal-tab-btn').forEach(btn => btn.classList.remove('active'));
+
+      const target = document.getElementById('portal-' + portalId);
       if (target) target.classList.add('active');
 
       const btnMap = {
-        student: 'tabBtnStudent',
-        faculty: 'tabBtnFaculty',
-        hod: 'tabBtnHOD',
-        map: 'tabBtnCampusMap'
+        student: 'navStudentBtn',
+        faculty: 'navFacultyBtn',
+        hod: 'navHODBtn',
+        map: 'navMapBtn'
       };
-      if (btnMap[tabId]) document.getElementById(btnMap[tabId]).classList.add('active');
+      if (btnMap[portalId]) document.getElementById(btnMap[portalId]).classList.add('active');
 
-      if (tabId === 'faculty') loadFacultyRankedQueue();
-      if (tabId === 'hod') loadHODOverview();
-      if (tabId === 'map') renderCampusGisMap();
+      if (portalId === 'faculty') fetchFacultyRankedQueue();
+      if (portalId === 'hod') fetchHODOverview();
+      if (portalId === 'map') renderCampusGis();
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
-    // Role-Based Auth Functions
-    function openAuthModal() {
-      document.getElementById('authModal').classList.add('open');
-    }
-    function closeAuthModal() {
-      document.getElementById('authModal').classList.remove('open');
-    }
+    // Auth & Role Management
+    function openAuthDialog() { document.getElementById('authDialog').classList.add('open'); }
+    function closeAuthDialog() { document.getElementById('authDialog').classList.remove('open'); }
 
-    async function fastLogin(email, role) {
+    async function triggerFastLogin(email, role) {
       try {
         const res = await fetch('/api/auth/login', {
           method: 'POST',
@@ -797,122 +1278,100 @@
           body: JSON.stringify({ email: email, role: role })
         });
         const data = await res.json();
-        appState.currentUser = data.user;
-        appState.token = data.token;
-        updateHeaderUserBadge();
-        closeAuthModal();
+        app.user = data.user;
+        app.token = data.token;
+        updateHeaderUI();
+        closeAuthDialog();
+        showToast(`Authenticated as ${data.user.name} (${data.user.role})`, 'success');
 
-        // Navigate to the respective dashboard
-        if (role === 'STUDENT') navigateTab('student');
-        else if (role === 'FACULTY') navigateTab('faculty');
-        else if (role === 'HOD_ADMIN') navigateTab('hod');
+        if (role === 'STUDENT') navigatePortal('student');
+        else if (role === 'FACULTY') navigatePortal('faculty');
+        else if (role === 'HOD_ADMIN') navigatePortal('hod');
       } catch (err) {
-        alert('Authentication error: ' + err);
+        showToast('Login error: ' + err, 'error');
       }
     }
 
-    async function submitCustomLogin() {
-      const email = document.getElementById('customAuthEmail').value.trim();
+    async function submitCustomEmailLogin() {
+      const email = document.getElementById('customEmailInput').value.trim();
       if (!email) return;
       const role = email.includes('fac') ? 'FACULTY' : (email.includes('hod') ? 'HOD_ADMIN' : 'STUDENT');
-      await fastLogin(email, role);
+      await triggerFastLogin(email, role);
     }
 
-    function logoutUser() {
-      appState.token = null;
-      appState.currentUser = {
-        name: 'Guest / Signed Out',
+    function signOutActiveUser() {
+      app.token = null;
+      app.user = {
+        name: 'Guest User',
         role: 'GUEST',
         email: '',
         roll_or_staff_id: '',
-        title: 'Click to Sign In',
-        avatar_url: '👤'
+        title: 'Click to Sign In'
       };
-      updateHeaderUserBadge();
-      openAuthModal();
+      updateHeaderUI();
+      openAuthDialog();
+      showToast('Signed out of session', 'info');
     }
 
-    function updateHeaderUserBadge() {
-      document.getElementById('hdrUserAvatar').innerText = appState.currentUser.avatar_url || '🎓';
-      document.getElementById('hdrUserName').innerText = appState.currentUser.name;
-      document.getElementById('hdrUserRole').innerText = `${appState.currentUser.role} (${appState.currentUser.roll_or_staff_id || ''})`;
+    function updateHeaderUI() {
+      const initials = app.user.name.split(' ').map(w => w[0]).join('').substring(0, 2).toUpperCase();
+      document.getElementById('headerAvatar').innerText = initials || 'AS';
+      document.getElementById('headerUserName').innerText = app.user.name;
+      document.getElementById('headerRoleTag').innerText = `${app.user.role} (${app.user.roll_or_staff_id || ''})`;
     }
 
-    // Student Proof Upload Handler (Photo or Video)
-    function handleStudentProofUpload(event) {
-      const file = event.target.files[0];
+    // Student Proof Upload Handling
+    function onStudentProofSelected(e) {
+      const file = e.target.files[0];
       if (!file) return;
 
-      const isVideo = file.type.startsWith('video');
-      appState.studentProofType = isVideo ? 'VIDEO' : 'PHOTO';
+      const isVid = file.type.startsWith('video');
+      app.studentProofType = isVid ? 'VIDEO' : 'PHOTO';
 
       const reader = new FileReader();
-      reader.onload = function(e) {
-        appState.studentProofBase64 = e.target.result;
-        const imgEl = document.getElementById('studImagePreview');
-        const vidEl = document.getElementById('studVideoPreview');
-        const statusEl = document.getElementById('studProofStatus');
+      reader.onload = function(evt) {
+        app.studentProofBase64 = evt.target.result;
+        const img = document.getElementById('imgProofPreview');
+        const vid = document.getElementById('vidProofPreview');
+        const lbl = document.getElementById('dropzoneLabel');
 
-        if (isVideo) {
-          imgEl.style.display = 'none';
-          vidEl.style.display = 'block';
-          vidEl.src = e.target.result;
-          statusEl.innerText = `✓ Video file loaded: ${file.name} (${(file.size / (1024 * 1024)).toFixed(2)} MB)`;
+        if (isVid) {
+          img.style.display = 'none';
+          vid.style.display = 'block';
+          vid.src = evt.target.result;
+          lbl.innerText = `✓ Video file attached: ${file.name} (${(file.size / (1024 * 1024)).toFixed(2)} MB)`;
         } else {
-          vidEl.style.display = 'none';
-          imgEl.style.display = 'block';
-          imgEl.src = e.target.result;
-          statusEl.innerText = `✓ Photo file loaded: ${file.name} (${(file.size / 1024).toFixed(1)} KB)`;
+          vid.style.display = 'none';
+          img.style.display = 'block';
+          img.src = evt.target.result;
+          lbl.innerText = `✓ Photo file attached: ${file.name} (${(file.size / 1024).toFixed(1)} KB)`;
         }
       };
       reader.readAsDataURL(file);
     }
 
-    function triggerPresetProof(type) {
-      appState.studentProofBase64 = null;
-      appState.studentProofType = 'PHOTO';
-      const imgEl = document.getElementById('studImagePreview');
-      const vidEl = document.getElementById('studVideoPreview');
-      vidEl.style.display = 'none';
-      imgEl.style.display = 'block';
-
-      if (type === 'sparking_wire') {
-        imgEl.src = '/static/images/sparking_wire.svg';
-        document.getElementById('studTitle').value = 'Active Arc-Flashing Electrical Conduit Outside Examination Hall';
-        document.getElementById('studDescription').value = 'Exposed utility conduit detached from ceiling and violently sparking outside Examination Hall A. Semester final bell ringing in 25 mins!';
-        document.getElementById('studCategory').value = 'Public Safety & Electrical';
-        document.getElementById('studProofStatus').innerText = 'Proof preset: sparking_wire.svg (Exam Hall Frontage)';
-      } else if (type === 'water_flood') {
-        imgEl.src = '/static/images/water_flood.svg';
-        document.getElementById('studTitle').value = 'Girls Hostel Block 3 Main Supply Pipe Rupture';
-        document.getElementById('studDescription').value = 'Ruptured riser pipe in Block 3 shaft. Gushing water flooded corridor and entering rooms on 2nd floor.';
-        document.getElementById('studCategory').value = 'Hostel & Student Living';
-        document.getElementById('studProofStatus').innerText = 'Proof preset: water_flood.svg (Girls Hostel Block 3)';
-      }
-    }
-
-    // Submit Student Complaint to AI Engine
-    async function handleStudentSubmit(e) {
+    // Submit Student Grievance
+    async function submitStudentGrievance(e) {
       e.preventDefault();
-      const btn = document.getElementById('btnSubmitStudent');
+      const btn = document.getElementById('btnSubmitGrievance');
       btn.disabled = true;
-      btn.innerText = 'AI Triage & Computer Vision Scoring in Progress...';
+      btn.innerText = 'Calculating Priority Index & Computer Vision Hazard...';
 
       const payload = {
-        title: document.getElementById('studTitle').value,
-        description: document.getElementById('studDescription').value,
-        category: document.getElementById('studCategory').value,
-        user_name: document.getElementById('studName').value,
-        student_roll: document.getElementById('studRoll').value,
-        student_email: appState.currentUser.email || 'student@college.edu',
-        department: document.getElementById('studDept').value,
-        location_name: document.getElementById('studLocation').value,
+        title: document.getElementById('inStudentTitle').value,
+        description: document.getElementById('inStudentDesc').value,
+        category: document.getElementById('inStudentCategory').value,
+        user_name: document.getElementById('inStudentName').value,
+        student_roll: document.getElementById('inStudentRoll').value,
+        student_email: app.user.email || 'student@college.edu',
+        department: document.getElementById('inStudentDept').value,
+        location_name: document.getElementById('inStudentLocation').value,
         latitude: 37.7753,
         longitude: -122.4190,
-        proof_type: appState.studentProofType,
-        image_base64: appState.studentProofType === 'PHOTO' ? appState.studentProofBase64 : null,
-        video_base64: appState.studentProofType === 'VIDEO' ? appState.studentProofBase64 : null,
-        image_preset: appState.studentProofBase64 ? null : 'sparking_wire'
+        proof_type: app.studentProofType,
+        image_base64: app.studentProofType === 'PHOTO' ? app.studentProofBase64 : null,
+        video_base64: app.studentProofType === 'VIDEO' ? app.studentProofBase64 : null,
+        image_preset: app.studentProofBase64 ? null : 'sparking_wire'
       };
 
       try {
@@ -922,56 +1381,56 @@
           body: JSON.stringify(payload)
         });
         const data = await res.json();
-        alert(`🎉 Grievance Submitted Successfully!\nTracking Number: ${data.id}\nAI Priority Score: ${data.priority_score}/100 [${data.priority_tier}]\nGlobal Rank: #${data.rank}`);
-        loadStudentComplaints();
-        loadFacultyRankedQueue();
+        showToast(`Grievance #${data.id} filed! Priority: ${data.priority_score}/100 [Rank #${data.rank}]`, 'success');
+        refreshStudentComplaints();
+        fetchFacultyRankedQueue();
       } catch (err) {
-        alert('Submission failed: ' + err);
+        showToast('Submission error: ' + err, 'error');
       } finally {
         btn.disabled = false;
-        btn.innerText = '🚀 Submit Grievance for Autonomous AI Triage & Ranking';
+        btn.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg> Run AI Multimodal Triage & Compute Priority Index`;
       }
     }
 
-    // Load Student's Submitted Complaints
-    async function loadStudentComplaints() {
-      const container = document.getElementById('studentComplaintsContainer');
+    // Refresh Student Grievance Feed
+    async function refreshStudentComplaints() {
+      const container = document.getElementById('studentGrievanceFeed');
       try {
-        const email = appState.currentUser.email || 'student@college.edu';
+        const email = app.user.email || 'student@college.edu';
         const res = await fetch(`/api/student/my-complaints?email=${encodeURIComponent(email)}`);
         const list = await res.json();
 
         if (!list || list.length === 0) {
-          container.innerHTML = '<div style="text-align:center; padding:1.5rem; color:var(--text-muted);">No grievances filed yet.</div>';
+          container.innerHTML = '<div style="text-align:center; padding:2rem; color:var(--text-dim);">No grievances submitted yet.</div>';
           return;
         }
 
         let html = '';
         list.forEach(c => {
-          const isResolved = c.status === 'VERIFIED_CLOSED' || c.status === 'AUTO_RESOLVED';
+          const isClosed = c.status === 'VERIFIED_CLOSED' || c.status === 'AUTO_RESOLVED';
           html += `
-            <div style="background:#0c1222; border:1px solid #1e293b; border-radius:var(--radius-md); padding:1rem; margin-bottom:0.85rem;">
+            <div style="background:#090e1c; border:1px solid var(--border-subtle); border-radius:var(--radius-md); padding:1rem; margin-bottom:0.85rem;">
               <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.4rem;">
                 <span class="badge badge-rank">Rank #${c.rank}</span>
-                <span class="badge badge-${c.priority_tier === 'CRITICAL' ? 'critical' : 'high'}">${c.priority_tier} (${c.priority_score}/100)</span>
-                <span class="badge ${isResolved ? 'badge-good' : 'badge-medium'}">${c.status}</span>
+                <span class="badge badge-${c.priority_tier === 'CRITICAL' ? 'critical' : 'high'}">${c.priority_tier} (${c.priority_score} pts)</span>
+                <span class="badge ${isClosed ? 'badge-good' : 'badge-medium'}">${c.status}</span>
               </div>
-              <h4 style="font-size:0.95rem; color:#f8fafc; margin-bottom:0.3rem;">${c.title}</h4>
-              <p style="font-size:0.78rem; color:#94a3b8; margin-bottom:0.5rem;">${c.description}</p>
+              <h4 style="font-size:0.92rem; font-weight:700; color:#ffffff; margin-bottom:0.3rem;">${c.title}</h4>
+              <p style="font-size:0.78rem; color:#94a3b8; margin-bottom:0.6rem;">${c.description}</p>
               
-              <div style="font-size:0.72rem; color:#64748b; margin-bottom:0.6rem;">
-                📍 ${c.location_name} | Assigned: <strong>${c.assigned_faculty_name || 'Pending Faculty Dispatch'}</strong>
+              <div style="font-size:0.72rem; color:var(--text-dim); margin-bottom:0.6rem;">
+                📍 ${c.location_name} | Assigned Resolver: <strong style="color:#cbd5e1;">${c.assigned_faculty_name || 'Pending Dispatch'}</strong>
               </div>
 
-              ${isResolved ? `
-                <div style="background:rgba(16, 185, 129, 0.1); border:1px solid #10b981; border-radius:var(--radius-sm); padding:0.65rem; font-size:0.75rem; color:#a7f3d0;">
-                  <strong>✓ Problem Solved by Faculty & Verified by AI:</strong><br />
-                  Turnaround Time: <strong>${c.time_taken_minutes || 42} Minutes</strong> | Verdict: <strong>${c.resolution_proof?.quality_verdict || 'GOOD_FIX_EXCELLENT'}</strong><br />
-                  HOD Status: <strong>${c.hod_status}</strong> (${c.hod_feedback || 'Endorsed'})
+              ${isClosed ? `
+                <div style="background:rgba(16, 185, 129, 0.08); border:1px solid rgba(16, 185, 129, 0.4); border-radius:var(--radius-sm); padding:0.7rem; font-size:0.75rem; color:#a7f3d0;">
+                  <strong>✓ Work Remediated & Verified by AI:</strong><br />
+                  Turnaround Duration: <strong>${c.time_taken_minutes || 42} Minutes</strong> | Verdict: <strong>${c.resolution_proof?.quality_verdict || 'GOOD_FIX_EXCELLENT'}</strong><br />
+                  HOD Endorsement: <strong>${c.hod_status}</strong> (${c.hod_feedback || 'Institutional sign-off granted'})
                 </div>
               ` : `
-                <div style="font-size:0.72rem; color:#fbbf24;">
-                  ⏳ In Progress: Faculty dispatched. SLA Timer: ${Math.floor(c.sla_seconds_remaining / 60)} mins remaining
+                <div style="font-size:0.72rem; color:#fde68a;">
+                  ⏳ Active in Resolver Queue. SLA Countdown: ${Math.floor(c.sla_seconds_remaining / 60)} mins remaining.
                 </div>
               `}
             </div>
@@ -979,114 +1438,115 @@
         });
         container.innerHTML = html;
       } catch (err) {
-        container.innerHTML = '<div style="color:#f87171; padding:1rem;">Error loading grievances.</div>';
+        container.innerHTML = '<div style="color:#fda4af; padding:1rem;">Error loading grievances.</div>';
       }
     }
 
-    // Load Faculty AI-Ranked Grievance Queue
-    async function loadFacultyRankedQueue() {
+    // Faculty Ranked Queue
+    async function fetchFacultyRankedQueue() {
       const container = document.getElementById('facultyRankedQueue');
       try {
         const res = await fetch('/api/faculty/ranked-complaints');
         const list = await res.json();
-        appState.complaints = list;
+        app.complaints = list;
+        document.getElementById('navFacultyBadge').innerText = list.length;
 
         if (!list || list.length === 0) {
-          container.innerHTML = '<div style="text-align:center; padding:1.5rem; color:var(--text-muted);">No active complaints in queue.</div>';
+          container.innerHTML = '<div style="text-align:center; padding:2rem; color:var(--text-dim);">Queue is empty.</div>';
           return;
         }
 
         let html = '';
-        list.forEach((c, idx) => {
-          const isSelected = c.id === appState.selectedComplaintId;
+        list.forEach(c => {
+          const isSel = c.id === app.selectedId;
           html += `
-            <div class="ranked-item ${isSelected ? 'selected' : ''}" onclick="selectFacultyComplaint('${c.id}')">
-              <div style="display:flex; align-items:center; gap:0.75rem;">
+            <div class="ranked-feed-item ${isSel ? 'selected' : ''}" onclick="pickFacultyTicket('${c.id}')">
+              <div style="display:flex; align-items:center; gap:0.85rem;">
                 <span class="badge badge-rank">#${c.rank}</span>
                 <div>
-                  <div style="font-weight:700; color:#f8fafc; font-size:0.88rem;">${c.title}</div>
+                  <div style="font-weight:700; color:#ffffff; font-size:0.88rem;">${c.title}</div>
                   <div style="font-size:0.73rem; color:#94a3b8;">
-                    ${c.student_roll || 'Student'} • ${c.department || 'Campus'} • ${c.proof_type === 'VIDEO' ? '🎥 Video Proof' : '📷 Photo Proof'}
+                    ${c.student_roll || 'Student'} • ${c.department || 'Campus'} • ${c.proof_type === 'VIDEO' ? '🎥 Video' : '📷 Photo'}
                   </div>
                 </div>
               </div>
               <div style="text-align:right;">
                 <span class="badge badge-${c.priority_tier === 'CRITICAL' ? 'critical' : 'high'}">${c.priority_score} pts</span>
-                <div style="font-size:0.68rem; color:#64748b; margin-top:2px;">${c.status}</div>
+                <div style="font-size:0.68rem; color:var(--text-dim); margin-top:2px;">${c.status}</div>
               </div>
             </div>
           `;
         });
         container.innerHTML = html;
 
-        // Auto select first if not selected
-        if (!appState.selectedComplaintId && list.length > 0) {
-          selectFacultyComplaint(list[0].id);
-        }
+        if (!app.selectedId && list.length > 0) pickFacultyTicket(list[0].id);
       } catch (err) {
-        container.innerHTML = '<div style="color:#f87171; padding:1rem;">Error loading queue.</div>';
+        container.innerHTML = '<div style="color:#fda4af; padding:1rem;">Error loading queue.</div>';
       }
     }
 
-    function selectFacultyComplaint(id) {
-      appState.selectedComplaintId = id;
-      const c = appState.complaints.find(x => x.id === id);
+    function pickFacultyTicket(id) {
+      app.selectedId = id;
+      const c = app.complaints.find(x => x.id === id);
       if (!c) return;
 
-      document.getElementById('facultyActiveTicketBadge').innerText = c.id;
-      document.getElementById('facTicketRank').innerText = `Rank #${c.rank}`;
-      document.getElementById('facTicketPriority').innerText = `Priority: ${c.priority_score} / 100 [${c.priority_tier}]`;
+      document.getElementById('facultyActiveTicketPill').innerText = c.id;
+      document.getElementById('facTicketRankBadge').innerText = `Rank #${c.rank}`;
+      document.getElementById('facTicketPriorityBadge').innerText = `Priority: ${c.priority_score} / 100 [${c.priority_tier}]`;
       document.getElementById('facTicketTitle').innerText = c.title;
       document.getElementById('facTicketDesc').innerText = c.description;
       document.getElementById('facTicketStudent').innerText = `${c.user_name} (${c.student_roll || '21CS042'})`;
       document.getElementById('facTicketLocation').innerText = c.location_name;
-      document.getElementById('facBeforePreview').src = c.image_url || '/static/images/sparking_wire.svg';
+      document.getElementById('facBeforePreviewImg').src = c.image_url || '/static/images/sparking_wire.svg';
 
-      document.querySelectorAll('.ranked-item').forEach(el => el.classList.remove('selected'));
-      loadFacultyRankedQueue();
+      document.querySelectorAll('.ranked-feed-item').forEach(el => el.classList.remove('selected'));
+      fetchFacultyRankedQueue();
     }
 
-    // Faculty Proof Upload & Presets
-    function handleFacultyProofUpload(event) {
-      const file = event.target.files[0];
+    function onFacultyProofSelected(e) {
+      const file = e.target.files[0];
       if (!file) return;
       const reader = new FileReader();
-      reader.onload = function(e) {
-        appState.facultyProofBase64 = e.target.result;
-        document.getElementById('facAfterPreview').src = e.target.result;
+      reader.onload = function(evt) {
+        app.facultyProofBase64 = evt.target.result;
+        document.getElementById('facAfterPreviewImg').src = evt.target.result;
+        showToast(`Loaded faculty repair proof: ${file.name}`, 'info');
       };
       reader.readAsDataURL(file);
     }
 
-    function setFacultyPreset(preset) {
-      appState.facultyPresetKey = preset;
-      appState.facultyProofBase64 = null;
-      const img = document.getElementById('facAfterPreview');
+    function setFacultyPresetMode(preset) {
+      app.facultyPresetKey = preset;
+      app.facultyProofBase64 = null;
+      const img = document.getElementById('facAfterPreviewImg');
       if (preset === 'genuine_repaired_wire') {
         img.src = '/static/images/genuine_repaired_wire.svg';
-        document.getElementById('facNotes').value = 'Conduit replaced with armored fire-retardant casing, ground insulation certified.';
+        document.getElementById('facNotesInput').value = 'Conduit safely re-sheathed in fire-retardant conduit, junction locked, ground fault resistance verified.';
+        showToast('Loaded preset: Certified Wire Repair (Good Fix)', 'info');
       } else if (preset === 'college_bad_tape_patch') {
         img.src = '/static/images/sparking_wire.svg';
-        document.getElementById('facNotes').value = 'Wrapped electrical tape over burnt wire temporarily until weekend.';
+        document.getElementById('facNotesInput').value = 'Wrapped electrical tape over charred wire temporarily.';
+        showToast('Loaded preset: Makeshift Tape Patch (Bad Fix)', 'info');
       } else if (preset === 'fake_unrelated') {
         img.src = '/static/images/pothole.svg';
-        document.getElementById('facNotes').value = 'Job completed.';
+        document.getElementById('facNotesInput').value = 'Job completed.';
+        showToast('Loaded preset: Unrelated Photo (Fraud / Reject)', 'info');
       }
     }
 
-    // Submit Faculty Proof & AI Scanning (GOOD vs BAD Fix Evaluation)
-    async function submitFacultyProofEvaluation() {
-      const btn = document.getElementById('btnScanProof');
+    // AI Proof Evaluation (Good Fix vs Bad Fix)
+    async function executeProofScan() {
+      const btn = document.getElementById('btnScanFacultyProof');
       btn.disabled = true;
       btn.innerText = 'AI Scanning Proof & Evaluating Remediation Quality...';
 
       const payload = {
-        complaint_id: appState.selectedComplaintId || 'CMP-7001',
+        complaint_id: app.selectedId || 'CMP-7001',
         resolver_id: 'FAC-881',
         resolver_name: 'Prof. Rajesh Verma',
-        after_image_preset: appState.facultyProofBase64 ? null : appState.facultyPresetKey,
-        after_image_base64: appState.facultyProofBase64,
-        resolver_notes: document.getElementById('facNotes').value
+        after_image_preset: app.facultyProofBase64 ? null : app.facultyPresetKey,
+        after_image_base64: app.facultyProofBase64,
+        resolver_notes: document.getElementById('facNotesInput').value
       };
 
       try {
@@ -1097,73 +1557,79 @@
         });
         const data = await res.json();
         const ev = data.evaluation;
-        const banner = document.getElementById('aiVerdictContainer');
-        banner.style.display = 'block';
+        const box = document.getElementById('aiVerdictBox');
+        box.style.display = 'block';
 
         if (data.is_good) {
-          banner.className = 'verdict-banner verdict-good';
-          banner.innerHTML = `
-            <div class="verdict-title">
-              <span>✓</span> AI VERDICT: GOOD FIX (APPROVED & REMEDIATED)
-            </div>
-            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.5rem;">
-              <span class="verdict-score" style="color:#34d399;">${data.quality_score}% Quality Score</span>
+          box.className = 'verdict-card good-fix';
+          box.innerHTML = `
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.4rem;">
+              <div style="font-size:1rem; font-weight:800; color:#34d399; display:flex; align-items:center; gap:0.4rem;">
+                ✓ AI VERDICT: GOOD FIX (REMEDIATION CERTIFIED)
+              </div>
               <span class="badge badge-good">Turnaround: ${data.complaint.time_taken_minutes || 48} mins</span>
             </div>
-            <p style="font-size:0.8rem; margin-bottom:0.4rem;">${ev.reason}</p>
-            <div style="font-size:0.72rem; color:#6ee7b7;">
-              🛡️ Cryptographic Verification Token: <code>${ev.cryptographic_token}</code><br />
-              Status updated to <strong>VERIFIED_CLOSED</strong> and forwarded to HOD for institutional sign-off.
+            <div style="font-size:1.2rem; font-weight:800; font-family:'JetBrains Mono', monospace; color:#6ee7b7; margin-bottom:0.35rem;">
+              ${data.quality_score}% Remediation Quality
+            </div>
+            <p style="font-size:0.8rem; color:#cbd5e1; margin-bottom:0.5rem;">${ev.reason}</p>
+            <div style="font-size:0.72rem; color:#a7f3d0;">
+              🛡️ Cryptographic Verification Seal: <code>${ev.cryptographic_token}</code><br />
+              Status updated to <strong>VERIFIED_CLOSED</strong>. Dispatched to HOD for institutional sign-off.
             </div>
           `;
+          showToast('Proof Verified as GOOD FIX! Ticket closed and sent to HOD.', 'success');
         } else {
-          banner.className = 'verdict-banner verdict-bad';
-          banner.innerHTML = `
-            <div class="verdict-title">
-              <span>⚠️</span> AI VERDICT: BAD FIX (SUB-STANDARD / REJECTED)
-            </div>
-            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.5rem;">
-              <span class="verdict-score" style="color:#f87171;">${data.quality_score}% Quality Score</span>
+          box.className = 'verdict-card bad-fix';
+          box.innerHTML = `
+            <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.4rem;">
+              <div style="font-size:1rem; font-weight:800; color:#f87171; display:flex; align-items:center; gap:0.4rem;">
+                ⚠️ AI VERDICT: BAD FIX (SUB-STANDARD / REJECTED)
+              </div>
               <span class="badge badge-bad">Rework Required</span>
             </div>
-            <p style="font-size:0.8rem; margin-bottom:0.4rem;"><strong>REASON:</strong> ${ev.reason}</p>
-            <div style="font-size:0.72rem; color:#fca5a5;">
-              ⚠️ Ticket cannot be closed. Retained in <strong>IN_PROGRESS</strong> state for proper remediation.
+            <div style="font-size:1.2rem; font-weight:800; font-family:'JetBrains Mono', monospace; color:#fca5a5; margin-bottom:0.35rem;">
+              ${data.quality_score}% Quality Score
+            </div>
+            <p style="font-size:0.8rem; color:#fecaca; margin-bottom:0.5rem;"><strong>REASON:</strong> ${ev.reason}</p>
+            <div style="font-size:0.72rem; color:#fda4af;">
+              ⚠️ Ticket closure blocked. Maintained in <strong>IN_PROGRESS</strong> state for proper resolution.
             </div>
           `;
+          showToast('Proof Rejected as BAD FIX! Rework required.', 'error');
         }
 
-        loadFacultyRankedQueue();
-        loadStudentComplaints();
-        loadHODOverview();
+        fetchFacultyRankedQueue();
+        refreshStudentComplaints();
+        fetchHODOverview();
       } catch (err) {
-        alert('Proof evaluation failed: ' + err);
+        showToast('Proof evaluation error: ' + err, 'error');
       } finally {
         btn.disabled = false;
-        btn.innerText = '🔍 AI Scan & Evaluate Proof of Work (Good vs Bad)';
+        btn.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg> AI Scan Proof & Evaluate Remediation Quality`;
       }
     }
 
-    // Load Admin & HOD Overview (Turnaround Times & Faculty Scorecards)
-    async function loadHODOverview() {
+    // HOD & Dean Overview
+    async function fetchHODOverview() {
       try {
         const res = await fetch('/api/hod/overview');
         const data = await res.json();
 
-        document.getElementById('kpiTotalGrievances').innerText = data.total_grievances;
-        document.getElementById('kpiAvgTurnaround').innerText = data.avg_turnaround_display;
+        document.getElementById('kpiTotalCount').innerText = data.total_grievances;
+        document.getElementById('kpiTurnaroundTime').innerText = data.avg_turnaround_display;
         document.getElementById('kpiPendingCount').innerText = data.pending_count;
 
-        // Render Faculty Scorecards Table
-        const tbody = document.getElementById('facultyScorecardsBody');
+        // Render Scorecards Table
+        const tbody = document.getElementById('scorecardsTableBody');
         let html = '';
         data.scorecards.forEach(sc => {
           html += `
             <tr>
-              <td><strong>${sc.name}</strong></td>
+              <td><strong style="color:#ffffff;">${sc.name}</strong></td>
               <td>${sc.role_title}</td>
-              <td>${sc.tasks_resolved} / ${sc.tasks_assigned}</td>
-              <td><strong style="color:#38bdf8;">${sc.avg_time_taken_hours}h</strong></td>
+              <td><span style="font-weight:700; color:#38bdf8;">${sc.tasks_resolved}</span> / ${sc.tasks_assigned}</td>
+              <td><strong style="color:#6ee7b7;">${sc.avg_time_taken_hours}h</strong></td>
               <td><span class="badge badge-good">${sc.avg_quality_score}%</span></td>
               <td>⭐ <strong>${sc.rating}</strong></td>
             </tr>
@@ -1171,13 +1637,13 @@
         });
         tbody.innerHTML = html;
 
-        // Populate HOD inspection ticket (CMP-7005 or first resolved)
+        // Inspection target
         if (data.recent_resolutions && data.recent_resolutions.length > 0) {
           const c = data.recent_resolutions[0];
           document.getElementById('hodReviewTicketPill').innerText = c.id;
-          document.getElementById('hodTicketTitle').innerText = c.title;
-          document.getElementById('hodTicketFaculty').innerText = c.assigned_faculty_name || 'Prof. Rajesh Verma';
-          document.getElementById('hodTicketTime').innerText = `${c.time_taken_minutes || 42} Minutes`;
+          document.getElementById('hodInspectionTitle').innerText = c.title;
+          document.getElementById('hodInspectionFaculty').innerText = c.assigned_faculty_name || 'Prof. Rajesh Verma';
+          document.getElementById('hodInspectionTime').innerText = `${c.time_taken_minutes || 42} Minutes`;
           document.getElementById('hodBeforeImg').src = c.image_url || '/static/images/sparking_wire.svg';
           document.getElementById('hodAfterImg').src = c.after_image_url || '/static/images/genuine_repaired_wire.svg';
         }
@@ -1186,8 +1652,7 @@
       }
     }
 
-    // Execute HOD Review (Approve or Rework)
-    async function executeHODReview(endorsement) {
+    async function executeHODDecision(decision) {
       const ticketId = document.getElementById('hodReviewTicketPill').innerText;
       const feedback = document.getElementById('hodFeedbackInput').value;
 
@@ -1197,113 +1662,124 @@
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
             complaint_id: ticketId,
-            endorsement: endorsement,
+            endorsement: decision,
             feedback: feedback,
             hod_name: 'Dr. Ananya Shukla (HOD CSE)'
           })
         });
         const data = await res.json();
-        alert(`🏛️ HOD Review Recorded: ${endorsement}!\nFeedback successfully registered on institutional ledger.`);
-        loadHODOverview();
-        loadStudentComplaints();
+        showToast(`HOD Decision Recorded: ${decision}!`, 'success');
+        fetchHODOverview();
+        refreshStudentComplaints();
       } catch (err) {
-        alert('HOD review error: ' + err);
+        showToast('HOD review error: ' + err, 'error');
       }
     }
 
-    // Load College Scenarios
-    function loadCollegeScenario(type) {
+    // Preset Scenarios Helper
+    function applyPresetScenario(type) {
       if (type === 'exam_wire') {
-        triggerPresetProof('sparking_wire');
-        navigateTab('student');
+        document.getElementById('inStudentTitle').value = 'Active Arc-Flashing Electrical Conduit Outside Examination Hall';
+        document.getElementById('inStudentDesc').value = 'Exposed utility conduit detached from ceiling and violently sparking outside Examination Hall A. Final bell ringing in 25 mins!';
+        document.getElementById('inStudentCategory').value = 'Public Safety & Electrical';
+        document.getElementById('inStudentLocation').value = 'Oakridge School & Campus Main Examination Hall';
+        document.getElementById('imgProofPreview').src = '/static/images/sparking_wire.svg';
+        document.getElementById('vidProofPreview').style.display = 'none';
+        document.getElementById('imgProofPreview').style.display = 'block';
+        showToast('Loaded scenario: Sparking Wire outside Exam Hall (Rank #1)', 'info');
+        navigatePortal('student');
       } else if (type === 'hostel_water') {
-        triggerPresetProof('water_flood');
-        navigateTab('student');
+        document.getElementById('inStudentTitle').value = 'Girls Hostel Block 3 Main Supply Pipe Rupture';
+        document.getElementById('inStudentDesc').value = 'Ruptured riser pipe in Block 3 shaft. Gushing water flooding corridor and entering rooms on 2nd floor.';
+        document.getElementById('inStudentCategory').value = 'Hostel & Student Living';
+        document.getElementById('inStudentLocation').value = 'Girls Hostel Block 3 Ground & 2nd Floor';
+        document.getElementById('imgProofPreview').src = '/static/images/water_flood.svg';
+        document.getElementById('vidProofPreview').style.display = 'none';
+        document.getElementById('imgProofPreview').style.display = 'block';
+        showToast('Loaded scenario: Hostel Water Breach (Rank #2)', 'info');
+        navigatePortal('student');
       } else if (type === 'lab_server') {
-        document.getElementById('studTitle').value = 'CS Lab Server Rack Power Trip';
-        document.getElementById('studDescription').value = 'Server rack 4 in CS Lab lost power during student data processing lab. 18 terminals halted.';
-        document.getElementById('studCategory').value = 'Labs & Academic Infrastructure';
-        document.getElementById('studLocation').value = 'Campus CS Lab Building & Server Room 204';
-        document.getElementById('studProofStatus').innerText = 'Proof preset: Video file (CS Lab Server Trip)';
-        navigateTab('student');
+        document.getElementById('inStudentTitle').value = 'CS Lab Server Rack Power Trip';
+        document.getElementById('inStudentDesc').value = 'Server rack 4 in CS Lab lost power during student data processing lab. 18 terminals halted.';
+        document.getElementById('inStudentCategory').value = 'Labs & Academic Infrastructure';
+        document.getElementById('inStudentLocation').value = 'Campus CS Lab Building & Server Room 204';
+        showToast('Loaded scenario: CS Lab Server Power Trip', 'info');
+        navigatePortal('student');
       } else if (type === 'fee_double') {
-        document.getElementById('studTitle').value = 'Duplicate Deduction of Semester Exam Fee ($89)';
-        document.getElementById('studDescription').value = 'Portal charged semester exam fee twice on October 28th. Transaction reference #TXN-402.';
-        document.getElementById('studCategory').value = 'Billing & Financial Services';
-        document.getElementById('studProofStatus').innerText = 'Proof preset: Transaction Statement PDF';
-        navigateTab('student');
+        document.getElementById('inStudentTitle').value = 'Duplicate Deduction of Semester Exam Fee ($89)';
+        document.getElementById('inStudentDesc').value = 'Portal charged semester exam fee twice on October 28th. Transaction reference #TXN-402.';
+        document.getElementById('inStudentCategory').value = 'Billing & Financial Services';
+        showToast('Loaded scenario: Tuition Double Deduction', 'info');
+        navigatePortal('student');
       }
     }
 
-    // Simulate Mass Outage Swarm
-    async function simulateMassOutageSwarm() {
+    // Swarm Simulator
+    async function simulateCrowdSwarm() {
       try {
         const res = await fetch('/api/demo/simulate-mass-outage', { method: 'POST' });
         const data = await res.json();
-        alert(`⚡ Campus Power Swarm Simulated!\n25 Student reports across Sector 4 merged into 1 pulsing Master Incident.\nDynamic Priority escalated to ${data.master_incident.priority_score}/100 [CRITICAL].`);
-        loadFacultyRankedQueue();
-        loadHODOverview();
-        renderCampusGisMap();
+        showToast(`⚡ 25 Reports Swarmed into Master Incident ${data.master_incident.id} [CRITICAL]`, 'success');
+        fetchFacultyRankedQueue();
+        fetchHODOverview();
+        renderCampusGis();
       } catch (err) {
-        alert('Swarm simulation error: ' + err);
+        showToast('Swarm simulation error: ' + err, 'error');
       }
     }
 
-    // Campus GIS Map
-    function renderCampusGisMap() {
-      const canvas = document.getElementById('campusGisCanvas');
+    // Campus GIS Visualizer
+    function renderCampusGis() {
+      const canvas = document.getElementById('campusCanvas');
       if (!canvas) return;
       const ctx = canvas.getContext('2d');
       const w = canvas.width = canvas.parentElement.clientWidth || 800;
-      const h = canvas.height = 500;
+      const h = canvas.height = 520;
 
       ctx.fillStyle = '#060a14';
       ctx.fillRect(0, 0, w, h);
 
       // Grid
-      ctx.strokeStyle = '#111a2d';
+      ctx.strokeStyle = '#111a2e';
       ctx.lineWidth = 1;
       for (let x = 0; x < w; x += 40) { ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, h); ctx.stroke(); }
       for (let y = 0; y < h; y += 40) { ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(w, y); ctx.stroke(); }
 
-      // Landmarks: Exam Hall, Girls Hostel, CS Lab, Health Center
       const landmarks = [
-        { name: 'Exam Hall Complex A', x: w * 0.45, y: h * 0.35, icon: '🏫', color: '#ef4444' },
-        { name: 'Girls Hostel Block 3', x: w * 0.75, y: h * 0.70, icon: '🏢', color: '#f59e0b' },
-        { name: 'CS Lab Complex 204', x: w * 0.25, y: h * 0.50, icon: '💻', color: '#3b82f6' },
-        { name: 'Campus Health Center', x: w * 0.60, y: h * 0.20, icon: '🏥', color: '#10b981' }
+        { name: 'Exam Hall Complex A', x: w * 0.45, y: h * 0.35, color: '#f43f5e' },
+        { name: 'Girls Hostel Block 3', x: w * 0.75, y: h * 0.70, color: '#f59e0b' },
+        { name: 'CS Lab Complex 204', x: w * 0.25, y: h * 0.50, color: '#6366f1' },
+        { name: 'Campus Health Center', x: w * 0.60, y: h * 0.20, color: '#10b981' }
       ];
 
       landmarks.forEach(lm => {
-        // Buffer circle (200m)
+        // 200m buffer
         ctx.beginPath();
         ctx.arc(lm.x, lm.y, 55, 0, Math.PI * 2);
-        ctx.fillStyle = 'rgba(59, 130, 246, 0.08)';
+        ctx.fillStyle = 'rgba(99, 102, 241, 0.08)';
         ctx.fill();
-        ctx.strokeStyle = 'rgba(59, 130, 246, 0.35)';
+        ctx.strokeStyle = 'rgba(99, 102, 241, 0.35)';
         ctx.setLineDash([4, 4]);
         ctx.stroke();
         ctx.setLineDash([]);
 
-        // Core dot
         ctx.beginPath();
         ctx.arc(lm.x, lm.y, 8, 0, Math.PI * 2);
         ctx.fillStyle = lm.color;
         ctx.fill();
 
-        // Label
         ctx.fillStyle = '#cbd5e1';
         ctx.font = 'bold 11px sans-serif';
-        ctx.fillText(`${lm.name} ${lm.icon}`, lm.x + 12, lm.y + 4);
+        ctx.fillText(lm.name, lm.x + 12, lm.y + 4);
       });
     }
 
     // Startup
     window.addEventListener('DOMContentLoaded', () => {
-      updateHeaderUserBadge();
-      loadStudentComplaints();
-      loadFacultyRankedQueue();
-      loadHODOverview();
+      updateHeaderUI();
+      refreshStudentComplaints();
+      fetchFacultyRankedQueue();
+      fetchHODOverview();
     });
   </script>
 </body>
