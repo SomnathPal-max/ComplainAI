@@ -13,4 +13,4 @@ if __name__ == "__main__":
     print(f"   Integrated LLM:     Ollama (http://127.0.0.1:11434) with Autonomous Local Engine")
     print("=" * 70)
 
-    uvicorn.run("backend.main:app", host=host, port=port, reload=False)
+    uvicorn.run("backend.main:app", host=host, port=port, reload=True)

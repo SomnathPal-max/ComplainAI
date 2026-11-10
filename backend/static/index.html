@@ -858,7 +858,37 @@
               <button class="btn btn-secondary" style="font-size:0.75rem; padding:0.3rem 0.75rem;" onclick="refreshStudentComplaints()">Refresh</button>
             </div>
             <div id="studentGrievanceFeed">
-              <!-- Dynamically populated via JS -->
+              <div style="background:#090e1c; border:1px solid var(--border-subtle); border-radius:var(--radius-md); padding:1rem; margin-bottom:0.85rem;">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.4rem;">
+                  <span class="badge badge-rank">Rank #1</span>
+                  <span class="badge badge-critical">CRITICAL (94.8 pts)</span>
+                  <span class="badge badge-medium">IN_PROGRESS</span>
+                </div>
+                <h4 style="font-size:0.92rem; font-weight:700; color:#ffffff; margin-bottom:0.3rem;">Active Arc-Flashing Electrical Conduit Outside Examination Hall</h4>
+                <p style="font-size:0.78rem; color:#94a3b8; margin-bottom:0.6rem;">Exposed utility conduit detached from ceiling and sparking violently near Examination Hall A.</p>
+                <div style="font-size:0.72rem; color:var(--text-dim); margin-bottom:0.6rem;">
+                  📍 Exam Hall Complex A | Assigned Resolver: <strong style="color:#cbd5e1;">Prof. Rajesh Verma</strong>
+                </div>
+                <div style="font-size:0.72rem; color:#fde68a;">
+                  ⏳ Active in Resolver Queue. SLA Countdown: 48 mins remaining.
+                </div>
+              </div>
+
+              <div style="background:#090e1c; border:1px solid var(--border-subtle); border-radius:var(--radius-md); padding:1rem; margin-bottom:0.85rem;">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.4rem;">
+                  <span class="badge badge-rank">Rank #2</span>
+                  <span class="badge badge-high">HIGH (86.4 pts)</span>
+                  <span class="badge badge-medium">IN_PROGRESS</span>
+                </div>
+                <h4 style="font-size:0.92rem; font-weight:700; color:#ffffff; margin-bottom:0.3rem;">Girls Hostel Block 3 Main Supply Pipe Rupture</h4>
+                <p style="font-size:0.78rem; color:#94a3b8; margin-bottom:0.6rem;">Riser pipe breach in shaft. Gushing water flooded corridor and entering rooms on 2nd floor.</p>
+                <div style="font-size:0.72rem; color:var(--text-dim); margin-bottom:0.6rem;">
+                  📍 Girls Hostel Block 3 | Assigned Resolver: <strong style="color:#cbd5e1;">Er. Ramesh Kumar</strong>
+                </div>
+                <div style="font-size:0.72rem; color:#fde68a;">
+                  ⏳ Technician on-site. Isolation valve shutoff confirmed.
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -886,7 +916,69 @@
           </div>
 
           <div id="facultyRankedQueue">
-            <!-- Populated via JS -->
+            <div class="ranked-feed-item selected" onclick="pickFacultyTicket('CMP-7001')">
+              <div style="display:flex; align-items:center; gap:0.85rem;">
+                <span class="badge badge-rank">#1</span>
+                <div>
+                  <div style="font-weight:700; color:#ffffff; font-size:0.88rem;">Active Arc-Flashing Electrical Conduit</div>
+                  <div style="font-size:0.73rem; color:#94a3b8;">
+                    21CS042 • CSE Dept • 📷 Photo Proof
+                  </div>
+                </div>
+              </div>
+              <div style="text-align:right;">
+                <span class="badge badge-critical">94.8 pts</span>
+                <div style="font-size:0.68rem; color:var(--text-dim); margin-top:2px;">IN_PROGRESS</div>
+              </div>
+            </div>
+
+            <div class="ranked-feed-item" onclick="pickFacultyTicket('CMP-7004')">
+              <div style="display:flex; align-items:center; gap:0.85rem;">
+                <span class="badge badge-rank">#2</span>
+                <div>
+                  <div style="font-weight:700; color:#ffffff; font-size:0.88rem;">Girls Hostel Block 3 Water Main Rupture</div>
+                  <div style="font-size:0.73rem; color:#94a3b8;">
+                    23EE019 • Electrical Dept • 📷 Photo Proof
+                  </div>
+                </div>
+              </div>
+              <div style="text-align:right;">
+                <span class="badge badge-high">86.4 pts</span>
+                <div style="font-size:0.68rem; color:var(--text-dim); margin-top:2px;">IN_PROGRESS</div>
+              </div>
+            </div>
+
+            <div class="ranked-feed-item" onclick="pickFacultyTicket('CMP-7002')">
+              <div style="display:flex; align-items:center; gap:0.85rem;">
+                <span class="badge badge-rank">#3</span>
+                <div>
+                  <div style="font-weight:700; color:#ffffff; font-size:0.88rem;">Severe Asphalt Void on North Campus Path</div>
+                  <div style="font-size:0.73rem; color:#94a3b8;">
+                    22ME084 • Mechanical • 📷 Photo Proof
+                  </div>
+                </div>
+              </div>
+              <div style="text-align:right;">
+                <span class="badge badge-high">68.2 pts</span>
+                <div style="font-size:0.68rem; color:var(--text-dim); margin-top:2px;">IN_PROGRESS</div>
+              </div>
+            </div>
+
+            <div class="ranked-feed-item" onclick="pickFacultyTicket('CMP-7003')">
+              <div style="display:flex; align-items:center; gap:0.85rem;">
+                <span class="badge badge-rank">#4</span>
+                <div>
+                  <div style="font-weight:700; color:#ffffff; font-size:0.88rem;">Duplicate Deduction of Semester Exam Fee</div>
+                  <div style="font-size:0.73rem; color:#94a3b8;">
+                    20CS102 • CSE Dept • 📄 Billing Invoice
+                  </div>
+                </div>
+              </div>
+              <div style="text-align:right;">
+                <span class="badge badge-medium">42.0 pts</span>
+                <div style="font-size:0.68rem; color:var(--text-dim); margin-top:2px;">IN_PROGRESS</div>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -984,7 +1076,7 @@
             <span class="kpi-title">Total Campus Grievances</span>
             <svg class="kpi-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/></svg>
           </div>
-          <div class="kpi-metric" id="kpiTotalCount">--</div>
+          <div class="kpi-metric" id="kpiTotalCount">5</div>
           <div class="kpi-footer">Across all 6 academic departments</div>
         </div>
 
@@ -993,7 +1085,7 @@
             <span class="kpi-title">Avg Turnaround Time</span>
             <svg class="kpi-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
           </div>
-          <div class="kpi-metric" id="kpiTurnaroundTime" style="color:#38bdf8;">--</div>
+          <div class="kpi-metric" id="kpiTurnaroundTime" style="color:#38bdf8;">42 mins</div>
           <div class="kpi-footer">From student report to verified fix</div>
         </div>
 
@@ -1011,7 +1103,7 @@
             <span class="kpi-title">Active / Rework Required</span>
             <svg class="kpi-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/></svg>
           </div>
-          <div class="kpi-metric" id="kpiPendingCount" style="color:#fde68a;">--</div>
+          <div class="kpi-metric" id="kpiPendingCount" style="color:#fde68a;">4</div>
           <div class="kpi-footer">Assigned to facilities engineers</div>
         </div>
       </div>
@@ -1044,7 +1136,30 @@
                 </tr>
               </thead>
               <tbody id="scorecardsTableBody">
-                <!-- Dynamically loaded -->
+                <tr>
+                  <td><strong style="color:#ffffff;">Prof. Rajesh Verma</strong></td>
+                  <td>Campus Facilities &amp; Lab Superintendent</td>
+                  <td><span style="font-weight:700; color:#38bdf8;">14</span> / 15</td>
+                  <td><strong style="color:#6ee7b7;">0.8h</strong></td>
+                  <td><span class="badge badge-good">98.4%</span></td>
+                  <td>⭐ <strong>4.9</strong></td>
+                </tr>
+                <tr>
+                  <td><strong style="color:#ffffff;">Er. Ramesh Kumar</strong></td>
+                  <td>Civil Works &amp; Sanitation</td>
+                  <td><span style="font-weight:700; color:#38bdf8;">9</span> / 11</td>
+                  <td><strong style="color:#6ee7b7;">2.1h</strong></td>
+                  <td><span class="badge badge-good">94.2%</span></td>
+                  <td>⭐ <strong>4.6</strong></td>
+                </tr>
+                <tr>
+                  <td><strong style="color:#ffffff;">Dr. Sunita Patil</strong></td>
+                  <td>Academic Admin &amp; Finance</td>
+                  <td><span style="font-weight:700; color:#38bdf8;">22</span> / 22</td>
+                  <td><strong style="color:#6ee7b7;">0.3h</strong></td>
+                  <td><span class="badge badge-good">99.1%</span></td>
+                  <td>⭐ <strong>5.0</strong></td>
+                </tr>
               </tbody>
             </table>
           </div>
@@ -1774,8 +1889,22 @@
       });
     }
 
+    // Aliases
+    window.refreshHODData = fetchHODOverview;
+
     // Startup
     window.addEventListener('DOMContentLoaded', () => {
+      const path = (window.location.pathname || '').toLowerCase();
+      if (path.includes('login')) {
+        openAuthDialog();
+      } else if (path.includes('faculty')) {
+        navigatePortal('faculty');
+      } else if (path.includes('hod') || path.includes('admin')) {
+        navigatePortal('hod');
+      } else if (path.includes('map')) {
+        navigatePortal('map');
+      }
+
       updateHeaderUI();
       refreshStudentComplaints();
       fetchFacultyRankedQueue();

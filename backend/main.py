@@ -756,11 +756,25 @@ app.mount("/uploads", StaticFiles(directory="backend/uploads"), name="uploads")
 app.mount("/static", StaticFiles(directory="backend/static"), name="static")
 
 @app.get("/")
+@app.get("/login")
+@app.get("/student")
+@app.get("/faculty")
+@app.get("/hod")
+@app.get("/admin")
+@app.get("/dashboard")
+@app.get("/map")
 def serve_index():
     index_path = os.path.join("backend", "static", "index.html")
     if os.path.exists(index_path):
         return FileResponse(index_path)
     return JSONResponse({"message": "ComplainAI API is running. static/index.html is loading."})
+
+@app.get("/favicon.ico")
+def serve_favicon():
+    index_path = os.path.join("backend", "static", "images", "sparking_wire.svg")
+    if os.path.exists(index_path):
+        return FileResponse(index_path, media_type="image/svg+xml")
+    return JSONResponse({"status": "ok"})
 
 if __name__ == "__main__":
     import uvicorn
