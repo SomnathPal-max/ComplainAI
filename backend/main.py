@@ -764,7 +764,6 @@ app.mount("/static", StaticFiles(directory="backend/static"), name="static")
 @app.get("/hod")
 @app.get("/admin")
 @app.get("/dashboard")
-@app.get("/map")
 def serve_index():
     index_path = os.path.join("backend", "static", "index.html")
     if os.path.exists(index_path):

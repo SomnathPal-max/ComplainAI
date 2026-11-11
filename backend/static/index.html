@@ -698,10 +698,6 @@
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="2" width="16" height="20" rx="2" ry="2"/><line x1="9" y1="22" x2="9" y2="22.01"/><line x1="15" y1="22" x2="15" y2="22.01"/><line x1="9" y1="18" x2="9" y2="18.01"/><line x1="15" y1="18" x2="15" y2="18.01"/><line x1="9" y1="14" x2="9" y2="14.01"/><line x1="15" y1="14" x2="15" y2="14.01"/><line x1="9" y1="10" x2="9" y2="10.01"/><line x1="15" y1="10" x2="15" y2="10.01"/><line x1="9" y1="6" x2="9" y2="6.01"/><line x1="15" y1="6" x2="15" y2="6.01"/></svg>
         HOD / Dean Oversight
       </button>
-      <button class="portal-tab-btn" id="navMapBtn" onclick="navigatePortal('map')">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"/><line x1="8" y1="2" x2="8" y2="18"/><line x1="16" y1="6" x2="16" y2="22"/></svg>
-        Campus GIS Map
-      </button>
     </nav>
 
     <!-- Header Actions & Active Role -->
@@ -710,7 +706,7 @@
         <div class="avatar-initials" id="headerAvatar">AS</div>
         <div class="profile-info">
           <span class="profile-name" id="headerUserName">Aarav Sharma</span>
-          <span class="profile-role-tag" id="headerRoleTag">Student (21CS042)</span>
+          <span class="profile-role-tag" id="headerRoleTag">Student • CSE Dept</span>
         </div>
       </div>
       <button class="btn-switch-role" onclick="openAuthDialog()">
@@ -1031,15 +1027,9 @@
           </div>
 
           <form id="grievanceForm" onsubmit="submitStudentGrievance(event)">
-            <div class="grid-2col" style="margin-bottom:0.75rem;">
-              <div class="form-group">
-                <label>Student Full Name</label>
-                <input type="text" id="inStudentName" value="Aarav Sharma" required />
-              </div>
-              <div class="form-group">
-                <label>Roll Number</label>
-                <input type="text" id="inStudentRoll" value="21CS042" required />
-              </div>
+            <div class="form-group" style="margin-bottom:0.75rem;">
+              <label>Student Full Name</label>
+              <input type="text" id="inStudentName" value="Aarav Sharma" required />
             </div>
 
             <div class="grid-2col" style="margin-bottom:0.75rem;">
@@ -1191,7 +1181,7 @@
                 <div>
                   <div style="font-weight:700; color:#ffffff; font-size:0.88rem;">Active Arc-Flashing Electrical Conduit</div>
                   <div style="font-size:0.73rem; color:#94a3b8;">
-                    21CS042 • CSE Dept • 📷 Photo Proof
+                    Aarav Sharma • CSE Dept • 📷 Photo Proof
                   </div>
                 </div>
               </div>
@@ -1207,7 +1197,7 @@
                 <div>
                   <div style="font-weight:700; color:#ffffff; font-size:0.88rem;">Girls Hostel Block 3 Water Main Rupture</div>
                   <div style="font-size:0.73rem; color:#94a3b8;">
-                    23EE019 • Electrical Dept • 📷 Photo Proof
+                    Priya Patel • Electrical Dept • 📷 Photo Proof
                   </div>
                 </div>
               </div>
@@ -1223,7 +1213,7 @@
                 <div>
                   <div style="font-weight:700; color:#ffffff; font-size:0.88rem;">Severe Asphalt Void on North Campus Path</div>
                   <div style="font-size:0.73rem; color:#94a3b8;">
-                    22ME084 • Mechanical • 📷 Photo Proof
+                    Rohan Mehta • Mechanical Dept • 📷 Photo Proof
                   </div>
                 </div>
               </div>
@@ -1239,7 +1229,7 @@
                 <div>
                   <div style="font-weight:700; color:#ffffff; font-size:0.88rem;">Duplicate Deduction of Semester Exam Fee</div>
                   <div style="font-size:0.73rem; color:#94a3b8;">
-                    20CS102 • CSE Dept • 📄 Billing Invoice
+                    Neha Gupta • CSE Dept • 📄 Billing Invoice
                   </div>
                 </div>
               </div>
@@ -1273,7 +1263,7 @@
             <h4 id="facTicketTitle" style="font-size:0.95rem; font-weight:700; color:#ffffff; margin-bottom:0.35rem;">Active Arc-Flashing Electrical Conduit</h4>
             <p id="facTicketDesc" style="font-size:0.78rem; color:#94a3b8; margin-bottom:0.6rem;">Exposed utility conduit detached from ceiling and sparking violently.</p>
             <div style="display:flex; gap:1.25rem; font-size:0.74rem; color:var(--text-dim);">
-              <span>Student: <strong id="facTicketStudent" style="color:#e2e8f0;">Aarav Sharma (21CS042)</strong></span>
+              <span>Student: <strong id="facTicketStudent" style="color:#e2e8f0;">Aarav Sharma (CSE Dept)</strong></span>
               <span>Location: <strong id="facTicketLocation" style="color:#e2e8f0;">Exam Hall Complex A</strong></span>
             </div>
           </div>
@@ -1497,31 +1487,6 @@
       </div>
     </div>
 
-    <!-- ============================================================== -->
-    <!-- TAB 4: 🗺️ CAMPUS GIS MAP & SWARM INCIDENTS                     -->
-    <!-- ============================================================== -->
-    <div id="portal-map" class="tab-content">
-      <div class="card">
-        <div class="card-header">
-          <div class="card-title-group">
-            <div class="card-title">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#6366f1" stroke-width="2"><polygon points="1 6 1 22 8 18 16 22 23 18 23 2 16 6 8 2 1 6"/></svg>
-              Geospatial Campus Infrastructure & Swarm Incident Map
-            </div>
-            <div class="card-subtitle">200m safety buffers around critical academic assets & automatic crowd-density clustering.</div>
-          </div>
-          <button class="btn btn-primary" onclick="simulateCrowdSwarm()">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
-            Execute Outage Swarm Clustering (25 Reports)
-          </button>
-        </div>
-
-        <div style="position:relative; width:100%; border-radius:var(--radius-md); overflow:hidden;">
-          <canvas id="campusCanvas" style="width:100%; height:520px; background:#060a14;"></canvas>
-        </div>
-      </div>
-    </div>
-
   </main>
 
   <!-- ============================================================== -->
@@ -1545,7 +1510,7 @@
             <div class="avatar-initials" style="background:linear-gradient(135deg, #2563eb, #38bdf8);">AS</div>
             <div>
               <div style="font-weight:700; color:#ffffff; font-size:0.92rem;">Aarav Sharma — Student</div>
-              <div style="font-size:0.75rem; color:#94a3b8;">Roll: 21CS042 | Computer Science & Engineering (Year 4)</div>
+              <div style="font-size:0.75rem; color:#94a3b8;">Computer Science & Engineering (Year 4)</div>
             </div>
           </div>
           <button class="btn btn-primary" style="font-size:0.78rem;">Enter Portal →</button>
@@ -1640,14 +1605,12 @@
         overview: 'navOverviewBtn',
         student: 'navStudentBtn',
         faculty: 'navFacultyBtn',
-        hod: 'navHODBtn',
-        map: 'navMapBtn'
+        hod: 'navHODBtn'
       };
       if (btnMap[portalId]) document.getElementById(btnMap[portalId]).classList.add('active');
 
       if (portalId === 'faculty') fetchFacultyRankedQueue();
       if (portalId === 'hod') fetchHODOverview();
-      if (portalId === 'map') renderCampusGis();
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
@@ -1702,7 +1665,7 @@
       const initials = app.user.name.split(' ').map(w => w[0]).join('').substring(0, 2).toUpperCase();
       document.getElementById('headerAvatar').innerText = initials || 'AS';
       document.getElementById('headerUserName').innerText = app.user.name;
-      document.getElementById('headerRoleTag').innerText = `${app.user.role} (${app.user.roll_or_staff_id || ''})`;
+      document.getElementById('headerRoleTag').innerText = app.user.role === 'STUDENT' ? 'Student • CSE Dept' : `${app.user.role} (${app.user.roll_or_staff_id || ''})`;
     }
 
     // Student Proof Upload Handling
@@ -1747,7 +1710,7 @@
         description: document.getElementById('inStudentDesc').value,
         category: document.getElementById('inStudentCategory').value,
         user_name: document.getElementById('inStudentName').value,
-        student_roll: document.getElementById('inStudentRoll').value,
+        student_roll: null,
         student_email: app.user.email || 'student@college.edu',
         department: document.getElementById('inStudentDept').value,
         location_name: document.getElementById('inStudentLocation').value,
@@ -1851,7 +1814,7 @@
                 <div>
                   <div style="font-weight:700; color:#ffffff; font-size:0.88rem;">${c.title}</div>
                   <div style="font-size:0.73rem; color:#94a3b8;">
-                    ${c.student_roll || 'Student'} • ${c.department || 'Campus'} • ${c.proof_type === 'VIDEO' ? '🎥 Video' : '📷 Photo'}
+                    ${c.user_name || 'Student'} • ${c.department || 'Campus'} • ${c.proof_type === 'VIDEO' ? '🎥 Video' : '📷 Photo'}
                   </div>
                 </div>
               </div>
@@ -1880,7 +1843,7 @@
       document.getElementById('facTicketPriorityBadge').innerText = `Priority: ${c.priority_score} / 100 [${c.priority_tier}]`;
       document.getElementById('facTicketTitle').innerText = c.title;
       document.getElementById('facTicketDesc').innerText = c.description;
-      document.getElementById('facTicketStudent').innerText = `${c.user_name} (${c.student_roll || '21CS042'})`;
+      document.getElementById('facTicketStudent').innerText = `${c.user_name} (${c.department || 'Student'})`;
       document.getElementById('facTicketLocation').innerText = c.location_name;
       document.getElementById('facBeforePreviewImg').src = c.image_url || '/static/images/sparking_wire.svg';
 
@@ -2107,56 +2070,9 @@
         showToast(`⚡ 25 Reports Swarmed into Master Incident ${data.master_incident.id} [CRITICAL]`, 'success');
         fetchFacultyRankedQueue();
         fetchHODOverview();
-        renderCampusGis();
       } catch (err) {
         showToast('Swarm simulation error: ' + err, 'error');
       }
-    }
-
-    // Campus GIS Visualizer
-    function renderCampusGis() {
-      const canvas = document.getElementById('campusCanvas');
-      if (!canvas) return;
-      const ctx = canvas.getContext('2d');
-      const w = canvas.width = canvas.parentElement.clientWidth || 800;
-      const h = canvas.height = 520;
-
-      ctx.fillStyle = '#060a14';
-      ctx.fillRect(0, 0, w, h);
-
-      // Grid
-      ctx.strokeStyle = '#111a2e';
-      ctx.lineWidth = 1;
-      for (let x = 0; x < w; x += 40) { ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, h); ctx.stroke(); }
-      for (let y = 0; y < h; y += 40) { ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(w, y); ctx.stroke(); }
-
-      const landmarks = [
-        { name: 'Exam Hall Complex A', x: w * 0.45, y: h * 0.35, color: '#f43f5e' },
-        { name: 'Girls Hostel Block 3', x: w * 0.75, y: h * 0.70, color: '#f59e0b' },
-        { name: 'CS Lab Complex 204', x: w * 0.25, y: h * 0.50, color: '#6366f1' },
-        { name: 'Campus Health Center', x: w * 0.60, y: h * 0.20, color: '#10b981' }
-      ];
-
-      landmarks.forEach(lm => {
-        // 200m buffer
-        ctx.beginPath();
-        ctx.arc(lm.x, lm.y, 55, 0, Math.PI * 2);
-        ctx.fillStyle = 'rgba(99, 102, 241, 0.08)';
-        ctx.fill();
-        ctx.strokeStyle = 'rgba(99, 102, 241, 0.35)';
-        ctx.setLineDash([4, 4]);
-        ctx.stroke();
-        ctx.setLineDash([]);
-
-        ctx.beginPath();
-        ctx.arc(lm.x, lm.y, 8, 0, Math.PI * 2);
-        ctx.fillStyle = lm.color;
-        ctx.fill();
-
-        ctx.fillStyle = '#cbd5e1';
-        ctx.font = 'bold 11px sans-serif';
-        ctx.fillText(lm.name, lm.x + 12, lm.y + 4);
-      });
     }
 
     // Aliases
@@ -2173,8 +2089,6 @@
         navigatePortal('faculty');
       } else if (path.includes('hod') || path.includes('admin')) {
         navigatePortal('hod');
-      } else if (path.includes('map')) {
-        navigatePortal('map');
       } else if (path.includes('overview') || path.includes('about')) {
         navigatePortal('overview');
       }
